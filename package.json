@@ -11,9 +11,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+<<<<<<< HEAD
     "axios": "^0.19.2",
     "bull": "^3.13.0",
     "bull-board": "^0.6.0",
+=======
+    "axios": "^0.18.1",
+>>>>>>> 56979ae74c9be22914e0fe46e5b0908b84dbd11a
     "express": "^4.16.3",
     "kafka-node": "^5.0.0",
     "pug": "^2.0.3",
