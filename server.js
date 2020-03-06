@@ -2,33 +2,42 @@ const express = require('express')
 
 const scraper = require('./utils/scraper')
 const app = express()
-
-app.set('view engine', 'pug')
+// app.set('view engine', 'pug')
+const handlers = {"amazon": scraper.scrapeAmazon, "staples": scraper.scrapeStaples}
 
 app.get('/', (req, res) => {
-  const mediumArticles = new Promise((resolve, reject) => {
-    scraper
-      .scrapeMedium()
-      .then(data => {
-        resolve(data)
-      })
-      .catch(err => reject('Medium scrape failed'))
-  })
+  console.log(req.query)
+  stores = req.query["stores"].split(",")
+  promises = []
+  stores.forEach(store => {
+    console.log("Starting to scrape store " + store)
+    promises.push(new Promise((resolve, reject) => {
+      scraper
+        .handleStore(handlers[store], req.query)
+        .then(data => {
+          console.log("Finsihed scraping store " + store)
+          console.log(data)
+          resolve({[store]:data})
+        })
+        .catch(err => {
+          reject(`${store} scrape failed: ` +  err)
+        })
+    }))
+  });
 
-  const youtubeVideos = new Promise((resolve, reject) => {
-    scraper
-      .scrapeYoutube()
-      .then(data => {
-        resolve(data)
-      })
-      .catch(err => reject('YouTube scrape failed'))
-  })
-
-  Promise.all([mediumArticles, youtubeVideos])
+  Promise.all(promises)
     .then(data => {
-      res.render('index', { data: { articles: data[0], videos: data[1] } })
+      res.status(200).send({res: data})
     })
-    .catch(err => res.status(500).send(err))
+    .catch(err => res.status(500).send({error:err}))
 })
 
 app.listen(process.env.PORT || 3000)
+
+
+// scraper
+//   //     .scrapeYoutube()
+//   //     .then(data => {
+//   //       resolve(data)
+//   //     })
+//   //     .catch(err => reject('YouTube scrape failed'))

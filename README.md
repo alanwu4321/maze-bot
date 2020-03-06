@@ -1,7 +1,47 @@
-# scraped-tutorials
-Demo app to get matching content from YouTube and Medium using Node and Puppeteer.
+# Maze Bot 
+API enpoints to fetch products info based on keywords using Node and Puppeteer.
 
 ## Getting Started
  - Run `npm i` (Make sure you have Node installed first)
- - Run `npm start`
- - Visit `localhost:3000` in your browser
+ - Run `npm start` or `nodemon .` 
+ - Hit endpoint `localhost:3000`
+
+## Example
+
+ `http://localhost:3000?keywords=macbook&stores=amazon,staples`
+
+ ```
+{
+    "res": [
+        {
+            "amazon": [
+                {
+                    "macbook": {
+                        "name": "Apple 13\" MacBook Air, 1.8GHz Intel Core i5 Dual Core Processor, 8GB RAM, 128GB SSD, Mac OS, Silver, MQD32LL/A",
+                        "url": "https://www.amazon.ca/Apple-MacBook-1-8GHz-Processor-MQD32LL/dp/B07211W6X2/ref=sr_1_1?keywords=macbook&qid=1583459665&sr=8-1",
+                        "uuid": "B07211W6X2",
+                        "salePrice": 1069.99,
+                        "regularPrice": 1138.99
+                    }
+                }
+            ]
+        },
+        {
+            "staples": [
+                {
+                    "macbook": {
+                        "name": "Apple MUHN2LL/A MacBook Pro 13.3\" with Touch Bar, 1.4 GHz Intel Core i5, 128 GB SSD, 8GB RAM, macOS Mojave, Space Grey, English",
+                        "url": "https://www.staples.ca/products/2955723-en-apple-muhn2lla-macbook-pro-133-with-touch-bar-14-ghz-intel-core-i5-128-gb-ssd-8gb-ram-macos-mojave-space-grey-english",
+                        "uuid": "2172698689665",
+                        "salePrice": 1699.99,
+                        "regularPrice": null
+                    }
+                }
+            ]
+        }
+    ]
+}
+
+
+
+ ```
