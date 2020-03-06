@@ -1,17 +1,27 @@
 const puppeteer = require('puppeteer')
 const axios = require('axios');
-
-const handleStore = async (handler, keywords) => {
+const handleJobs = async (store, keywords, job = null, producer = null) => {
   return new Promise(function (resolve, reject) {
-    console.log(keywords)
-    let counter = 0
+    let items = 0
     let res = []
     keywords.forEach((keyword) => {
-      handler(keyword).then(
+      handlers[store](keyword).then(
         data => {
           res.push({ [keyword]: data })
-          counter += 1
-          if (counter == keywords.length) {
+          items += 1
+          if (job != null) {
+            job.progress((items / keywords.length) * 100)
+            payloads = [
+              {topic: "test3", messages: JSON.stringify({store: job.data.store, keyword:keyword, data: data}), partition: 0 }
+            ];
+            producer.send(payloads, function (err, data) {
+              console.log("streaming data", {store: job.data.store, keyword:keyword});
+            });
+            producer.on("error", function (err) {
+              console.log(err);
+            });
+          }
+          if (items == keywords.length) {
             resolve(res)
           }
         }
@@ -33,7 +43,7 @@ const scrapeBestBuy = (keyword) => {
     }
     axios.get(`https://api.bestbuy.com/v1/products((search=${keyword}))?apiKey=tda21Z9pyCFomCJM211gkCrY&sort=modelNumber.asc&show=modelNumber,name,salePrice,regularPrice&pageSize=100&format=json`)
       .then(response => {
-        if (response.data["products"].length > 0){
+        if (response.data["products"].length > 0) {
           resolve(response.data["products"][0])
         }
         resolve(prod)
@@ -208,13 +218,18 @@ const scrapeWalmart = async (keyword) => {
   return scrapedData
 }
 
+const handlers = {
+  "amazon": scrapeAmazon,
+  "staples": scrapeStaples,
+  "walmart": scrapeWalmart,
+  "bestbuy": scrapeBestBuy,
+}
 
-
-module.exports.handleStore = handleStore
-module.exports.scrapeAmazon = scrapeAmazon
-module.exports.scrapeStaples = scrapeStaples
-module.exports.scrapeWalmart = scrapeWalmart
-module.exports.scrapeBestBuy = scrapeBestBuy
+module.exports.handleJobs = handleJobs
+// module.exports.scrapeAmazon = scrapeAmazon
+// module.exports.scrapeStaples = scrapeStaples
+// module.exports.scrapeWalmart = scrapeWalmart
+// module.exports.scrapeBestBuy = scrapeBestBuy
 
 
 
