@@ -10,9 +10,11 @@ const handleJobs = async (store, keywords, job = null, producer = null) => {
           res.push({ [keyword]: data })
           items += 1
           if (job != null) {
-            job.progress((items / keywords.length) * 100)
+            progress = (items / keywords.length) * 100
+            job.progress(progress)
             payloads = [
-              {topic: "test3", messages: JSON.stringify({store: job.data.store, keyword:keyword, data: data}), partition: 0 }
+              {topic: "test4", key: job.data.store, messages: JSON.stringify({store: job.data.store, keyword:keyword, data: data})},
+              // {topic: "progress", key: job.data.store, messages: JSON.stringify({store: job.data.store, keyword:keyword, data: progress})},
             ];
             producer.send(payloads, function (err, data) {
               console.log("streaming data", {store: job.data.store, keyword:keyword});
