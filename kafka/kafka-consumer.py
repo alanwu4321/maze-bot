@@ -3,61 +3,39 @@ import logging
 import time
 import multiprocessing
 import json
+from setup import env, db
+import os
 from kafka import KafkaConsumer, KafkaProducer, TopicPartition
-# from kafka.partitioner import RoundRobinPartitioner
-# from kafka.coordinator.assignors.roundrobin import RoundRobinPartitionAssignor
 from kafka.structs import OffsetAndMetadata
 
 
-class Producer(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-        self.stop_event = threading.Event()
 
-    def stop(self):
-        self.stop_event.set()
+print(db.query("productsupplier").select().eql(1,3).where("p_id", "s_id").eval())
 
-    def run(self):
-        # # given that topic `topic` has at least 2 partitions
-        # partitioner = RoundRobinPartitioner(partitions=[
-        #     TopicPartition(topic='cat', partition=0),
-        #     TopicPartition(topic='cat', partition=1)
-        # ])
-        producer = KafkaProducer(bootstrap_servers='localhost:9092')
-        count = 0
-        while not self.stop_event.is_set():
-            count += 1
-            producer.send('cat', str(count))
-            time.sleep(1)
-        producer.flush()
-        producer.close()
+# print(db.query("productsupplier").pk("p_id","s_id").write(3, 1, "testing").into("p_id","s_id", "url").eval())
+
+exit(0)
 
 class Consumer(multiprocessing.Process):
     def __init__(self, uuid):
         multiprocessing.Process.__init__(self)
         self.stop_event = multiprocessing.Event()
         self.uuid = uuid
-
     def stop(self):
         self.stop_event.set()
-
     def run(self):
         consumer = KafkaConsumer(
-            bootstrap_servers='localhost:9092',
+            bootstrap_servers=os.getenv('KAFKA_SERVER'),
             consumer_timeout_ms=1000,
             group_id='group',
             value_deserializer=json.loads
         )
         consumer.subscribe(['test4', 'progress'])
-        print("Consumer Listening")
+        print('Consumer %s Listening', self.uuid)
         while not self.stop_event.is_set():
             for msg in consumer:
                 print(msg.partition)
-                # print(json.loads(message[6])['data']['name'])
-                # print ("%s:%d:%d: key=%s value=%s" % (message.topic, message.partition,
-                #                           message.offset, message.key,
-                #                           message.value))
-                print(msg.key, msg.value, msg.topic, self.uuid)
+                print(self.uuid, msg.key, msg.value, msg.topic)
 
                 tp = TopicPartition(msg.topic, msg.partition)
                 offsets = {tp: OffsetAndMetadata(msg.offset, None)}
@@ -70,13 +48,8 @@ class Consumer(multiprocessing.Process):
         consumer.close()
 
 def main():
-    tasks = [
-        Consumer("consumer 1"),
-        Consumer("consumer 2"),
-        Consumer("consumer 3"),
-        Consumer("consumer 4"),
-    ]
-
+    threadiness = int(os.getenv("THREADINESS"))
+    tasks = [Consumer(i) for i in range(threadiness)]
     for t in tasks:
         t.start()
 
@@ -88,11 +61,13 @@ def main():
     # for task in tasks:
     #     task.join()
 
-
+    
 if __name__ == "__main__":
+    
+    pass
     # logging.basicConfig(
     #     format='%(asctime)s.%(msecs)s:%(name)s:%(thread)d:%(levelname)s:%(process)d:%(message)s',
     #     level=logging.INFO
     #     )
 
-    main()
+    # main()

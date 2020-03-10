@@ -15,7 +15,6 @@
     "bull": "^3.13.0",
     "bull-board": "^0.6.0",
     "express": "^4.16.3",
-    "google-trends-api": "^4.9.0",
     "kafka-node": "^5.0.0",
     "pug": "^2.0.3",
     "puppeteer": "^1.20.0",
