@@ -1,9 +1,9 @@
 const puppeteer = require('puppeteer')
-const axios = require('axios');
+const axios = require('axios')
 const handleJobs = async (store, keywords, job = null, producer = null) => {
   return new Promise(function (resolve, reject) {
     let items = 0
-    let res = []
+    const res = []
     keywords.forEach((keyword) => {
       handlers[store](keyword).then(
         data => {
@@ -13,15 +13,15 @@ const handleJobs = async (store, keywords, job = null, producer = null) => {
             progress = (items / keywords.length) * 100
             job.progress(progress)
             payloads = [
-              {topic: "test4", key: job.data.store, messages: JSON.stringify({store: job.data.store, keyword:keyword, data: data})},
+              { topic: 'test4', key: job.data.store, messages: JSON.stringify({ store: job.data.store, keyword: keyword, data: data }) }
               // {topic: "progress", key: job.data.store, messages: JSON.stringify({store: job.data.store, keyword:keyword, data: progress})},
-            ];
+            ]
             producer.send(payloads, function (err, data) {
-              console.log("streaming data", {store: job.data.store, keyword:keyword});
-            });
-            producer.on("error", function (err) {
-              console.log(err);
-            });
+              console.log('streaming data', { store: job.data.store, keyword: keyword })
+            })
+            producer.on('error', function (err) {
+              console.log(err)
+            })
           }
           if (items == keywords.length) {
             resolve(res)
@@ -36,65 +36,66 @@ const handleJobs = async (store, keywords, job = null, producer = null) => {
 
 const scrapeBestBuy = (keyword) => {
   return new Promise(function (resolve, reject) {
-    let prod = {
+    const prod = {
       name: null,
       url: null,
       uuid: null,
       salePrice: null,
-      regularPrice: null,
+      regularPrice: null
     }
     axios.get(`https://api.bestbuy.com/v1/products((search=${keyword}))?apiKey=tda21Z9pyCFomCJM211gkCrY&sort=modelNumber.asc&show=modelNumber,name,salePrice,regularPrice&pageSize=100&format=json`)
       .then(response => {
-        if (response.data["products"].length > 0) {
-          resolve(response.data["products"][0])
+        if (response.data.products.length > 0) {
+          resolve(response.data.products[0])
         }
         resolve(prod)
       })
       .catch(error => {
         reject(error)
-      });
+      })
   })
 }
 
 const scrapeAmazon = async (keyword) => {
   const browser = await puppeteer.launch({
-    headless: true, args: [
+    headless: true,
+    args: [
       '--window-size=1000,1000',
       '--no-sandbox', '--disable-setuid-sandbox'
     ]
   })
   const page = await browser.newPage()
   await page.setViewport({ width: 1000, height: 1000, deviceScaleFactor: 1 })
-  await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36');
+  await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36')
   await page.goto(`https://www.amazon.ca/s?k=${keyword}`)
   const scrapedData = await page.evaluate(() => {
     const numberify = string => Number(string.replace(/[^\d.]+/, '').replace(/\btp\./g, '').replace(',', '') || 0)
-    let products = Array.from(
+    const products = Array.from(
       document.querySelectorAll(
         '.s-include-content-margin.s-border-bottom'
       )
     ).map(product => {
-      let prod = {
+      const prod = {
         name: null,
         url: null,
         uuid: null,
         salePrice: null,
-        regularPrice: null,
+        regularPrice: null
       }
-      prod.name = product.querySelector("span.a-size-medium.a-color-base.a-text-normal").textContent
-      let url = product.querySelector(".a-link-normal .a-text-normal")
+      prod.name = product.querySelector('span.a-size-medium.a-color-base.a-text-normal').textContent
+      const url = product.querySelector('.a-link-normal .a-text-normal')
       if (url != null) {
         parent = url.parentNode
         if (parent != null) {
-          prod.url = "https://www.amazon.ca" + parent.getAttribute("href")
-          if (prod.url.includes("/dp/")) {
-            prod.uuid = prod.url.split("/")[5]
-          } else if (prod.url.includes("dp%2F")) {
-            prod.uuid = prod.url.split("dp%2F")[1].split("%2F")[0]
+          prod.url = 'https://www.amazon.ca' + parent.getAttribute('href')
+          if (prod.url.includes('/dp/')) {
+            prod.uuid = prod.url.split('/')[5]
+          } else if (prod.url.includes('dp%2F')) {
+            prod.uuid = prod.url.split('dp%2F')[1].split('%2F')[0]
           }
         }
       }
-      let prices = product.querySelectorAll(".a-offscreen")
+      const prices = product.querySelectorAll('.a-offscreen')
       if (prices.length > 0) {
         prod.salePrice = numberify(prices[0].textContent)
         prod.regularPrice = prod.salePrice
@@ -104,7 +105,7 @@ const scrapeAmazon = async (keyword) => {
       }
       return prod
     }).filter(product => {
-      return product.name != null && (product.salePrice != null || product.regularPrice != null);
+      return product.name != null && (product.salePrice != null || product.regularPrice != null)
     })
     return products[0]
   })
@@ -114,14 +115,15 @@ const scrapeAmazon = async (keyword) => {
 
 const scrapeStaples = async (keyword) => {
   const browser = await puppeteer.launch({
-    headless: true, args: [
+    headless: true,
+    args: [
       '--window-size=1000,1000',
       '--no-sandbox', '--disable-setuid-sandbox'
     ]
   })
   const page = await browser.newPage()
   await page.setViewport({ width: 1000, height: 1000, deviceScaleFactor: 1 })
-  await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36');
+  await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36')
   await page.goto(
     `https://www.staples.ca/search?query=${keyword}`
   )
@@ -130,26 +132,26 @@ const scrapeStaples = async (keyword) => {
     const numberify = string => Number(string.replace(/[^\d.]+/, '').replace(/\btp\./g, '').replace(',', '') || 0)
     const products = Array.from(document.querySelectorAll('.ais-hits--item'))
       .map(product => {
-        let prod = {
+        const prod = {
           name: null,
           url: null,
           uuid: null,
           salePrice: null,
-          regularPrice: null,
+          regularPrice: null
         }
-        title = product.querySelector("a.product-thumbnail__title.product-link")
+        title = product.querySelector('a.product-thumbnail__title.product-link')
         if (title != null) {
           prod.name = title.textContent
-          prod.url = "https://www.staples.ca" + title.getAttribute("href")
+          prod.url = 'https://www.staples.ca' + title.getAttribute('href')
         }
-        price = product.querySelector(".money.pre-money")
+        price = product.querySelector('.money.pre-money')
         if (price != null) {
           prod.salePrice = numberify(price.textContent)
-          prod.uuid = price.getAttribute("data-product-id")
+          prod.uuid = price.getAttribute('data-product-id')
         }
         return prod
       }).filter(product => {
-        return product.name != null && (product.salePrice != null || product.regularPrice != null);
+        return product.name != null && (product.salePrice != null || product.regularPrice != null)
       })
     return products[0]
   })
@@ -159,14 +161,15 @@ const scrapeStaples = async (keyword) => {
 
 const scrapeWalmart = async (keyword) => {
   const browser = await puppeteer.launch({
-    headless: true, args: [
+    headless: true,
+    args: [
       '--window-size=1000,1000',
       '--no-sandbox', '--disable-setuid-sandbox'
     ]
   })
   const page = await browser.newPage()
   await page.setViewport({ width: 1000, height: 1000, deviceScaleFactor: 1 })
-  await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36');
+  await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36')
   await page.goto(
     `https://www.walmart.ca/search/${keyword}`
   )
@@ -174,36 +177,36 @@ const scrapeWalmart = async (keyword) => {
     const numberify = string => Number(string.replace(/[^\d.]+/, '').replace(/\btp\./g, '').replace(',', '') || 0)
     const products = Array.from(document.querySelectorAll('.product-link'))
       .map(product => {
-        let prod = {
+        const prod = {
           name: null,
           url: null,
           uuid: null,
           salePrice: null,
-          regularPrice: null,
+          regularPrice: null
         }
-        prod.url = "https://www.walmart.ca" + product.getAttribute("href")
-        uuid = prod.url.split("/")
+        prod.url = 'https://www.walmart.ca' + product.getAttribute('href')
+        uuid = prod.url.split('/')
         if (uuid.length > 0) {
           prod.uuid = uuid[uuid.length - 1]
         }
-        title = product.querySelector(".thumb-header")
+        title = product.querySelector('.thumb-header')
         if (title != null) {
           prod.name = title.textContent
         }
 
-        price = product.querySelector("span.product-price-analytics")
+        price = product.querySelector('span.product-price-analytics')
         if (price != null) {
-          prod.salePrice = numberify(price.getAttribute("data-analytics-value"))
+          prod.salePrice = numberify(price.getAttribute('data-analytics-value'))
           if (prod.salePrice == 0) {
             prod.salePrice = -1
           }
         } else {
-          curPrice = product.querySelector(".price-current")
+          curPrice = product.querySelector('.price-current')
           if (curPrice != null) {
             prod.salePrice = numberify(curPrice.textContent)
           }
         }
-        price_was = product.querySelector(".price-was")
+        price_was = product.querySelector('.price-was')
         if (price_was != null) {
           prod.regularPrice = numberify(price_was.textContent)
           if (prod.regularPrice == 0) {
@@ -212,7 +215,7 @@ const scrapeWalmart = async (keyword) => {
         }
         return prod
       }).filter(product => {
-        return product.name != null && (product.salePrice != null || product.regularPrice != null);
+        return product.name != null && (product.salePrice != null || product.regularPrice != null)
       })
     return products[0]
   })
@@ -221,10 +224,10 @@ const scrapeWalmart = async (keyword) => {
 }
 
 const handlers = {
-  "amazon": scrapeAmazon,
-  "staples": scrapeStaples,
-  "walmart": scrapeWalmart,
-  "bestbuy": scrapeBestBuy,
+  amazon: scrapeAmazon,
+  staples: scrapeStaples,
+  walmart: scrapeWalmart,
+  bestbuy: scrapeBestBuy
 }
 
 module.exports.handleJobs = handleJobs
@@ -232,6 +235,3 @@ module.exports.handleJobs = handleJobs
 // module.exports.scrapeStaples = scrapeStaples
 // module.exports.scrapeWalmart = scrapeWalmart
 // module.exports.scrapeBestBuy = scrapeBestBuy
-
-
-
