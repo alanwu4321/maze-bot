@@ -55,12 +55,13 @@ class query:
             cur = con.cursor()
             print(f'Executing {self.q}')
             cur.execute(self.q)
+            
             if self.type == "write":
                 con.commit()
                 self.select().eql(*self.values).where(*self.columns)
                 cur.execute(self.q)
-            rows = cur.fetchall()
-            return rows
+
+            return cur.fetchall()
         except (Exception, psycopg2.DatabaseError) as error :
             print ("Error while creating PostgreSQL table", error)
         finally:

@@ -17,9 +17,10 @@ INSERT INTO v1.product (name, model_no, brand, category, created_by) VALUES ('te
 INSERT INTO v1.product (name, model_no, brand, category, created_by) VALUES ('test_product4','test1_model_no4','laptop','test_brand4',1);
 
 
-INSERT INTO v1.productsupplier (p_id,s_id,price,last_updated) VALUES (1,1,15.39, 'NOW');
-INSERT INTO v1.productsupplier (p_id,s_id,price,last_updated) VALUES (1,2,16.99, 'NOW');
-INSERT INTO v1.productsupplier (p_id,s_id,price,last_updated) VALUES (1,3,19, 'NOW');
-INSERT INTO v1.productsupplier (p_id,s_id,price,last_updated) VALUES (2,1,75.50, 'NOW');
-INSERT INTO v1.productsupplier (p_id,s_id,price,last_updated) VALUES (2,2,95.80, 'NOW');
-INSERT INTO v1.productsupplier (p_id,s_id,price,last_updated) VALUES (2,3,85.70, 'NOW');
+INSERT INTO v1.productsupplier (p_id,s_id,price,timestamp) VALUES (1,1,15.39, 'NOW');
+INSERT INTO v1.productsupplier (p_id,s_id,price,timestamp) VALUES (1,2,16.99, 'NOW');
+INSERT INTO v1.productsupplier (p_id,s_id,price,timestamp) VALUES (1,3,19, 'NOW');
+INSERT INTO v1.productsupplier (p_id,s_id,price,timestamp) VALUES (2,1,75.50, 'NOW');
+INSERT INTO v1.productsupplier (p_id,s_id,price,timestamp) VALUES (2,2,95.80, 'NOW');
+INSERT INTO v1.productsupplier (p_id,s_id,price,timestamp) VALUES (2,3,85.70, 'NOW');
+

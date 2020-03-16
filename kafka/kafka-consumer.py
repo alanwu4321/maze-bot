@@ -4,13 +4,15 @@ import time
 import multiprocessing
 import json
 from setup import env, db
+from utils import gtrend
 import os
 from kafka import KafkaConsumer, KafkaProducer, TopicPartition
 from kafka.structs import OffsetAndMetadata
 
 
+print(gtrend.getDemand())
 
-print(db.query("productsupplier").select().eql(1,3).where("p_id", "s_id").eval())
+# print(db.query("productsupplier").select().eql(1,3).where("p_id", "s_id").eval())
 
 # print(db.query("productsupplier").pk("p_id","s_id").write(3, 1, "testing").into("p_id","s_id", "url").eval())
 
