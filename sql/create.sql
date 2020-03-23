@@ -27,7 +27,7 @@ CREATE TABLE v1.ProductDemand
   ( 
      p_id         INT NOT NULL DEFAULT -1, 
      timestamp    DATE NOT NULL, 
-     demand       NUMERIC
+     demand       double precision
   ); 
 
 ALTER TABLE v1.ProductDemand 
@@ -49,14 +49,17 @@ CREATE TABLE v1.ProductSupplier
      p_id         INT NOT NULL DEFAULT -1, 
      s_id         INT NOT NULL DEFAULT -1, 
      timestamp    DATE NOT NULL, 
-     inventory    NUMERIC, 
-     price        NUMERIC, 
+     inventory    double precision, 
+     price        double precision, 
      url          CHARACTER VARYING, 
      created_by   INT DEFAULT -1 
   ); 
 
 ALTER TABLE v1.ProductSupplier 
   ADD CONSTRAINT pk_productsupplier PRIMARY KEY (p_id, s_id, timestamp); 
+
+ALTER TABLE v1.productsupplier
+    ADD CONSTRAINT ps_unique UNIQUE (p_id, s_id, "timestamp");
 
 ALTER TABLE v1.Product 
   ADD CONSTRAINT fk_product_0 FOREIGN KEY (created_by) REFERENCES v1.User (u_id) 

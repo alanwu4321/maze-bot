@@ -10,21 +10,24 @@ from kafka import KafkaConsumer, KafkaProducer, TopicPartition
 from kafka.structs import OffsetAndMetadata
 
 
-print(gtrend.getDemand())
-
+# print(gtrend.getDemand())
+print(db.query("productsupplier").select().join("product").on("p_id", "p_id").eql(1,3).where("p_id", "s_id").eval())
+# print(db.query("productsupplier").select().eval())
 # print(db.query("productsupplier").select().eql(1,3).where("p_id", "s_id").eval())
-
-# print(db.query("productsupplier").pk("p_id","s_id").write(3, 1, "testing").into("p_id","s_id", "url").eval())
+# print(db.query("productsupplier").pk("p_id","s_id","timestamp").write(1, 3, 17.5256, "testing", "NOW").into("p_id","s_id", "price", "url", "timestamp").eval())
 
 exit(0)
+
 
 class Consumer(multiprocessing.Process):
     def __init__(self, uuid):
         multiprocessing.Process.__init__(self)
         self.stop_event = multiprocessing.Event()
         self.uuid = uuid
+
     def stop(self):
         self.stop_event.set()
+
     def run(self):
         consumer = KafkaConsumer(
             bootstrap_servers=os.getenv('KAFKA_SERVER'),
@@ -49,6 +52,7 @@ class Consumer(multiprocessing.Process):
         consumer.unsuscribe()
         consumer.close()
 
+
 def main():
     threadiness = int(os.getenv("THREADINESS"))
     tasks = [Consumer(i) for i in range(threadiness)]
@@ -63,9 +67,9 @@ def main():
     # for task in tasks:
     #     task.join()
 
-    
+
 if __name__ == "__main__":
-    
+
     pass
     # logging.basicConfig(
     #     format='%(asctime)s.%(msecs)s:%(name)s:%(thread)d:%(levelname)s:%(process)d:%(message)s',
