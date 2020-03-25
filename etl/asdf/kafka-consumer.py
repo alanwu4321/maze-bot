@@ -3,20 +3,20 @@ import logging
 import time
 import multiprocessing
 import json
-from setup import env, db
-from utils import gtrend
+from setup import env
+from utils import gtrend, db
 import os
 from kafka import KafkaConsumer, KafkaProducer, TopicPartition
 from kafka.structs import OffsetAndMetadata
 
 
 # print(gtrend.getDemand())
-print(db.query("productsupplier").select().join("product").on("p_id", "p_id").eql(1,3).where("p_id", "s_id").eval())
+# print(db.query("productsupplier").select().join("product").on("p_id").join("supplier").on("s_id").eql(1,3).where("p_id", "s_id").eval())
 # print(db.query("productsupplier").select().eval())
 # print(db.query("productsupplier").select().eql(1,3).where("p_id", "s_id").eval())
-# print(db.query("productsupplier").pk("p_id","s_id","timestamp").write(1, 3, 17.5256, "testing", "NOW").into("p_id","s_id", "price", "url", "timestamp").eval())
+# print(db.query("productsupplier").pk("p_id","s_id","timestamp").write(2, 3, 21.5256, "testing", "NOW").into("p_id","s_id", "price", "url", "timestamp").eval())
 
-exit(0)
+# exit(0)
 
 
 class Consumer(multiprocessing.Process):
@@ -70,10 +70,10 @@ def main():
 
 if __name__ == "__main__":
 
-    pass
+    # pass
     # logging.basicConfig(
     #     format='%(asctime)s.%(msecs)s:%(name)s:%(thread)d:%(levelname)s:%(process)d:%(message)s',
     #     level=logging.INFO
     #     )
 
-    # main()
+    main()

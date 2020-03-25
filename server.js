@@ -17,7 +17,13 @@ producer.on('ready', function () {
 Queue.process(async (job) => {
   console.log('processing', job.data.store, job.id)
   const keywords = job.data.keywords
-  return scraper.handleJobs(job.data.store, keywords, job, producer)
+  return scraper.handleJobs(
+    job.data.store,
+    keywords,
+    job.data.isUpdate,
+    job,
+    producer
+  )
 })
 
 Queue.on('waiting', (job, result) => {
@@ -58,7 +64,9 @@ app.get('/kafka', (req, res) => {
       if (item == stores.length) {
         res.status(200).json({
           res: `succesfully queued ${stores.length} stores and ${keywords.length} items`,
-          jobs: jobs
+          jobs: jobs,
+          //null is set to no update
+          isUpdate: req.query.update,
         })
       }
     })
@@ -73,7 +81,7 @@ app.get('/api', (req, res) => {
     console.log('Starting to scrape store ' + store)
     promises.push(new Promise((resolve, reject) => {
       scraper
-        .handleJobs(store, keywords)
+        .handleJobs(store, keywords, req.query.update)
         .then(data => {
           console.log('Finsihed scraping store ' + store)
           console.log(data)

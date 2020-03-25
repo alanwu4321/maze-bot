@@ -1,26 +1,152 @@
-INSERT INTO v1.user (u_id, name, role,email, password) VALUES (-1, 'default', 'default','default','default');
-INSERT INTO v1.user (name, role,email, password) VALUES ('admin', 'admin','admin@maze.com','password');
-INSERT INTO v1.user (name, role,email, password) VALUES ('admin2', 'admin','admin@maze.com','password');
-INSERT INTO v1.user (name, role,email, password) VALUES ('admin3', 'admin','admin@maze.com','password');
+CREATE OR REPLACE FUNCTION trigger_set_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TABLE v1.User 
+  (
+     u_id       SERIAL            NOT NULL, 
+     u_name     CHARACTER VARYING, 
+     role       CHARACTER VARYING, 
+     email      CHARACTER VARYING NOT NULL, 
+     password   CHARACTER VARYING NOT NULL,
+     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  ); 
+
+ALTER TABLE v1.User 
+  ADD CONSTRAINT pk_user PRIMARY KEY (u_id); 
+
+CREATE TRIGGER set_timestamp_1
+BEFORE UPDATE ON v1.User
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+CREATE TABLE v1.Product 
+  ( 
+     p_id       SERIAL            NOT NULL, 
+     p_name     CHARACTER VARYING NOT NULL, 
+     model_no   CHARACTER VARYING NOT NULL, 
+     brand      CHARACTER VARYING, 
+     category   CHARACTER VARYING, 
+     updated_by INT DEFAULT -1,
+     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  ); 
+
+ALTER TABLE v1.Product 
+  ADD CONSTRAINT pk_product PRIMARY KEY (p_id); 
+
+CREATE TRIGGER set_timestamp_2
+BEFORE UPDATE ON v1.Product
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
 
 
-INSERT INTO v1.supplier (s_id, name, base_url, created_by) VALUES (-1, 'default','default', -1);
-INSERT INTO v1.supplier (name, base_url, created_by) VALUES ('bestbuy','https://bestbuy.ca',1);
-INSERT INTO v1.supplier (name, base_url, created_by) VALUES ('amazon','https://amazon.ca',1);
-INSERT INTO v1.supplier (name, base_url, created_by) VALUES ('walmart','https://walmart.ca',1);
-INSERT INTO v1.supplier (name, base_url, created_by) VALUES ('staples','https://staples.ca',1);
+CREATE TABLE v1.ProductDemand
+  ( 
+     p_id       INT NOT NULL DEFAULT -1, 
+     date       DATE NOT NULL, 
+     demand     double precision,
+     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  ); 
 
-INSERT INTO v1.product (p_id, name, model_no, brand, category, created_by) VALUES (-1, 'default','default','default','default',-1);
-INSERT INTO v1.product (name, model_no, brand, category, created_by) VALUES ('test_product1','test1_model_no1','laptop','test_brand1',1);
-INSERT INTO v1.product (name, model_no, brand, category, created_by) VALUES ('test_product2','test1_model_no2','laptop','test_brand2',1);
-INSERT INTO v1.product (name, model_no, brand, category, created_by) VALUES ('test_product3','test1_model_no3','laptop','test_brand3',1);
-INSERT INTO v1.product (name, model_no, brand, category, created_by) VALUES ('test_product4','test1_model_no4','laptop','test_brand4',1);
+ALTER TABLE v1.ProductDemand 
+  ADD CONSTRAINT pk_productdemand PRIMARY KEY (p_id, date); 
+  
+CREATE TRIGGER set_timestamp_3
+BEFORE UPDATE ON v1.ProductDemand
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+CREATE TABLE v1.Supplier 
+  ( 
+     s_id       SERIAL            NOT NULL, 
+     s_name     CHARACTER VARYING NOT NULL, 
+     base_url   CHARACTER VARYING NOT NULL, 
+     updated_by INT DEFAULT -1,
+     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  ); 
+
+ALTER TABLE v1.Supplier 
+  ADD CONSTRAINT pk_supplier PRIMARY KEY (s_id); 
+  
+CREATE TRIGGER set_timestamp_4
+BEFORE UPDATE ON v1.Supplier
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+CREATE TABLE v1.ProductSupplier_Map 
+  (
+     p_id         INT NOT NULL DEFAULT -1, 
+     s_id         INT NOT NULL DEFAULT -1, 
+     uuid         CHARACTER VARYING NOT NULL, 
+     updated_by   INT DEFAULT -1,
+     updated_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  );
+
+ALTER TABLE v1.ProductSupplier_Map 
+  ADD CONSTRAINT pk_productsupplier_map PRIMARY KEY (p_id, s_id); 
+
+CREATE TRIGGER set_timestamp_5
+BEFORE UPDATE ON v1.ProductSupplier_Map
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+CREATE TABLE v1.ProductSupplier 
+  ( 
+     p_id         INT NOT NULL DEFAULT -1, 
+     s_id         INT NOT NULL DEFAULT -1, 
+     date         DATE NOT NULL, 
+     inventory    double precision, 
+     price        double precision, 
+     url          CHARACTER VARYING, 
+     updated_by   INT DEFAULT -1,
+     updated_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  ); 
+
+ALTER TABLE v1.ProductSupplier 
+  ADD CONSTRAINT pk_productsupplier PRIMARY KEY (p_id, s_id, date); 
+
+CREATE TRIGGER set_timestamp_6
+BEFORE UPDATE ON v1.ProductSupplier
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
 
 
-INSERT INTO v1.productsupplier (p_id,s_id,price,timestamp) VALUES (1,1,15.39, 'NOW');
-INSERT INTO v1.productsupplier (p_id,s_id,price,timestamp) VALUES (1,2,16.99, 'NOW');
-INSERT INTO v1.productsupplier (p_id,s_id,price,timestamp) VALUES (1,3,19, 'NOW');
-INSERT INTO v1.productsupplier (p_id,s_id,price,timestamp) VALUES (2,1,75.50, 'NOW');
-INSERT INTO v1.productsupplier (p_id,s_id,price,timestamp) VALUES (2,2,95.80, 'NOW');
-INSERT INTO v1.productsupplier (p_id,s_id,price,timestamp) VALUES (2,3,85.70, 'NOW');
+ALTER TABLE v1.Product 
+  ADD CONSTRAINT fk_product_0 FOREIGN KEY (updated_by) REFERENCES v1.User (u_id) 
+  ON DELETE CASCADE; 
 
+ALTER TABLE v1.ProductDemand 
+  ADD CONSTRAINT fk_productdemand_0 FOREIGN KEY (p_id) REFERENCES v1.Product (
+  p_id) ON DELETE CASCADE; 
+
+ALTER TABLE v1.Supplier 
+  ADD CONSTRAINT fk_supplier_0 FOREIGN KEY (updated_by) REFERENCES v1.User (u_id 
+  ) ON DELETE CASCADE; 
+
+ALTER TABLE v1.ProductSupplier 
+  ADD CONSTRAINT fk_productsupplier_0 FOREIGN KEY (p_id) REFERENCES v1.Product ( 
+  p_id) ON DELETE CASCADE; 
+
+ALTER TABLE v1.ProductSupplier 
+  ADD CONSTRAINT fk_productsupplier_1 FOREIGN KEY (s_id) REFERENCES v1.Supplier 
+  (s_id) ON DELETE CASCADE; 
+
+ALTER TABLE v1.ProductSupplier 
+  ADD CONSTRAINT fk_productsupplier_2 FOREIGN KEY (updated_by) REFERENCES 
+  v1.User (u_id) ON DELETE CASCADE; 
+
+ALTER TABLE v1.ProductSupplier_Map 
+  ADD CONSTRAINT fk_productsupplier_map_0 FOREIGN KEY (p_id) REFERENCES v1.Product ( 
+  p_id) ON DELETE CASCADE; 
+
+ALTER TABLE v1.ProductSupplier_Map 
+  ADD CONSTRAINT fk_productsupplier_map_1 FOREIGN KEY (s_id) REFERENCES v1.Supplier 
+  (s_id) ON DELETE CASCADE; 
+
+ALTER TABLE v1.ProductSupplier_Map 
+  ADD CONSTRAINT fk_productsupplier_map_2 FOREIGN KEY (updated_by) REFERENCES 
+  v1.User (u_id) ON DELETE CASCADE; 

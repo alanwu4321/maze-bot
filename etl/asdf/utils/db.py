@@ -1,33 +1,41 @@
 import psycopg2
 import os
 
+PD = "productdemand"
+P = "product"
+
+PKs = {
+    PD: ["p_id","date"],
+    P: ["p_id"]
+}
+
 
 class query:
-    writeType = "write"
-    readType = "read"
+    write_type = "write"
+    read_type = "read"
 
     def __init__(self, table):
         self.table = table
         self.db = os.getenv("PG_SCHEMA")
 
     def select(self, *columns):
-        self.type = query.readType
+        self.type = query.read_type
         cols = ','.join(columns) if columns else '*'
         self.q = f'select {cols} from {self.db}.{self.table} as {self.table} '
         return self
 
     def join(self, join_table):
-        self.q += f'inner join {self.db}.{join_table} as {join_table} on {join_table}.%s={self.table}.%s '
+        self.q += f'inner join {self.db}.{join_table} as {join_table} on \
+            {join_table}.%s={self.table}.%s '
         return self
 
     def on(self, *join_cols):
-        if len(join_cols) == 1:
-            self.q = self.q % (join_cols[0], join_cols[0])
-        else:
-            self.q = self.q % (join_cols[0], join_cols[1])
+        self.q = self.q % (join_cols[0], join_cols[0]) if len(
+            join_cols) == 1 else self.q % (join_cols[0], join_cols[1])
         return self
 
     def where(self, *columns):
+        if not columns: return self
         temp = ""
         for col, val in zip(columns, self.values):
             col = self.table + "." + col
@@ -41,30 +49,32 @@ class query:
     def into(self, *columns):
         self.columns = columns
         cols = ','.join(columns)
-        pks = ','.join(self.pk)
+        pks = ','.join(PKs[self.table])
         vals = sets = ""
         for col, val in zip(columns, self.values):
             vals += "'%s'," % val if isinstance(val, str) else "%s," % val
             sets += col + f'=EXCLUDED.{col},'
-        vals = vals[:-1]
-        sets = sets[:-1]
+        vals, sets = vals[:-1], sets[:-1]
         self.q = f'''
         insert into {self.db}.{self.table} ({cols}) values ({vals})
         on conflict ({pks}) do update set {sets}
         '''
         return self
 
-    def pk(self, *pk):
-        self.pk = pk
-        return self
-
     def write(self, *values):
-        self.type = query.writeType
+        self.type = query.write_type
         self.values = values
         return self
 
     def eql(self, *values):
         self.values = values
+        return self
+
+    def order_by(self, col, order):
+        if not col: col = "updated_at"
+        if not order: order = "DESC"
+        order = order.upper()
+        self.q += f'order by {col} {order} '
         return self
 
     def eval(self):
@@ -74,7 +84,7 @@ class query:
             print(f'Executing {self.q}')
             cur.execute(self.q)
             # Get the fields name (only once!)
-            if self.type == query.writeType:
+            if self.type == query.write_type:
                 con.commit()
                 # read the latest update
                 self.select().eql(*self.values).where(*self.columns)

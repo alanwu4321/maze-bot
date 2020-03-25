@@ -1,34 +1,59 @@
 const puppeteer = require('puppeteer')
 const axios = require('axios')
-const handleJobs = async (store, keywords, job = null, producer = null) => {
+const redis = require('redis');
+const client = redis.createClient();
+// Print redis errors to the console
+client.on('error', (err) => {
+  console.log("Error " + err);
+}).on("connect", function(error) {
+  console.log("Redis is connected");
+})
+
+const kafkaWork = (producer, job, keyword, data) => {
+  payloads = [
+    { topic: 'test4', key: job.data.store, messages: JSON.stringify({ store: job.data.store, keyword: keyword, data: JSON.parse(data) }) }
+    // {topic: "progress", key: job.data.store, messages: JSON.stringify({store: job.data.store, keyword:keyword, data: progress})},
+  ]
+  producer.send(payloads, function (err, data) {
+    console.log('streaming data', { store: job.data.store, keyword: keyword })
+  })
+  producer.on('error', function (err) {
+    console.log(err)
+  })
+}
+
+const handleJobs = async (store, keywords, isUpdate, job = null, producer = null) => {
   return new Promise(function (resolve, reject) {
-    let items = 0
     const res = []
+    let items = 0
     keywords.forEach((keyword) => {
-      handlers[store](keyword).then(
-        data => {
-          res.push({ [keyword]: data })
-          items += 1
-          if (job != null) {
-            progress = (items / keywords.length) * 100
-            job.progress(progress)
-            payloads = [
-              { topic: 'test4', key: job.data.store, messages: JSON.stringify({ store: job.data.store, keyword: keyword, data: data }) }
-              // {topic: "progress", key: job.data.store, messages: JSON.stringify({store: job.data.store, keyword:keyword, data: progress})},
-            ]
-            producer.send(payloads, function (err, data) {
-              console.log('streaming data', { store: job.data.store, keyword: keyword })
-            })
-            producer.on('error', function (err) {
-              console.log(err)
-            })
-          }
-          if (items == keywords.length) {
-            resolve(res)
-          }
+      items += 1
+      keyword = encodeURIComponent(keyword)
+      client.get(`${store}:${keyword}`, (err, data) => {
+        //if update is request or there is no data
+        if(isUpdate || !data) {
+          console.log("retrieving from web")
+          handlers[store](keyword).then(
+            data => {
+              res.push({ [keyword]: data })
+              if (job) kafkaWork(producer, job, keyword, data)
+              client.set(`${store}:${keyword}`, JSON.stringify(data), function(err) {
+                if (err != null) console.error(err);
+              })
+              progress = (items / keywords.length) * 100
+              if (items == keywords.length) resolve(res)
+            }
+          ).catch(err => {
+            reject(err)
+          })
         }
-      ).catch(err => {
-        reject(err)
+        else {
+          console.log("retrieving from cache")
+          res.push({ [keyword]: JSON.parse(data) })
+          if (job) kafkaWork(producer, job, keyword, data)
+          progress = (items / keywords.length) * 100
+          if (items == keywords.length) resolve(res)
+        }
       })
     })
   })
@@ -43,7 +68,7 @@ const scrapeBestBuy = (keyword) => {
       salePrice: null,
       regularPrice: null
     }
-    axios.get(`https://api.bestbuy.com/v1/products((search=${keyword}))?apiKey=tda21Z9pyCFomCJM211gkCrY&sort=modelNumber.asc&show=modelNumber,name,salePrice,regularPrice&pageSize=100&format=json`)
+    axios.get(`https://api.bestbuy.com/v1/products((search=${keyword}))?apiKey=tda21Z9pyCFomCJM211gkCrY&sort=bestSellingRank.dsc&show=modelNumber,name,salePrice,regularPrice&pageSize=100&format=json`)
       .then(response => {
         if (response.data.products.length > 0) {
           resolve(response.data.products[0])
@@ -107,7 +132,7 @@ const scrapeAmazon = async (keyword) => {
     }).filter(product => {
       return product.name != null && (product.salePrice != null || product.regularPrice != null)
     })
-    return products[0]
+    return products
   })
   await browser.close()
   return scrapedData

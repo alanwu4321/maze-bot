@@ -4,7 +4,27 @@ API enpoints to fetch products info based on keywords using Node and Puppeteer.
 ## Getting Started
  - Run `npm i` (Make sure you have Node installed first)
  - Run `npm start` or `nodemon .` 
- - Hit endpoint `localhost:3000`
+ - Hit endpoint `localhost:3000`## Redis
+
+### productsupplier_map
+- map unique supplier id to product
+
+## Database
+
+### productsupplier_map
+- map unique supplier id to product
+
+## Redis
+
+### keys
+- `store`:`model_id`
+
+## Request
+- request updates on `product_id` or `model` 
+
+### productsupplier_map
+- map unique supplier id to product
+
 
 ## Example
 
