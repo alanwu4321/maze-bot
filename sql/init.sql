@@ -11,8 +11,8 @@ CREATE TABLE v1.User
      u_id       SERIAL            NOT NULL, 
      u_name     CHARACTER VARYING, 
      role       CHARACTER VARYING, 
-     email      CHARACTER VARYING NOT NULL, 
-     password   CHARACTER VARYING NOT NULL,
+     email      CHARACTER VARYING, 
+     password   CHARACTER VARYING,
      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
   ); 
 
@@ -27,10 +27,12 @@ EXECUTE PROCEDURE trigger_set_timestamp();
 CREATE TABLE v1.Product 
   ( 
      p_id       SERIAL            NOT NULL, 
-     p_name     CHARACTER VARYING NOT NULL, 
-     model_no   CHARACTER VARYING NOT NULL, 
+     p_name     CHARACTER VARYING, 
+     keyword    CHARACTER VARYING,
+     model_no   CHARACTER VARYING, 
      brand      CHARACTER VARYING, 
      category   CHARACTER VARYING, 
+     img        CHARACTER VARYING,
      updated_by INT DEFAULT -1,
      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
   ); 
@@ -63,8 +65,9 @@ EXECUTE PROCEDURE trigger_set_timestamp();
 CREATE TABLE v1.Supplier 
   ( 
      s_id       SERIAL            NOT NULL, 
-     s_name     CHARACTER VARYING NOT NULL, 
-     base_url   CHARACTER VARYING NOT NULL, 
+     s_name     CHARACTER VARYING, 
+     base_url   CHARACTER VARYING,
+     update_using CHARACTER VARYING,
      updated_by INT DEFAULT -1,
      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
   ); 
@@ -81,7 +84,8 @@ CREATE TABLE v1.ProductSupplier_Map
   (
      p_id         INT NOT NULL DEFAULT -1, 
      s_id         INT NOT NULL DEFAULT -1, 
-     uuid         CHARACTER VARYING NOT NULL, 
+     uuid         CHARACTER VARYING, 
+     url          CHARACTER VARYING, 
      updated_by   INT DEFAULT -1,
      updated_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
   );
@@ -101,7 +105,6 @@ CREATE TABLE v1.ProductSupplier
      date         DATE NOT NULL, 
      inventory    double precision, 
      price        double precision, 
-     url          CHARACTER VARYING, 
      updated_by   INT DEFAULT -1,
      updated_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
   ); 

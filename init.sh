@@ -43,7 +43,7 @@ then
 
   # python server console (4)
   tmux new-window -n python-api -t ${SESSION_NAME}
-  tmux send-keys -t ${SESSION_NAME}:7 'python3 ./kafka/server.py' C-m
+  tmux send-keys -t ${SESSION_NAME}:7 'python3 ./etl/main.py' C-m
 
   # Start out on the first window when we attach
   tmux select-window -t ${SESSION_NAME}:1
