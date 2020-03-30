@@ -2,7 +2,7 @@
 # kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
 #!/bin/sh
 #!/bin/sh
-SESSION_NAME="hi"
+SESSION_NAME="mazeBot"
 
 tmux has-session -t ${SESSION_NAME}
 
@@ -35,15 +35,19 @@ then
 
   # js console (4)
   tmux new-window -n js-api -t ${SESSION_NAME}
-  tmux send-keys -t ${SESSION_NAME}:5 'nodemon ./server.js' C-m
+  tmux send-keys -t ${SESSION_NAME}:5 'nodemon scrapper_service/server.js' C-m
 
-  # kafka console (4)
+  # kafka console (5)
   tmux new-window -n kafka-consumer -t ${SESSION_NAME}
-  tmux send-keys -t ${SESSION_NAME}:6 'python3 ./kafka/kafka-consumer.py' C-m
+  tmux send-keys -t ${SESSION_NAME}:6 'python3 ./etl_service/kafkaConsumer.py' C-m
 
-  # python server console (4)
+  # python server console (6)
   tmux new-window -n python-api -t ${SESSION_NAME}
-  tmux send-keys -t ${SESSION_NAME}:7 'python3 ./etl/main.py' C-m
+  tmux send-keys -t ${SESSION_NAME}:7 'python3 ./etl_service/apiServer.py' C-m
+
+  # react server console (7)
+  tmux new-window -n python-api -t ${SESSION_NAME}
+  tmux send-keys -t ${SESSION_NAME}:8 'cd frontend && npm start' C-m
 
   # Start out on the first window when we attach
   tmux select-window -t ${SESSION_NAME}:1

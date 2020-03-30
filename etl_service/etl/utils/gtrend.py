@@ -1,7 +1,7 @@
 from pytrends.request import TrendReq
 from pytrends import dailydata
-from asdf.utils import db
-from asdf.utils import env
+from etl.utils import db
+from etl.utils import env
 import os
 import pandas as pd
 

@@ -1,5 +1,5 @@
-from asdf.utils import api_utils as utils, db
-# from asdf.utils.api_utils import redisUtil
+from etl.utils import api_utils as utils, db
+# from etl.utils.api_utils import redisUtil
 from flask_restx import Namespace, Resource, fields, reqparse
 from flask_cors import cross_origin
 import requests

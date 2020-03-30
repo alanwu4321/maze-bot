@@ -3,7 +3,7 @@ import logging
 import time
 import multiprocessing
 import json
-from asdf.utils import env, gtrend, db
+from etl.utils import env, gtrend, db
 import os
 from kafka import KafkaConsumer, KafkaProducer, TopicPartition
 from kafka.structs import OffsetAndMetadata
