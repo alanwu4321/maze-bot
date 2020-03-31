@@ -89,7 +89,7 @@ app.get('/kafka', (req, res) => {
 
 app.get('/test', (req, res) => {
   io.emit("FromAPI",{message: "", store: "bestbuy"})
-  res.status(200).send("fuck you ")
+  res.status(200).send("hi")
 })
 
 app.get('/api', (req, res) => {
