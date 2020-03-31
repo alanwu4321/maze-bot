@@ -1,8 +1,9 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import { Link } from 'react-router-dom';
 import faker from 'faker/locale/en_US';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import socketIOClient from "socket.io-client";
 
 import {
     UncontrolledDropdown,
@@ -36,19 +37,27 @@ const activityFeedIcons = [
 ];
 /*eslint-enable */
 
-const NavbarActivityFeed = (props) => (
+export function NavbarActivityFeed (props){
+    const socket = socketIOClient("http://127.0.0.1:8080");
+    const [messages, setMessages] = useState([])
+    socket.on("FromAPI", data => {
+        let newstate = messages
+        newstate.push(data)
+        setMessages(newstate)
+    });
+    return (
     <UncontrolledDropdown nav inNavbar { ...props }>
         <DropdownToggle nav>
             <IconWithBadge
-                badge={ <Badge pill color="primary">6</Badge> }
+                badge={ <Badge pill color="primary">{messages.length}</Badge> }
             >
                 <i className="fa fa-bell-o fa-fw" />
             </IconWithBadge>
         </DropdownToggle>
         <ExtendedDropdown right>
             <ExtendedDropdown.Section className="d-flex justify-content-between align-items-center">
-                <h6 className="mb-0">Activity Feed</h6>
-                <Badge pill>4</Badge>
+                <h6 className="mb-0"></h6>
+                <Badge pill>{messages.length}</Badge>
             </ExtendedDropdown.Section>
 
             <ExtendedDropdown.Section list>
@@ -58,11 +67,11 @@ const NavbarActivityFeed = (props) => (
                         <ListGroupItem key={ index } action>
                             <Media>
                                 <Media left>
-                                    { activityFeedIcons[index%4] }
+                                    { activityFeedIcons[0] }
                                 </Media>
                                 <Media body>
                                     <span className="h6">
-                                        { faker.name.firstName() } { faker.name.lastName() }
+                                        {/* {message.store} */}
                                     </span> changed Description to &quot;{ faker.random.words() }&quot;
                                     <p className="mt-2 mb-1">
                                         { faker.lorem.sentence() }
@@ -84,10 +93,10 @@ const NavbarActivityFeed = (props) => (
             </ExtendedDropdown.Section>
         </ExtendedDropdown>
     </UncontrolledDropdown>
-);
+)};
 NavbarActivityFeed.propTypes = {
     className: PropTypes.string,
     style: PropTypes.object
 };
 
-export { NavbarActivityFeed };
+

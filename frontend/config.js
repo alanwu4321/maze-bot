@@ -18,7 +18,7 @@ var config = {
     srcHtmlLayout:          path.join(root, 'app', 'index.html'),
 
     // Site Config ====================================================
-    siteTitle:              'Airframe',
+    siteTitle:              'Maze Bot',
     siteDescription:        'Default Dashboard ready for Development',
     siteCannonicalUrl:      'http://localhost:4100',
     siteKeywords:           'react dashboard seed bootstrap',

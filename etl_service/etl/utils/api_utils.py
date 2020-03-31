@@ -5,6 +5,7 @@ from flask import Flask
 import logging
 import json
 import redis as redis_py
+from datetime import datetime
 
 class redisUtil:
     def __init__(self):
@@ -33,9 +34,16 @@ def _get_target_cols():
 
 def jsonify(rows):
     for row in rows:
+        # smallestDate = None
         for target_col in _get_target_cols():
+            # if target_col == "updated_at":
+            #     if not smallestDate:
+            #         smallestDate = datetime.strptime(str(row[target_col]).split(".")[0], '%Y-%m-%d %H:%M:%S')
+            #     if  datetime.strptime(str(row[target_col]).split(".")[0], '%Y-%m-%d %H:%M:%S') > smallestDate:
+            #         smallestDate = datetime.strptime(str(row[target_col]).split(".")[0], '%Y-%m-%d %H:%M:%S')
             if row.get(target_col):
                 row[target_col] = str(row[target_col])
+        # row["updated_at"] = str(smallestDate)
     return rows
 
 # # ?sort=last_update.desc

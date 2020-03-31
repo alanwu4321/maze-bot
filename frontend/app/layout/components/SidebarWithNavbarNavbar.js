@@ -41,11 +41,12 @@ export const SidebarWithNavbarNavbar = () => {
                                     </Link>
                                 </NavItem>
                             </Nav>
-
+                            
                             <h1
                                 className="h5 mb-0 mr-auto ml-2 d-none d-lg-block"
                             >
                                 Maze Bot
+
                     </h1>
 
                             <Nav navbar className="ml-auto">

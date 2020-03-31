@@ -14,6 +14,19 @@ producer.on('ready', function () {
   console.log('Producer is ready')
 })
 
+const io = require('socket.io')()
+io.listen(8080, function () {
+  console.log('listening on *:8080')
+})
+io.on('connection', function (socket) {
+  console.log('connected')
+  socket.on('message', function (msg) {
+    console.log('message: ' + msg)
+  })
+})
+
+
+
 Queue.process(async (job) => {
   console.log('processing', job.data.store, job.id)
   const keywords = job.data.keywords
@@ -74,6 +87,11 @@ app.get('/kafka', (req, res) => {
   })
 })
 
+app.get('/test', (req, res) => {
+  io.emit("FromAPI",{message: "", store: "bestbuy"})
+  res.status(200).send("fuck you ")
+})
+
 app.get('/api', (req, res) => {
   const stores = req.query.stores != null ? req.query.stores.split(',') : ['amazon', 'staples', 'walmart', 'bestbuy']
   const keywords = req.query.keywords.split(',')
@@ -114,17 +132,6 @@ app.get('/api', (req, res) => {
 app.listen(process.env.PORT || 3000)
 
 // var http = require('http').createServer(app);
-var io = require('socket.io')()
-io.listen(8080, function () {
-  console.log('listening on *:8080')
-})
-io.on('connection', function (socket) {
-  console.log('connected')
-  io.emit('FromAPI', 'fuck you')
-  socket.on('message', function (msg) {
-    console.log('message: ' + msg)
-  })
-})
 
 // Consumer = kafka.Consumer,
 //   client = new kafka.KafkaClient(),

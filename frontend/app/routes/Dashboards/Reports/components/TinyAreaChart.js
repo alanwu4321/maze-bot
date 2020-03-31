@@ -8,9 +8,9 @@ import {
 
 import colors from './../../../../colors';
 
-const data = _.times(20, () => ({ pv: Math.random() * 100 }));
+// const data = _.times(20, () => ({ pv: Math.random() * 100 }));
 
-const TinyAreaChart = () => (
+const TinyAreaChart = ({data}) => (
     <ResponsiveContainer width='100%' height={ 40 }>
         <AreaChart data={data}>
             <Area dataKey='pv' stroke={ colors['primary'] } fill={ colors['primary-03'] } />

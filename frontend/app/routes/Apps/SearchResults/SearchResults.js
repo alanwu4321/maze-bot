@@ -352,7 +352,7 @@ export default class SearchResults extends React.Component {
         for (var key in payload) {
             form.set(key, payload[key]);
         }
-        swal("Warning", `Do you want to process adding this product?`, "warning",
+        swal("Warning", `Do you want to proceed adding this product?`, "warning",
             {
                 buttons: {
                     cancel: {

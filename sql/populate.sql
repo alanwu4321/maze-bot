@@ -13,16 +13,5 @@ INSERT INTO v1.supplier (s_id, s_name, base_url, updated_by, update_using) VALUE
 
 
 INSERT INTO v1.product (p_id, p_name, model_no, brand, category, updated_by) VALUES (-1, 'default','default','default','default',-1);
-INSERT INTO v1.product (p_name, model_no, brand, category, updated_by) VALUES ('Samsung 32" 60Hz 4ms Curved PLS LED Monitor - White','LC32F391FWNXZA','monitors','Samsung',1);
-INSERT INTO v1.product (p_name, model_no, brand, category, updated_by) VALUES ('test_product2','test1_model_no2','laptop','test_brand2',1);
-INSERT INTO v1.product (p_name, model_no, brand, category, updated_by) VALUES ('test_product3','test1_model_no3','laptop','test_brand3',1);
-INSERT INTO v1.product (p_name, model_no, brand, category, updated_by) VALUES ('test_product4','test1_model_no4','laptop','test_brand4',1);
 
-
-INSERT INTO v1.productsupplier (p_id,s_id,price,date) VALUES (1,1,15.39, 'NOW');
-INSERT INTO v1.productsupplier (p_id,s_id,price,date) VALUES (1,2,16.99, 'NOW');
-INSERT INTO v1.productsupplier (p_id,s_id,price,date) VALUES (1,3,19, 'NOW');
-INSERT INTO v1.productsupplier (p_id,s_id,price,date) VALUES (2,1,75.50, 'NOW');
-INSERT INTO v1.productsupplier (p_id,s_id,price,date) VALUES (2,2,95.80, 'NOW');
-INSERT INTO v1.productsupplier (p_id,s_id,price,date) VALUES (2,3,85.70, 'NOW');
 

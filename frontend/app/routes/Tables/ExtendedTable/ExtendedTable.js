@@ -16,7 +16,7 @@ import { HeaderMain } from "../../components/HeaderMain";
 export const ExtendedTable = () => (
     <Container>
         <HeaderMain 
-            title="Extended Tables"
+            title="Dashboard"
             className="mb-5 mt-4"
         />
         <Row className="mb-5">

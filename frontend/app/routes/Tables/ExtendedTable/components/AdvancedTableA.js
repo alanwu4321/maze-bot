@@ -6,6 +6,8 @@ import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 import _ from 'lodash';
 import faker from 'faker/locale/en_US';
 import moment from 'moment';
+import TrendingUpIcon from '@material-ui/icons/TrendingUp';
+
 
 import {
     Badge,
@@ -36,10 +38,24 @@ import {
     FormGroup,
     Label,
     Input,
-    FormText
+    FormText,
+    Row,
+    Col,
+    UncontrolledTooltip,
+    UncontrolledCollapse,
+    Avatar,
+    AvatarAddOn,
+
 } from './../../../../components';
 
 import { TinyLineChart } from "../../../../routes/Dashboards/components/TinyLineChart";
+import { TinyAreaChart } from "../../../../routes/Dashboards/Reports/components/TinyAreaChart";
+import { LineBarAreaComposedChart } from "../../../../routes/Graphs/ReCharts/components/LineBarAreaComposedChart";
+import { PieChartWithCustomizedLabel } from "../../../../routes/Graphs/ReCharts/components/PieChartWithCustomizedLabel";
+import { TwoLevelPieChart } from "../../../../routes/Graphs/ReCharts/components/TwoLevelPieChart";
+
+
+
 
 import {
     MetricVsTarget
@@ -61,6 +77,21 @@ import {
     buildCustomNumberFilter
 } from './../filters';
 
+import bestbuyLogo from '../../../../images/avatars/bestbuy.png'
+import staplesLogo from '../../../../images/avatars/staples.png'
+import walmartLogo from '../../../../images/avatars/walmart.png'
+import amazonLogo from '../../../../images/avatars/amazon.png'
+import sourceLogo from '../../../../images/avatars/source.png'
+
+const supplierLogoMap = {
+    bestbuy: bestbuyLogo,
+    staples: staplesLogo,
+    walmart: walmartLogo,
+    amazon: amazonLogo,
+    source: sourceLogo,
+}
+
+
 const LAYOUT = {
     'metric-v-target-users': { h: 6, md: 4 },
     'metric-v-target-sessions': { h: 6, md: 4 },
@@ -68,6 +99,11 @@ const LAYOUT = {
     'analytics-audience-metrics': { h: 12, minH: 12 },
     'form-add-product': { h: 3 },
 }
+
+import PieChart from 'react-minimal-pie-chart';
+import colors from '../../../../colors'
+
+const COLORS = [ colors['primary'], colors['purple'], colors['success'], colors['yellow'],  colors['warning'], colors['danger']];
 
 const INITIAL_PRODUCTS_COUNT = 500;
 
@@ -97,39 +133,168 @@ const generateRow = (index) => ({
     inStockDate: faker.date.past()
 });
 
+//capitalize only the first letter of the string. 
+const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 const expandRow = {
     showExpandColumn: true,
     renderer: function ExtendedRowRender(row) {
-        console.log(row)
         return (
             <div>
-                <p>{`This Expand row is belong to rowKey ${row.p_id}`}</p>
-                <Card>
-                    <CardHeader className="bb-0 pt-3 pb-0 bg-none" tag="h6">
-                        <i className="fa fa-ellipsis-v text-body mr-2"></i> Users
-                                </CardHeader>
-                    <CardBody className="pt-2">
-                        <TinyLineChart data={_.times(100, () => ({ pv: Math.random() * 100 }))}/>
-                        <MetricVsTarget
-                            title="Users"
-                            value="168,793"
-                            progressbarColor="danger"
-                            targetValue="169,001"
-                        />
-                    </CardBody>
-                    <CardFooter>
-                        <Media className="small">
-                            <Media left>
-                                <i className="fa fa-fw fa-info-circle mr-2"></i>
-                            </Media>
-                            <Media body>
-                                How do your users (visitors), sessions (visits) and pageviews
-                                            metrics for <abbr title="attribute" className="text-dark">www.webkom.com</abbr> compare to your targets over the last 30 days?
-                                        </Media>
-                        </Media>
+                <Card className="mb-4">
+                    <Row>
+                        <Col xl={5} lg={5}>
+                            <CardBody className="bb-0">
+                                <span className="d-flex">
+                                    {/* <CardTitle tag="h6" className="mb-0 bb-0">
+                                        Allocation
+                                    </CardTitle> */}
+                                    <span className="ml-auto justify-content-start">
+                                        <a href="javascript:;" className="ml-auto justify-content-start pr-2 text-decoration-none" id="AllocationTooltipSettings">
+                                            <i className="fa fa-fw fa-sliders"></i>
+                                        </a> <a href="javascript:;" id="AllocationTooltipAdd" className="text-decoration-none">
+                                            <i className="fa fa-fw fa-plus"></i>
+                                        </a>
+                                    </span>
+                                    <UncontrolledTooltip placement="top" target="AllocationTooltipSettings">
+                                        Settings
+                                    </UncontrolledTooltip>
+                                    <UncontrolledTooltip placement="top" target="AllocationTooltipAdd">
+                                        Add
+                                    </UncontrolledTooltip>
+                                </span>
+                            </CardBody>
+                            <ListGroup flush className="mb-2">
+                                <ListGroupItem tag="a" href="#" id="RamToggler" className="by-0 mb-0 d-flex text-decoration-none">
+                                    Your Position
+                                    <i className="fa fa-fw fa-angle-down ml-auto justify-content-end" id="RamTooltip"></i>
+                                </ListGroupItem>
+                                <UncontrolledTooltip placement="top" target="RamTooltip">
+                                    Show/Hide Section
+                                </UncontrolledTooltip>
+                            </ListGroup>
+                            <UncontrolledCollapse toggler="#RamToggler" isOpen>
+                                <CardBody className="pt-0">
+                                    <dl className="row mb-3">
+                                        <dt className="col-sm-5">Price</dt>
+                                        <dd className="col-sm-7 text-right text-inverse">${row.price}</dd>
+                                        <dt className="col-sm-5">Difference From Min Price </dt>
+                                        <dd className="col-sm-7 text-right text-inverse">${row.diff_from_min}</dd>
+                                        <dt className="col-sm-8">Difference From Max Price </dt>
+                                        <dd className="col-sm-4 text-right text-inverse">${row.diff_from_max}</dd>
+                                    </dl>
+                                    {/* <Progress multi className="mt-2 mb-3" style={{height: "5px"}}>
+                                        <Progress bar value="45" />
+                                        <Progress bar color="danger" value="15" />
+                                    </Progress> */}
+
+                                    <CardTitle tag="h6" className="mb-3 bb-0">
+                                        Market Price
+                                    </CardTitle>
+
+                                    <Table size="sm" className="mb-3">
+                                        <tbody>
+                                            <tr>
+                                                <td className="bt-0">
+                                                    <i className="fa fa fa-circle-o mr-1" style={{ color: "green" }}></i>
+                                                    Max Price
+                                                </td>
+                                                <td className="text-right text-inverse bt-0">
+                                                    ${row.max_p} at {capitalizeFirstLetter(row.max_s)} <i className="fa fa-arrow-up fa-fw text-gray-300"></i>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <i className="fa fa fa-circle-o mr-1" style={{ color: "red" }}></i>
+                                                    Min Price
+                                                </td>
+                                                <td className="text-right text-inverse">
+                                                    ${row.min_p} at {capitalizeFirstLetter(row.min_s)} <i className="fa fa-arrow-down fa-fw text-gray-300"></i>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <i className="fa fa fa-circle-o mr-1" style={{ color: "orange" }}></i>
+                                                    Average Price
+                                                </td>
+                                                <td className="text-right text-inverse">
+                                                    ${row.agg_p} over {row.suppliers.length} vendors <i className="fa fa-arrow-right fa-fw text-gray-300"></i>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
+
+                                    <CardTitle tag="h6" className="mb-3 bb-0">
+                                        Vendors
+                                    </CardTitle>
+
+                                    <Media>
+                                        {
+                                            row.suppliers.map((supplier, index) => {
+                                                if (!supplier) {
+                                                    supplier = { s_name: "bestbuy" }
+                                                }
+                                                return (
+                                                    <Media left key={supplier.s_name + index} className="align-self-center mr-4">
+                                                        <Avatar.Image
+                                                            size="md"
+                                                            // src={randomAvatar()}
+                                                            src={supplierLogoMap[supplier.s_name]}
+                                                            className=''
+                                                            addOns={[
+                                                                <AvatarAddOn.Icon
+                                                                    className="fa fa-circle"
+                                                                    color="white"
+                                                                    key="avatar-icon-bg"
+                                                                />,
+                                                                <AvatarAddOn.Icon
+                                                                    className="fa fa-circle"
+                                                                    color="success"
+                                                                    key="avatar-icon-fg"
+                                                                />
+                                                            ]}
+                                                        />
+                                                    </Media>
+                                                )
+                                            })
+                                        }
+                                    </Media>
+                                </CardBody>
+
+
+                            </UncontrolledCollapse>
+                        </Col>
+                        <Col xl={7} lg={7}>
+                            <div className="mt-4 mr-3">
+                                <h6 className="card-title mb-3">
+                                    Historical Price & Stock
+                        </h6>
+                                <LineBarAreaComposedChart rowData={row} />
+                            </div>
+                            <div className="d-flex align-items-center mb-3 mr-4">
+                                <h6 className="card-title mb-1">
+                                    Demand & Popularity (%)
+                        </h6>
+                                <span className="ml-auto">
+                                    <Button color="link" href="https://jsfiddle.net/alidingling/tv8zfzxo/" target="_blank">
+                                        <i className="fa fa-external-link"></i>
+                                    </Button>
+                                </span>
+                            </div>
+                            <TinyAreaChart className="mr-3" data={_.times(100, () => ({ pv: Math.random() * 100 }))} />
+
+                        </Col>
+                    </Row>
+                    <CardFooter className="bt-0">
+                        <span className="mr-3 ">
+                            <i className="fa fa-refresh mr-1"></i> <span className="text-inverse">Last Updated: {moment(row.updated_at).format('DD/MM/YYYY')}</span>
+                        </span>
+
                     </CardFooter>
                 </Card>
+
             </div>
         );
     },
@@ -154,6 +319,8 @@ export class AdvancedTableA extends React.Component {
         this.state = {
             products: _.times(INITIAL_PRODUCTS_COUNT, generateRow),
             // products: [],
+            categories_agg: {},
+            categories_peichart: [],
             categories: [],
             selected: [],
             layouts: _.clone(LAYOUT),
@@ -171,12 +338,26 @@ export class AdvancedTableA extends React.Component {
                 // let supplier = this.state.suppliers[getStepBySupplier("bestbuy")]
                 // data.map(p => p.suppliers = [supplier])
                 let products = []
-                let categories = []
+                let categories = {}
+                let categories_agg = {}
                 Object.keys(data).map(function (key, index) {
                     products.push(data[key])
-                    categories.push({ value: data[key]['category'], label: data[key]['category'] })
+                    if(categories[data[key]['category']]){
+                        categories[data[key]['category']].push({ value: data[key]['category'], label: data[key]['category']})
+                        categories_agg[data[key]['category']] += data[key]['diff_from_min']
+                    }else{
+                        categories_agg[data[key]['category']] = data[key]['diff_from_min']
+                        categories[data[key]['category']] = [{ value: data[key]['category'], label: data[key]['category'],}]
+                    }
                 });
-                this.setState({ products: products, categories: categories })
+                _.reverse(products)
+                let piechart = []
+                let dropdown = []
+                Object.keys(categories).forEach(el => {
+                    piechart.push({title: el, value: categories[el].length, color: COLORS[Math.floor(Math.random() * COLORS.length)]})
+                    dropdown.push({ value: el, label: el})
+                })
+                this.setState({ products: products, categories: dropdown, categories_peichart: piechart,categories_agg: categories_agg})
                 // this.setState({ isProductLoading: false })
             })
             .catch(console.log)
@@ -261,46 +442,48 @@ export class AdvancedTableA extends React.Component {
                 getFilter: filter => { this.nameFilter = filter; }
             })
         }, {
-            dataField: 'diff_from_min',
-            text: 'Difference',
+            dataField: 'diff_trend',
+            text: 'Trend',
             formatter: (cell) => {
                 let pqProps;
-                switch (Math.sign(cell)) {
+                let trendIcon;
+                switch (cell) {
                     case -1:
-                        pqProps = {
-                            color: 'success',
-                            text: cell,
-                            value: Math.sign(cell)
-                        }
+                        // pqProps = {
+                        //     color: 'success',
+                        //     text: cell,
+                        //     value: Math.sign(cell)
+                        // }
+                        trendIcon = "fa fa-arrow-down fa-fw text-success"
                         break;
                     case 0:
                         pqProps = {
                             color: 'warning',
                             text: cell,
-                            value: Math.sign(cell)
-
                         }
+                        trendIcon = "fa fa-arrow-right fa-fw text-warning"
                         break;
                     case 1:
                         pqProps = {
                             color: 'danger',
-                            text: cell,
-                            value: Math.sign(cell)
-
+                            text: "+" + cell,
                         }
+                        trendIcon = "fa fa-arrow-up fa-fw text-danger"
+
                         break;
                     default:
                         pqProps = {
                             color: 'secondary',
                             text: cell,
-                            value: Math.sign(cell)
                         }
                 }
 
                 return (
-                    <Badge color={pqProps.color}>
-                        {pqProps.text}
-                    </Badge>
+                    <i className={trendIcon}></i>
+
+                    // <Badge color={pqProps.color}>
+                    //    <span> {pqProps.text}  <i className={trendIcon} aria-hidden="true"></i>  </span>
+                    // </Badge>
                 )
             },
             sort: true,
@@ -313,6 +496,55 @@ export class AdvancedTableA extends React.Component {
                     { value: 0, label: 'Warning' }
                 ],
                 getFilter: filter => { this.qualityFilter = Math.sign(filter); }
+            })
+        }, {
+            dataField: 'diff_from_min',
+            text: 'Difference',
+            formatter: (cell) => {
+                let pqProps;
+                let trendIcon;
+                switch (Math.sign(cell)) {
+                    case -1:
+                        pqProps = {
+                            color: 'success',
+                            text: cell,
+                            value: Math.sign(cell)
+                        }
+                        trendIcon = "fa fa-arrow-down fa-fw text-success"
+                        break;
+                    case 0:
+                        pqProps = {
+                            color: 'warning',
+                            text: cell,
+                        }
+                        trendIcon = "fa fa-arrow-right fa-fw text-warning"
+                        break;
+                    case 1:
+                        pqProps = {
+                            color: 'danger',
+                            text: "+" + cell,
+                        }
+                        trendIcon = "fa fa-arrow-up fa-fw text-danger"
+
+                        break;
+                    default:
+                        pqProps = {
+                            color: 'secondary',
+                            text: cell,
+                        }
+                }
+
+                return (
+                    <Badge color={pqProps.color}>
+                        <span> {pqProps.text}  </span>
+                    </Badge>
+                )
+            },
+            sort: true,
+            sortCaret,
+            ...buildCustomNumberFilter({
+                comparators: [Comparator.EQ, Comparator.GT, Comparator.LT],
+                getFilter: filter => { this.priceFilter = filter; }
             })
         }, {
             dataField: 'category',
@@ -353,36 +585,37 @@ export class AdvancedTableA extends React.Component {
                 options: this.state.categories,
                 getFilter: filter => { this.qualityFilter = filter; }
             })
-        }, {
-            dataField: 'price',
-            text: 'Product Price',
-            sort: true,
-            sortCaret,
-            ...buildCustomNumberFilter({
-                comparators: [Comparator.EQ, Comparator.GT, Comparator.LT],
-                getFilter: filter => { this.priceFilter = filter; }
-            })
         },
-        {
-            dataField: 'min_p',
-            text: 'Min Price',
-            sort: true,
-            sortCaret,
-            ...buildCustomNumberFilter({
-                comparators: [Comparator.EQ, Comparator.GT, Comparator.LT],
-                getFilter: filter => { this.priceFilter = filter; }
-            })
-        },
-        {
-            dataField: 'max_p',
-            text: 'Max Price',
-            sort: true,
-            sortCaret,
-            ...buildCustomNumberFilter({
-                comparators: [Comparator.EQ, Comparator.GT, Comparator.LT],
-                getFilter: filter => { this.priceFilter = filter; }
-            })
-        },
+        //{
+        //     dataField: 'price',
+        //     text: 'Product Price',
+        //     sort: true,
+        //     sortCaret,
+        //     ...buildCustomNumberFilter({
+        //         comparators: [Comparator.EQ, Comparator.GT, Comparator.LT],
+        //         getFilter: filter => { this.priceFilter = filter; }
+        //     })
+        // },
+        // {
+        //     dataField: 'min_p',
+        //     text: 'Min Price',
+        //     sort: true,
+        //     sortCaret,
+        //     ...buildCustomNumberFilter({
+        //         comparators: [Comparator.EQ, Comparator.GT, Comparator.LT],
+        //         getFilter: filter => { this.priceFilter = filter; }
+        //     })
+        // },
+        // {
+        //     dataField: 'max_p',
+        //     text: 'Max Price',
+        //     sort: true,
+        //     sortCaret,
+        //     ...buildCustomNumberFilter({
+        //         comparators: [Comparator.EQ, Comparator.GT, Comparator.LT],
+        //         getFilter: filter => { this.priceFilter = filter; }
+        //     })
+        // },
         // {
         //     dataField: 'satisfaction',
         //     text: 'Buyer Satisfaction',
@@ -398,9 +631,10 @@ export class AdvancedTableA extends React.Component {
         // }, 
         {
             dataField: 'updated_at',
-            text: 'In Stock From',
+            text: 'Last Updated At',
             formatter: (cell) =>
-                moment(cell).format('DD/MM/YYYY'),
+                // moment(cell).format('DD/MM/YYYY'),
+                moment(cell).toLocaleString(),
             filter: dateFilter({
                 className: 'd-flex align-items-center',
                 comparatorClassName: 'd-none',
@@ -460,47 +694,76 @@ export class AdvancedTableA extends React.Component {
                                 <Grid.Row
                                     onLayoutChange={layouts => this.setState({ layouts })}
                                     columnSizes={this.state.layouts}
-                                    rowHeight={60}
+                                    rowHeight={85}
                                 >
                                     <Grid.Col {...(applyColumn('metric-v-target-users', layouts))}>
+
                                         <Card>
-                                            <CardHeader className="bb-0 pt-3 pb-0 bg-none" tag="h6">
-                                                <i className="fa fa-ellipsis-v text-body mr-2"></i> Users
+                                        <CardHeader className="bb-0 pt-3 pb-0 bg-none" tag="h6">
+                                                <i className="fa fa-ellipsis-v text-body mr-2"></i> Category
                                 </CardHeader>
-                                            <CardBody className="pt-2">
-                                                <MetricVsTarget
-                                                    title="Users"
-                                                    value="168,793"
-                                                    progressbarColor="danger"
-                                                    targetValue="169,001"
-                                                />
+                                            <CardBody>
+                                                <div className="d-flex">
+                                                    <div>
+                                                        <h6 className="card-title mb-1">
+                                                            Category Distribution
+                                <span className="small ml-1 text-muted">
+                                                                {/* #4.05 */}
+                                </span>
+                                                        </h6>
+                                                        <p>Pie Charts</p>
+                                                    </div>
+                                                    <span className="ml-auto">
+                                                        <Button color="link" href="https://jsfiddle.net/alidingling/c9pL8k61/" target="_blank">
+                                                            <i className="fa fa-external-link"></i>
+                                                        </Button>
+                                                    </span>
+                                                </div>
+                                                <PieChart
+                                                     label
+                                                     labelPosition={60}
+                                                     labelStyle={{
+                                                       fontFamily: 'sans-serif',
+                                                       fontSize: '5px'
+                                                     }}
+                                                     lengthAngle={360}
+                                                     lineWidth={20}
+                                                    animate
+                                                    animationDuration={500}
+                                                    animationEasing="ease-out"
+                                                    data={this.state.categories_peichart}
+                                                />;
                                             </CardBody>
-                                            <CardFooter>
-                                                <Media className="small">
-                                                    <Media left>
-                                                        <i className="fa fa-fw fa-info-circle mr-2"></i>
-                                                    </Media>
-                                                    <Media body>
-                                                        How do your users (visitors), sessions (visits) and pageviews
-                                            metrics for <abbr title="attribute" className="text-dark">www.webkom.com</abbr> compare to your targets over the last 30 days?
-                                        </Media>
-                                                </Media>
-                                            </CardFooter>
                                         </Card>
                                     </Grid.Col>
                                     <Grid.Col {...(applyColumn('metric-v-target-sessions', layouts))}>
                                         <Card>
                                             <CardHeader className="bb-0 pt-3 pb-0 bg-none" tag="h6">
-                                                <i className="fa fa-ellipsis-v text-body mr-2"></i> Sessions
+                                                <i className="fa fa-ellipsis-v text-body mr-2"></i> Aggregation
                                 </CardHeader>
                                             <CardBody className="pt-2">
-                                                <MetricVsTarget
-                                                    title="Sessions"
-                                                    value="529,747"
-                                                    progressbarValue="67"
-                                                    progressbarColor="primary"
-                                                    targetValue="782,957"
-                                                />
+                                                                                   <CardTitle tag="h6" className="mt-2 mb-3 bb-0">
+                                        Total Difference By Category
+                                    </CardTitle>
+
+                                    <Table size="sm" className="mb-3">
+                                        <tbody>
+                                            {
+                                                Object.keys(this.state.categories_agg).map( (cat, index) =>(
+                                                    <tr key={index}>
+                                                    <td className="bt-0">
+                                                        <i className="fa fa fa-circle-o mr-1" style={{ color: "green" }}></i>
+                                                            {cat}
+                                                    </td>
+                                                    <td className="text-right bt-0">
+                                                        ${this.state.categories_agg[cat]}
+                                                    </td>
+                                                    </tr>
+                                                ))
+                                            }
+                                           
+                                        </tbody>
+                                    </Table>
                                             </CardBody>
                                             <CardFooter>
                                                 <Media className="small">
@@ -508,8 +771,7 @@ export class AdvancedTableA extends React.Component {
                                                         <i className="fa fa-fw fa-info-circle mr-2"></i>
                                                     </Media>
                                                     <Media body>
-                                                        How do your users (visitors), sessions (visits) and pageviews
-                                            metrics for <abbr title="attribute" className="text-dark">www.webkom.com</abbr> compare to your targets over the last 30 days?
+                                                        This is an aggregation of all difference from minumum offering on the market by category
                                         </Media>
                                                 </Media>
                                             </CardFooter>
@@ -518,15 +780,15 @@ export class AdvancedTableA extends React.Component {
                                     <Grid.Col {...(applyColumn('metric-v-target-pageviews', layouts))}>
                                         <Card>
                                             <CardHeader className="bb-0 pt-3 pb-0 bg-none" tag="h6">
-                                                <i className="fa fa-ellipsis-v text-body mr-2"></i> Pageviews
+                                                <i className="fa fa-ellipsis-v text-body mr-2"></i> Total Difference Overall
                                 </CardHeader>
                                             <CardBody className="pt-2">
                                                 <MetricVsTarget
                                                     title="Pageviews"
-                                                    value="1,763,981"
+                                                    value="$2,669.01"
                                                     progressbarValue="34"
                                                     progressbarColor="secondary"
-                                                    targetValue="1,567,334"
+                                                    targetValue="$1,000"
                                                 />
                                             </CardBody>
                                             <CardFooter>
@@ -535,65 +797,15 @@ export class AdvancedTableA extends React.Component {
                                                         <i className="fa fa-fw fa-info-circle mr-2"></i>
                                                     </Media>
                                                     <Media body>
-                                                        How do your users (visitors), sessions (visits) and pageviews
-                                            metrics for <abbr title="attribute" className="text-dark">www.webkom.com</abbr> compare to your targets over the last 30 days?
+                                                    This is an aggregation of all difference from minumum offering on the market overall
                                         </Media>
                                                 </Media>
                                             </CardFooter>
                                         </Card>
                                     </Grid.Col>
-                                    <Grid.Col {...(applyColumn('form-add-product', layouts))}>
-                                        <Card className="mb-3">
-                                            <CardBody>
-                                                <CardTitle tag="h6" className="mb-4">
-                                                    Forms Inline: Preview Example
-                                <span className="small ml-1 text-muted">
-                                                        #2.01
-                                </span>
-                                                </CardTitle>
-                                                { /* START Form */}
-                                                <Form inline>
-                                                    <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                                                        <Input type="text" name="text" id="enterName" placeholder="Enter Name..." />
-                                                    </FormGroup>
-                                                    <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                                                        <InputGroup>
-                                                            <InputGroupAddon addonType="prepend">
-                                                                <i className="fa fa-key fa-fw" />
-                                                            </InputGroupAddon>
-                                                            <Input type="password" name="password" placeholder="Password..." />
-                                                        </InputGroup>
-                                                    </FormGroup>
-                                                    <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                                                        <InputGroup>
-                                                            <InputGroupAddon addonType="prepend">
-                                                                Country
-                                        </InputGroupAddon>
-                                                            <CustomInput type="select" id="country-selector-3" name="customSelect">
-                                                                <option value="">Select...</option>
-                                                                <option>United Kingdom</option>
-                                                                <option>United States</option>
-                                                                <option>Canada</option>
-                                                                <option>Australia</option>
-                                                                <option>New Zeland</option>
-                                                            </CustomInput>
-                                                        </InputGroup>
-                                                    </FormGroup>
-                                                    <FormGroup>
-                                                        <CustomInput type="checkbox" id="rememberMe" label="Remember Me" inline />
-                                                    </FormGroup>
-                                                    <Button color="primary">
-                                                        Submit
-                                </Button>
-                                                </Form>
-                                                { /* END Form */}
-                                            </CardBody>
-                                        </Card>
-                                    </Grid.Col>
-
                                 </Grid.Row>
                             </Grid>
-                            <div className="d-flex justify-content-end align-items-center mb-2">
+                            <div className="d-flex justify-content-end align-items-center mb-2 mt-5">
                                 <h6 className="my-0">
                                     AdvancedTable A
                             </h6>

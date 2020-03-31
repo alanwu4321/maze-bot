@@ -83,7 +83,7 @@ const stars = [
 ];
 
 
-const ImagesResultsCard = ({ product, index, onProductDelete, onProductAdd }) => {
+const ImagesResultsCard = ({ product, index, onProductDelete, onProductAdd, icon="fa fa-fw fa-check" }) => {
     return (
         <React.Fragment>
             { /* START Card */}
@@ -91,7 +91,6 @@ const ImagesResultsCard = ({ product, index, onProductDelete, onProductAdd }) =>
                 <CardBody>
                     <div className="d-flex mb-4">
                         <CardTitle tag="h6">
-                            {index}
                         </CardTitle>
                         <ButtonToolbar className="ml-auto">
                             {index == -1 ?
@@ -99,7 +98,7 @@ const ImagesResultsCard = ({ product, index, onProductDelete, onProductAdd }) =>
                                     <i className="fa fa-fw fa-close"></i>
                                 </Button> :
                                 <Button color="primary" size="sm" className="mr-2" onClick={() => onProductAdd(product, index)}>
-                                    <i className="fa fa-fw fa-check"></i>
+                                    <i className={icon}></i>
                                 </Button>
                             }
                         </ButtonToolbar>

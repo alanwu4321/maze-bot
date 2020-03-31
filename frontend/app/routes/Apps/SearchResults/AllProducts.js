@@ -168,37 +168,52 @@ export default class AllProducts extends React.Component {
     }
 
     onLockDownProductAdd = (product, index) => {
-        // swal("Hello world!  asd" + product.p_name)
-        if (!this.state.lockedDownProduct) {
-            // swal("Success", `Target Product Added`, "success", {
-            //     button: false,
-            //     timer: 1100,
-            // }).then(e => {
-            //create product and product suppler
-
-            this.setState({ lockedDownProduct: product })
-            // })
-            return null
-        }
-        let locProduct = this.state.lockedDownProduct
-        for (let i = 0; i < product.suppliers.length; i++) {
-            if (locProduct.suppliers.includes(product.suppliers[i])) {
-                swal("Warning", `Duplicate Supplier ${capitalizeFirstLetter(product.suppliers[0].s_name)}`, "warning", {
-                    button: false,
-                    timer: 1100,
-                });
-                return
-            }
-        }
-        // swal("Success", `Supplier ${capitalizeFirstLetter(product.suppliers[0])} Added`, "success", {
-        //     button: false,
-        //     timer: 1100,
-        // });
-        locProduct.suppliers.push(...product.suppliers)
-        this.setState({ lockedDownProduct: locProduct })
-        let newMatchProducts = this.state.matchingProducts
-        newMatchProducts.push(product)
-        this.setState({ matchingProduct: newMatchProducts })
+    
+        swal("Warning", `Do you want to proceed updating this product from ${product.suppliers.length} of its vendors?`, "warning",
+            {
+                buttons: {
+                    cancel: {
+                        text: "Cancel",
+                        value: false,
+                        visible: true,
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        closeModal: false
+                    }
+                },
+            }).then(e => {
+                if (!e) return null
+                product.suppliers.forEach(supplier => {
+                    const form = new FormData()
+                    const payload = supplier
+                    form.set("p_id", product.p_id);
+                    for (var key in payload) {
+                        form.set(key, payload[key]);
+                    }
+                    axios.post(process.env.API_URL + '/product/supplier/update', form, {
+                        headers: { 'Content-Type': 'multipart/form-data' },
+                    }).then(res => {
+                        swal("Success", `Product update request added to queue!`, "success", {
+                            button: false,
+                            timer: 1300,
+                        }).then(e=> {
+                            window.location.href('/dashboard')
+                        })
+                    }).catch(err => {
+                        if (err) {
+                            swal("Oh noes!", "The request failed!", "error");
+                            this.setActiveStep(0)
+                        } else {
+                            swal.stopLoading();
+                            swal.close();
+                        }
+                    })
+                })
+            })
     }
 
     fetchBestBuy = (input) => {
@@ -375,6 +390,7 @@ export default class AllProducts extends React.Component {
                 },
             }).then(e => {
                 if (!e) return null
+
                 axios.post(process.env.API_URL + '/product/', form, {
                     headers: { 'Content-Type': 'multipart/form-data' },
                 }).then(res => {
@@ -557,7 +573,7 @@ export default class AllProducts extends React.Component {
     searchResults = ({ products }) => {
         const productsMap = products.map((product, index) => {
             return (
-                <ImagesResultsCard key={JSON.stringify(product)} product={product} index={index} onProductDelete={this.onProductDelete} onProductAdd={this.onLockDownProductAdd} />
+                <ImagesResultsCard key={JSON.stringify(product)} product={product} index={index} onProductDelete={this.onProductDelete} onProductAdd={this.onLockDownProductAdd} icon="fa fa-fw fa-refresh"/>
             )
         })
         return (

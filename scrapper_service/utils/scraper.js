@@ -150,6 +150,7 @@ const scrapeBestBuyProductPage = (keyword) => {
     axios.get(`https://api.bestbuy.com/v1/products(sku=${sku})?apiKey=tda21Z9pyCFomCJM211gkCrY&sort=bestSellingRank.dsc&show=modelNumber,name,salePrice,regularPrice&pageSize=100&format=json`)
       .then(response => {
         if (response.data.products.length > 0) {
+          console.log(response.data.products)
           resolve(marshalResBySoruce(response.data.products, "bestbuy"))
         }
         resolve(prod)
