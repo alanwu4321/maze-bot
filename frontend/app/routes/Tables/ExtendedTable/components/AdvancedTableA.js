@@ -49,6 +49,8 @@ import {
 import { TinyLineChart } from "../../../../routes/Dashboards/components/TinyLineChart";
 import { TinyAreaChart } from "../../../../routes/Dashboards/Reports/components/TinyAreaChart";
 import { LineBarAreaComposedChart } from "../../../../routes/Graphs/ReCharts/components/LineBarAreaComposedChart";
+import { LineBarAreaComposedChartDemand } from "../../../../routes/Graphs/ReCharts/components/LineBarAreaComposedChartDemand";
+
 import { PieChartWithCustomizedLabel } from "../../../../routes/Graphs/ReCharts/components/PieChartWithCustomizedLabel";
 import { TwoLevelPieChart } from "../../../../routes/Graphs/ReCharts/components/TwoLevelPieChart";
 import {
@@ -140,6 +142,7 @@ export class AdvancedTableA extends React.Component {
         this.state = {
             products: _.times(INITIAL_PRODUCTS_COUNT, generateRow),
             //map id to demand datas
+            totalCat:0,
             demandData: [],
             categories_agg: {},
             categories_peichart: [],
@@ -300,8 +303,7 @@ export class AdvancedTableA extends React.Component {
                                         </Button>
                                     </span>
                                 </div>
-                                <TinyAreaChart className="mr-3" row={row} />
-
+                                <TinyAreaChart rowData={row} />
                             </Col>
                         </Row>
                         <CardFooter className="bt-0">
@@ -339,6 +341,7 @@ export class AdvancedTableA extends React.Component {
                 let historyGraphs = []
                 let categories = {}
                 let categories_agg = {}
+                let totalCat = 0
                 Object.keys(data).map(function (key, index) {
                     products.push(data[key])
                     if (categories[data[key]['category']]) {
@@ -356,7 +359,12 @@ export class AdvancedTableA extends React.Component {
                     piechart.push({ title: el, value: categories[el].length, color: COLORS[Math.floor(Math.random() * COLORS.length)] })
                     dropdown.push({ value: el, label: el })
                 })
-                this.setState({ products: products, categories: dropdown, categories_peichart: piechart, categories_agg: categories_agg })
+
+                Object.keys(categories_agg).forEach(key => {
+                    totalCat += categories_agg[key]
+                })
+
+                this.setState({ products: products, categories: dropdown, categories_peichart: piechart, categories_agg: categories_agg, totalCat: totalCat })
                 // this.setState({ isProductLoading: false })
             })
             .catch(console.log)
@@ -440,63 +448,52 @@ export class AdvancedTableA extends React.Component {
                 placeholder: 'Enter product name...',
                 getFilter: filter => { this.nameFilter = filter; }
             })
-        }, {
-            dataField: 'diff_trend',
-            text: 'Trend',
-            formatter: (cell) => {
-                let pqProps;
-                let trendIcon;
-                switch (cell) {
-                    case -1:
-                        // pqProps = {
-                        //     color: 'success',
-                        //     text: cell,
-                        //     value: Math.sign(cell)
-                        // }
-                        trendIcon = "fa fa-arrow-down fa-fw text-success"
-                        break;
-                    case 0:
-                        pqProps = {
-                            color: 'warning',
-                            text: cell,
-                        }
-                        trendIcon = "fa fa-arrow-right fa-fw text-warning"
-                        break;
-                    case 1:
-                        pqProps = {
-                            color: 'danger',
-                            text: "+" + cell,
-                        }
-                        trendIcon = "fa fa-arrow-up fa-fw text-danger"
+        },
+        // }, {
+        //     dataField: 'diff_trend',
+        //     text: 'Trend',
+        //     formatter: (cell) => {
+        //         let pqProps;
+        //         let trendIcon;
+        //         switch (cell) {
+        //             case -1:
+        //                 // pqProps = {
+        //                 //     color: 'success',
+        //                 //     text: cell,
+        //                 //     value: Math.sign(cell)
+        //                 // }
+        //                 trendIcon = "fa fa-arrow-down fa-fw text-success"
+        //                 break;
+        //             case 0:
+        //                 pqProps = {
+        //                     color: 'warning',
+        //                     text: cell,
+        //                 }
+        //                 trendIcon = "fa fa-arrow-right fa-fw text-warning"
+        //                 break;
+        //             case 1:
+        //                 pqProps = {
+        //                     color: 'danger',
+        //                     text: "+" + cell,
+        //                 }
+        //                 trendIcon = "fa fa-arrow-up fa-fw text-danger"
 
-                        break;
-                    default:
-                        pqProps = {
-                            color: 'secondary',
-                            text: cell,
-                        }
-                }
+        //                 break;
+        //             default:
+        //                 pqProps = {
+        //                     color: 'secondary',
+        //                     text: cell,
+        //                 }
+        //         }
 
-                return (
-                    <i className={trendIcon}></i>
+        //         return (
+        //             <i className={trendIcon}></i>
 
-                    // <Badge color={pqProps.color}>
-                    //    <span> {pqProps.text}  <i className={trendIcon} aria-hidden="true"></i>  </span>
-                    // </Badge>
-                )
-            },
-            sort: true,
-            sortCaret,
-            ...buildCustomSelectFilter({
-                placeholder: 'Select Quality',
-                options: [
-                    { value: -1, label: 'Good' },
-                    { value: 1, label: 'Bad' },
-                    { value: 0, label: 'Warning' }
-                ],
-                getFilter: filter => { this.qualityFilter = Math.sign(filter); }
-            })
-        }, {
+        //             // <Badge color={pqProps.color}>
+        //             //    <span> {pqProps.text}  <i className={trendIcon} aria-hidden="true"></i>  </span>
+        //             // </Badge>
+        //         )
+       , {
             dataField: 'diff_from_agg',
             text: 'Difference',
             formatter: (cell) => {
@@ -585,26 +582,26 @@ export class AdvancedTableA extends React.Component {
                 getFilter: filter => { this.qualityFilter = filter; }
             })
         },
-        //{
-        //     dataField: 'price',
-        //     text: 'Product Price',
-        //     sort: true,
-        //     sortCaret,
-        //     ...buildCustomNumberFilter({
-        //         comparators: [Comparator.EQ, Comparator.GT, Comparator.LT],
-        //         getFilter: filter => { this.priceFilter = filter; }
-        //     })
-        // },
-        // {
-        //     dataField: 'min_p',
-        //     text: 'Min Price',
-        //     sort: true,
-        //     sortCaret,
-        //     ...buildCustomNumberFilter({
-        //         comparators: [Comparator.EQ, Comparator.GT, Comparator.LT],
-        //         getFilter: filter => { this.priceFilter = filter; }
-        //     })
-        // },
+        {
+            dataField: 'price',
+            text: 'Product Price',
+            sort: true,
+            sortCaret,
+            ...buildCustomNumberFilter({
+                comparators: [Comparator.EQ, Comparator.GT, Comparator.LT],
+                getFilter: filter => { this.priceFilter = filter; }
+            })
+        },
+        {
+            dataField: 'min_p',
+            text: 'Min Price',
+            sort: true,
+            sortCaret,
+            ...buildCustomNumberFilter({
+                comparators: [Comparator.EQ, Comparator.GT, Comparator.LT],
+                getFilter: filter => { this.priceFilter = filter; }
+            })
+        },
         // {
         //     dataField: 'max_p',
         //     text: 'Max Price',
@@ -784,7 +781,7 @@ export class AdvancedTableA extends React.Component {
                                             <CardBody className="pt-2">
                                                 <MetricVsTarget
                                                     title="Pageviews"
-                                                    value="$2,669.01"
+                                                    value={"$" + this.state.totalCat}
                                                     progressbarValue="34"
                                                     progressbarColor="secondary"
                                                     targetValue="$1,000"

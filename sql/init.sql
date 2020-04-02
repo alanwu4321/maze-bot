@@ -103,8 +103,8 @@ CREATE TABLE v1.ProductSupplier
      p_id         INT NOT NULL DEFAULT -1, 
      s_id         INT NOT NULL DEFAULT -1, 
      date         DATE NOT NULL, 
-     inventory    double precision, 
-     price        double precision, 
+     inventory    double precision DEFAULT 0, 
+     price        double precision DEFAULT 0, 
      updated_by   INT DEFAULT -1,
      updated_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
   ); 

@@ -84,9 +84,9 @@ export const SidebarWithNavbarNavbar = () => {
                                         <NavLink
                                             // active
                                             tag={Link}
-                                            to="/product/all"
+                                            to="/product/update"
                                         >
-                                            See All
+                                            Update
                                 </NavLink>
                                     </NavItem>
                                     <NavItem>

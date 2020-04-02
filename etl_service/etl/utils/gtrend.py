@@ -44,11 +44,11 @@
 #         # # frames.append(df)
 #         # # res = pd.concat(frames)
 
-# product_id = 8
+# product_id = 3
 # # p = db.query(db.P).select().eql(product_id).where("p_id").eval()
 # # print(p[0]['keyword'])
 # # keyword = p[0]['keyword']
-# keyword = "beats studio"
+# keyword = "bose qc"
 # d = demand(keyword, "2020.3", "2020.3")
 # df = d.getDemand()
 # for i, row in df.iterrows():

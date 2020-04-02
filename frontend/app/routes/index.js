@@ -187,7 +187,7 @@ export const RoutedContent = () => {
 
             { /*    Apps Routes     */}
             <Route component={ SearchResults } path="/product/add" />
-            <Route component={ AllProducts } path="/product/all" />
+            <Route component={ AllProducts } path="/product/update" />
             
             {/* <Route component={ AccountEdit } path="/apps/account-edit" />
             <Route component={ BillingEdit } path="/apps/billing-edit" />
@@ -256,7 +256,7 @@ export const RoutedNavbars = () => (
         />
         <Route
             component={SidebarWithNavbar.Navbar}
-            path="/product/all"
+            path="/product/update"
         />
 
         <Route
