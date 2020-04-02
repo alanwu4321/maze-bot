@@ -31,12 +31,24 @@ const generateDot = ({ stroke, ...other }) => (
 );
 
 const LineBarAreaComposedChart = ({ height, className, rowData }) => {
-    const data = [{ date: '2020-02-01', inventory: rowData.price - Math.random() * 100, price: rowData.price, avg: rowData.agg_p, max: rowData.max_p, min: rowData.min_p },
-    { date: '2020-02-20', inventory: rowData.price + Math.random() * 100, price: rowData.price + 120, avg: rowData.agg_p, max: rowData.max_p, min: rowData.min_p },
-    { date: '2020-02-27', inventory: rowData.price - Math.random() * 100, price: rowData.price - 150, avg: rowData.agg_p, max: rowData.max_p, min: rowData.min_p },
-    { date: '2020-03-05', inventory: rowData.price + Math.random() * 100, price: rowData.price + 200, avg: rowData.agg_p, max: rowData.max_p, min: rowData.min_p },
-    { date: '2020-03-13', inventory: rowData.price - Math.random() * 100, price: rowData.price - 100, avg: rowData.agg_p, max: rowData.max_p, min: rowData.min_p },
-    { date: '2020-03-23', inventory: rowData.price + Math.random() * 100, price: rowData.price + 340, avg: rowData.agg_p, max: rowData.max_p, min: rowData.min_p  }];
+    console.log(rowData)
+    let data = []
+    rowData.suppliers.forEach(sup => {
+        sup.forEach(s=> {
+            if(s.s_id == 1) {
+                s.agg_p = rowData.agg_p
+                s.max_p = rowData.max_p
+                s.min_p = rowData.min_p
+                data.push(s)
+            }
+        })
+    });
+    // const data = [{ date: '2020-02-01', inventory: rowData.price - Math.random() * 100, price: rowData.price, avg: rowData.agg_p, max: rowData.max_p, min: rowData.min_p },
+    // { date: '2020-02-20', inventory: rowData.price + Math.random() * 100, price: rowData.price + 120, avg: rowData.agg_p, max: rowData.max_p, min: rowData.min_p },
+    // { date: '2020-02-27', inventory: rowData.price - Math.random() * 100, price: rowData.price - 150, avg: rowData.agg_p, max: rowData.max_p, min: rowData.min_p },
+    // { date: '2020-03-05', inventory: rowData.price + Math.random() * 100, price: rowData.price + 200, avg: rowData.agg_p, max: rowData.max_p, min: rowData.min_p },
+    // { date: '2020-03-13', inventory: rowData.price - Math.random() * 100, price: rowData.price - 100, avg: rowData.agg_p, max: rowData.max_p, min: rowData.min_p },
+    // { date: '2020-03-23', inventory: rowData.price + Math.random() * 100, price: rowData.price + 340, avg: rowData.agg_p, max: rowData.max_p, min: rowData.min_p  }];
 
 
     return (
@@ -57,9 +69,9 @@ const LineBarAreaComposedChart = ({ height, className, rowData }) => {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Line dataKey='avg' stroke="orange"/>
-                <Line dataKey='max' stroke="green"/>
-                <Line dataKey='min' stroke="red"/>
+                <Line dataKey='agg_p' stroke="orange"/>
+                <Line dataKey='max_p' stroke="green"/>
+                <Line dataKey='min_p' stroke="red"/>
 
                 <Bar dataKey='price' barSize={5} fill={colors['primary']} />
                 <Line dataKey='inventory' stroke={colors['purple']} activeDot={{ r: 5 }} dot={generateDot} />

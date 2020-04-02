@@ -204,13 +204,8 @@ export default class AllProducts extends React.Component {
                             window.location.href('/dashboard')
                         })
                     }).catch(err => {
-                        if (err) {
-                            swal("Oh noes!", "The request failed!", "error");
-                            this.setActiveStep(0)
-                        } else {
                             swal.stopLoading();
                             swal.close();
-                        }
                     })
                 })
             })
@@ -305,6 +300,7 @@ export default class AllProducts extends React.Component {
             .then((data) => {
                 let res = []
                 Object.keys(data).map(function(key, index) {
+                    data[key].suppliers = data[key].suppliers[0]
                     res.push(data[key])
                 });
                 this.setState({ products: _.reverse(res) })

@@ -8,6 +8,11 @@ setQueues([Queue])
 const kafka = require('kafka-node')
 const Producer = kafka.Producer
 const client = new kafka.KafkaClient()
+const webpush = require('web-push');
+const bodyParser = require("body-parser");
+const path = require("path");
+
+
 // 3 = requires use of keyed messages. when you produce a keyed message, the value passed for the key field then is used to determine which partition to put it in, so every message with same key ends up in same partition
 const producer = new Producer(client, { partitionerType: 3 })
 producer.on('ready', function () {
@@ -24,8 +29,38 @@ io.on('connection', function (socket) {
     console.log('message: ' + msg)
   })
 })
+// app.use(express.static(path.join(__dirname, "client")));
+
+// app.use(bodyParser.json());
 
 
+ 
+// // Prints 2 URL Safe Base64 Encoded Strings
+// const publicKey = 'BH_3OqypatV4R8dmVVcSTVdUNZONH_seCuiOld6s1kDlr2BxoNC81s1tsBTaF1hobMvi4_NnYzUmsCHUqEqnil0' 
+// const privateKey = '0k0jHaal6PAAUdmHRobalkwFj_HZwpNfPv1sPU6to70'
+
+// webpush.setVapidDetails(
+//   "mailto:test@test.com",
+//   publicKey,
+//   privateKey
+// );
+
+// Subscribe Route
+app.post("/subscribe", (req, res) => {
+  // Get pushSubscription object
+  const subscription = req.body;
+
+  // Send 201 - resource created
+  res.status(201).json({});
+
+  // Create payload
+  const payload = JSON.stringify({ title: "Push Test" });
+
+  // Pass object into sendNotification
+  webpush
+    .sendNotification(subscription, payload)
+    .catch(err => console.error(err));
+});
 
 Queue.process(async (job) => {
   console.log('processing', job.data.store, job.id)
@@ -35,7 +70,9 @@ Queue.process(async (job) => {
     keywords,
     job.data.isUpdate,
     job,
-    producer
+    producer,
+    //echo back request
+    job.data.echo,
   )
 })
 
@@ -70,10 +107,11 @@ app.get('/kafka', (req, res) => {
     console.log('queing stores ', store)
     Queue.add({
       store: store,
-      keywords: keywords
+      keywords: keywords,
+      echo: req.query.echo,
     }).then(job => {
       item += 1
-      jobs.push({ store: store, id: job.id })
+      jobs.push({ store: store, id: job.id, echo: req.query.echo })
       if (item == stores.length) {
         const update = req.query.update == "true" ? true : false
         res.status(200).json({

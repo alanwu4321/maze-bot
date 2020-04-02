@@ -1,4 +1,4 @@
-from etl.utils import api_utils as utils, db
+from etl.utils import api_utils as utils, db, gtrend
 from flask_restx import Namespace, Resource, fields, reqparse
 from datetime import date
 

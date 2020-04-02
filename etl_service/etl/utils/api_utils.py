@@ -7,14 +7,18 @@ import json
 import redis as redis_py
 from datetime import datetime
 
+
 class redisUtil:
     def __init__(self):
         self.pool = redis_py.ConnectionPool(host='localhost', port=6379, db=0)
+
     def redis(self):
         return redis_py.Redis(connection_pool=self.pool)
 
+
 def redisPool():
     return redisUtil()
+
 
 def marshal(args):
     cols, vals = list(), list()
@@ -36,11 +40,6 @@ def jsonify(rows):
     for row in rows:
         # smallestDate = None
         for target_col in _get_target_cols():
-            # if target_col == "updated_at":
-            #     if not smallestDate:
-            #         smallestDate = datetime.strptime(str(row[target_col]).split(".")[0], '%Y-%m-%d %H:%M:%S')
-            #     if  datetime.strptime(str(row[target_col]).split(".")[0], '%Y-%m-%d %H:%M:%S') > smallestDate:
-            #         smallestDate = datetime.strptime(str(row[target_col]).split(".")[0], '%Y-%m-%d %H:%M:%S')
             if row.get(target_col):
                 row[target_col] = str(row[target_col])
         # row["updated_at"] = str(smallestDate)

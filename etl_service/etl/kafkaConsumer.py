@@ -46,21 +46,21 @@ class Consumer(multiprocessing.Process):
                 #     break
 
                 print(msg.value)
-                store = msg.value['store']
-                name = msg.value['data'][0]['name']
+                echo = msg.value['echo']
+                s_id = echo['s_id']
+                p_id = echo['p_id']
                 price =  msg.value['data'][0]['price']
-                s_id = db.query(db.S).select('s_id').eql(store).where('s_name').eval()[0]['s_id']
-                p_id = db.query(db.P).select('p_id').eql(name).where('p_name').eval()[0]['p_id']
-                print(s_id, p_id, price)
+            
+                # print(s_id, p_id, price)
                 rows = db.query(db.PS)
                 rows.write(s_id, p_id, price, 'NOW').into('s_id', 'p_id', 'price', 'date')
                 print(rows.eval())
 
-                # tp = TopicPartition(msg.topic, msg.partition)
-                # offsets = {tp: OffsetAndMetadata(msg.offset, None)}
-                # consumer.commit(offsets=offsets)
-                # if self.stop_event.is_set() or msg.key == "kill":
-                #     break
+                tp = TopicPartition(msg.topic, msg.partition)
+                offsets = {tp: OffsetAndMetadata(msg.offset, None)}
+                consumer.commit(offsets=offsets)
+                if self.stop_event.is_set() or msg.key == "kill":
+                    break
 
         print("Consumer Closing")
         consumer.unsuscribe()

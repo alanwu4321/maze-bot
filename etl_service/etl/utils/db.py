@@ -1,5 +1,7 @@
 import psycopg2
 import os
+from datetime import datetime
+
 
 PD = "productdemand"
 P = "product"
@@ -104,7 +106,19 @@ class query:
 
             field_name = [field[0] for field in cur.description]
             # map col name to val
-            return [dict(zip(field_name, row)) for row in cur.fetchall()]
+            res = []
+            for row in cur.fetchall():
+                temp = dict()
+                for fn, val in zip(field_name, row):
+                    # leave it as the most recent date time
+                    if fn == "updated_at":
+                        tempDate = datetime.strptime(str(val).split(".")[0], '%Y-%m-%d %H:%M:%S')
+                        if not temp.get(fn): temp[fn] = tempDate
+                        temp[fn] = max(tempDate,temp[fn])
+                    else:
+                        temp[fn] = val
+                res.append(temp)
+            return res 
 
         except (Exception, psycopg2.DatabaseError) as error:
             print("Error while creating PostgreSQL table", error)

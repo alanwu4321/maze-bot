@@ -16,7 +16,7 @@ print('__file__={0:<35} | __name__={1:<20} | __package__={2:<20}'.format(
 
 api = Namespace('Product', description='Product related CRUD operations')
 bestbuy_map = {
-    'p_name': 'name',
+    'p_name': 'keyword',
     'category': 'categoryPath',
     'price': 'salePrice',
     'model_no': 'modelNumber',

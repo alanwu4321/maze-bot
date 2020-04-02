@@ -6,6 +6,7 @@ from urllib.parse import urlencode
 import urllib.parse
 import os
 import collections
+import json
 print('__file__={0:<35} | __name__={1:<20} | __package__={2:<20}'.format(
     __file__, __name__, str(__package__)))
 
@@ -44,25 +45,48 @@ class ProductSupplier(Resource):
         ps = utils.jsonify(rows.eval())
         print(ps)
         res = collections.defaultdict(dict)
-        for product in ps:
+        #group everything by product first
+
+        # grouped = collections.defaultdict(list)
+        # for productsupplier in ps:
+        #     grouped[productsupplier['p_id']].append(productsupplier)
+
+        # for model, group in grouped.items():
+        #     print group
+        #     print model
+        #     pprint(group, width=150)
+
+        #group by product
+        for productsupplier in ps:
             #dump default supplier data to root object
-            if product['s_name'] == os.getenv('DEFAULT_SUPPLIER'):
-                for key, val in product.items():
-                    res[product['p_id']][key] = val
-            if res[product['p_id']].get('suppliers'):
-                res[product['p_id']]['suppliers'].append(product)
+            if res[productsupplier['p_id']].get('suppliers'):
+                res[productsupplier['p_id']]['suppliers'].append(productsupplier)
             else:
-                res[product['p_id']]['suppliers'] = [product]
+                res[productsupplier['p_id']]['suppliers'] = [productsupplier]
+
+        #group by date
+        for key, productsupplier in res.items():
+            temp = collections.defaultdict(list)
+            for sup in productsupplier['suppliers']:
+                # sup = sorted(sup, key=lambda a: a['date'])
+                temp[sup["date"]].append(sup)
+            productsupplier['suppliers'] = list(temp.values())
+            for sup in productsupplier['suppliers'][0]:
+                if sup['s_name'] == os.getenv('DEFAULT_SUPPLIER'):
+                    for key, val in sup.items():
+                        res[sup['p_id']][key] = val
+        
         for p_id, datas in res.items():
-            min_s = max_s = datas['suppliers'][0]['s_name']
+            #grab the most recent set of data
+            min_s = max_s = datas['suppliers'][0][0]['s_name']
             min_p = 100000
-            max_p = datas['suppliers'][0]['price']
+            max_p = datas['suppliers'][0][0]['price']
             default_p = 0
             agg_p = 0
-            for sup in datas['suppliers']:
+            for sup in datas['suppliers'][0]:
                 if sup['s_name'] == os.getenv('DEFAULT_SUPPLIER'): 
                     default_p = sup['price']
-                elif min_p >= sup['price']:
+                if min_p >= sup['price']:
                     min_p,min_s =  sup['price'], sup['s_name']
                 elif max_p <= sup['price']:
                     max_p,max_s =  sup['price'], sup['s_name']
@@ -74,10 +98,11 @@ class ProductSupplier(Resource):
             res[p_id]['min_s'] = min_s
             res[p_id]['max_s'] = max_s
             res[p_id]['default_p'] = default_p
+            res[p_id]['agg_p'] = round(agg_p / len(datas['suppliers'][0]),2)
+            res[p_id]['diff_from_agg'] = round(default_p - res[p_id]['agg_p'],2)
             res[p_id]['diff_from_min'] = round(default_p - min_p,2)
             res[p_id]['diff_from_max'] = round(max_p - default_p ,2)
-            res[p_id]['diff_trend'] = sign(default_p - min_p)
-            res[p_id]['agg_p'] = round(agg_p / len(datas['suppliers']),2)
+            res[p_id]['diff_trend'] = sign(default_p - agg_p)
         return res
     
     @api.doc('add ProductSupplier')
@@ -125,6 +150,6 @@ class ProductSupplierUpdate(Resource):
         args = ProductSupplierUpdate.post_parser.parse_args()
         mapping = db.query(db.PSM).select(args['update_using']).eql(args['p_id'], args['s_id']).where('p_id', 's_id').eval()
         uuid = mapping[0][args['update_using']]
-        query = {'keywords': 'product:'+uuid, 'stores': args['s_name']}
+        query = {'keywords': 'product:'+uuid, 'stores': args['s_name'], 'echo': json.dumps({'s_id': args['s_id'], 'p_id': args['p_id']})}
         response = requests.get(os.getenv('JS_API') + '/kafka?' + urlencode(query))
-        return response.json()
+        return "okay"

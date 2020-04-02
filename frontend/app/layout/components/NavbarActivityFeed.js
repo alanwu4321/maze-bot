@@ -38,13 +38,16 @@ const activityFeedIcons = [
 /*eslint-enable */
 
 export function NavbarActivityFeed (props){
-    const socket = socketIOClient("http://127.0.0.1:8080");
+    // const socket = socketIOClient("http://127.0.0.1:8080");
     const [messages, setMessages] = useState([])
-    socket.on("FromAPI", data => {
-        let newstate = messages
-        newstate.push(data)
-        setMessages(newstate)
-    });
+    // socket.on("FromAPI", data => {
+    //     console.log(data)
+    //     console.log(type(data))
+
+    //     // let newstate = messages
+    //     // newstate.push(data)
+    //     // setMessages(newstate)
+    // });
     return (
     <UncontrolledDropdown nav inNavbar { ...props }>
         <DropdownToggle nav>

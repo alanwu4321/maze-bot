@@ -9,9 +9,9 @@ client.on('error', (err) => {
   console.log("Redis is connected");
 })
 
-const kafkaWork = (producer, job, keyword, data) => {
+const kafkaWork = (producer, job, keyword, data, echo=null) => {
   payloads = [
-    { topic: 'test4', key: job.data.store, messages: JSON.stringify({ store: job.data.store, keyword: keyword, data: JSON.parse(data) }) }
+    { topic: 'test4', key: job.data.store, messages: JSON.stringify({ store: job.data.store, keyword: keyword, data: data, echo: echo}) }
     // {topic: "progress", key: job.data.store, messages: JSON.stringify({store: job.data.store, keyword:keyword, data: progress})},
   ]
   producer.send(payloads, function (err, data) {
@@ -30,7 +30,7 @@ const handlerDispatcher = (store, keyword) => {
   return handlers[store]
 }
 
-const handleJobs = async (store, keywords, isUpdate, job = null, producer = null) => {
+const handleJobs = async (store, keywords, isUpdate, job = null, producer = null, echo = null) => {
   return new Promise(function (resolve, reject) {
     const res = []
     let items = 0
@@ -39,12 +39,13 @@ const handleJobs = async (store, keywords, isUpdate, job = null, producer = null
       keyword = encodeURIComponent(keyword)
       client.get(`${store}:${keyword}`, (err, data) => {
         //if update is request or there is no data
-        if (isUpdate || !data) {
+        // if (isUpdate || !data) {
+        if (true) {
           console.log("retrieving from web")
           handlerDispatcher(store, keyword)(keyword).then(
             data => {
-              res.push({ [keyword]: data })
-              if (job) kafkaWork(producer, job, keyword, data)
+              res.push({ [keyword]: data})
+              if (job) kafkaWork(producer, job, keyword, data, JSON.parse(echo))
               client.set(`${store}:${keyword}`, JSON.stringify(data), function (err) {
                 if (err != null) console.error(err);
               })
@@ -242,7 +243,8 @@ const scrapeAmazonProductPage = async (url) => {
     if (price) {
       price = numberify(price.textContent)
     }
-    return price
+    // prod.price = price
+    return [{price: price}]
   })
   await browser.close()
   return scrapedData
@@ -266,7 +268,8 @@ const scrapeStaplesProductPage = async (url) => {
     if (price) {
       price = numberify(price.textContent)
     }
-    return price
+    // prod.price = price
+    return [{price: price}] 
   })
   await browser.close()
   return scrapedData
@@ -290,7 +293,7 @@ const scrapeWalmartProductPage = async (url) => {
     if (price) {
       price = numberify(price.textContent)
     }
-    return price
+    return [{price: price}]
   })
   await browser.close()
   return scrapedData
@@ -481,13 +484,13 @@ const scrapeSourceProductPage = async (keyword) => {
   return new Promise(function (resolve, reject) {
     axios.get(`https://stocktrack.ca/src/search.php?q=${sku}&order=&n=5`)
       .then(response => {
-        console.log(response)
         let products = response.data.result
         if (products.length > 0) {
           products.forEach(product => {
             product.href = "https://www.thesource.ca" + product.href
           });
-          resolve(marshalResBySoruce(products,"stocktrack_source"))
+          console.log(marshalResBySoruce(products,"stocktrack_source"))
+          resolve([marshalResBySoruce(products,"stocktrack_source")[0]])
         }
         resolve(prod)
       })
