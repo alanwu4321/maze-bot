@@ -2,29 +2,30 @@
 API enpoints to fetch products info based on keywords using Node and Puppeteer.
 
 ## Getting Started
- - Run `npm i` (Make sure you have Node installed first)
- - Run `npm start` or `nodemon .` 
- - Hit endpoint `localhost:3000`## Redis
+ -  Run `. ./init.sh` to launch `tmux`
+ 
+ - `Node Request API Server` @ `port 3000`
+ - `Python ETL API Server` @ `port 3002`
+ - `React Front End` @ `port 4100`
+ - `Kafka Server` @ `port 9092`
+ - `Postgres Server` @ `port 5432`
+ - `Redis Server` @ `port 6379`
+ 
+ ### Prerequisite
+ - NodeJS
+ - Kafka
+ - Zookeeper
+ - Redis
+ - Tmux
+ - Postgres
 
-### productsupplier_map
-- map unique supplier id to product
+## Overview
+![Image description](https://alan-wu.com/maze-bot/infra.png)
 
 ## Database
+![Image description](https://alan-wu.com/maze-bot/db.png)
 
-### productsupplier_map
-- map unique supplier id to product
-
-## Redis
-
-### keys
-- `store`:`model_id`
-
-## Request
-- request updates on `product_id` or `model` 
-
-### productsupplier_map
-- map unique supplier id to product
-
+### Request API
 
 ## Example
 
