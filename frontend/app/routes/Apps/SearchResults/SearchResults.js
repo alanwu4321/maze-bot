@@ -382,7 +382,7 @@ export default class SearchResults extends React.Component {
                         button: false,
                         timer: 1300,
                     }).then(e=>{
-                        window.location.href = '/product/all';
+                        window.location.href = '/product/update';
                     })
                 }).catch(err => {
                     if (err) {

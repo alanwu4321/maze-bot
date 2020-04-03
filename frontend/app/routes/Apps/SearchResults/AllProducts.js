@@ -576,7 +576,7 @@ export default class AllProducts extends React.Component {
             <React.Fragment>
                 <Container>
                     <HeaderMain
-                        title="All Products"
+                        title="Update Products"
                         className="mb-5 mt-4"
                     />
             

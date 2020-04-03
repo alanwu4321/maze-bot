@@ -88,7 +88,6 @@ const ImagesResultsCard = ({ product, index, onProductDelete, onProductAdd, icon
         <React.Fragment>
             { /* START Card */}
             <Card className="mb-3" style={index == -1 ? { backgroundColor: "white", borderRadius: "0.45rem" } : null}>
-                {product.p_id}
                 <CardBody>
                     <div className="d-flex mb-4">
                         <CardTitle tag="h6">
