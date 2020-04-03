@@ -176,11 +176,11 @@ const ImagesResultsCard = ({ product, index, onProductDelete, onProductAdd, icon
                     </Media>
                     <br />
                     <small>
-                        SKU: {product.uuid}
+                    {product.uuid ? "SKU:" + product.uuid : null}
                     </small>
                     <br />
                 </CardBody>
-                {index != -1 ?
+                {/* {index != -1 ?
                     <CardFooter className="bt-0">
                         <span className="mr-3">
                             <i className="fa fa-eye mr-1"></i> <span className="text-inverse">233</span>
@@ -190,7 +190,7 @@ const ImagesResultsCard = ({ product, index, onProductDelete, onProductAdd, icon
                         </span>
                     </CardFooter> :
                     null
-                }
+                } */}
 
             </Card>
             { /* END Card */}

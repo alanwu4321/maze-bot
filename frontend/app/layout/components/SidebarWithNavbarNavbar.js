@@ -96,10 +96,10 @@ export const SidebarWithNavbarNavbar = () => {
                                 </NavLink>
                                     </NavItem>
                                     <NavItem>
-                                        <NavLink tag={Link}
+                                        {/* <NavLink tag={Link}
                                             to="/product/edit">
                                             Edit
-                                </NavLink>
+                                </NavLink> */}
                                     </NavItem>
                                 </Nav>
                             </UncontrolledCollapse>

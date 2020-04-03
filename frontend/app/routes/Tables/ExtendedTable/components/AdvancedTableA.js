@@ -767,7 +767,7 @@ export class AdvancedTableA extends React.Component {
                                                         <i className="fa fa-fw fa-info-circle mr-2"></i>
                                                     </Media>
                                                     <Media body>
-                                                        This is an aggregation of all difference from minumum offering on the market by category
+                                                        This is an aggregation of all difference from average offering on the market by category
                                         </Media>
                                                 </Media>
                                             </CardFooter>
@@ -793,7 +793,7 @@ export class AdvancedTableA extends React.Component {
                                                         <i className="fa fa-fw fa-info-circle mr-2"></i>
                                                     </Media>
                                                     <Media body>
-                                                        This is an aggregation of all difference from minumum offering on the market overall
+                                                        This is an aggregation of all difference from average offering on the market overall
                                         </Media>
                                                 </Media>
                                             </CardFooter>
@@ -803,7 +803,7 @@ export class AdvancedTableA extends React.Component {
                             </Grid>
                             <div className="d-flex justify-content-end align-items-center mb-2 mt-5">
                                 <h6 className="my-0">
-                                    AdvancedTable A
+                                    Product Overview Table
                             </h6>
                                 <div className="d-flex ml-auto">
                                     <CustomSearch
