@@ -39,8 +39,8 @@ const handleJobs = async (store, keywords, isUpdate, job = null, producer = null
       keyword = encodeURIComponent(keyword)
       client.get(`${store}:${keyword}`, (err, data) => {
         //if update is request or there is no data
-        // if (isUpdate || !data) {
-        if (true) {
+        if (isUpdate || !data) {
+        // if (true) {
           console.log("retrieving from web")
           handlerDispatcher(store, keyword)(keyword).then(
             data => {
