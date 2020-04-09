@@ -1,3 +1,7 @@
+## About
+The problem addressed in this project is collecting data required for businesses to develop a competitive pricing strategy. The maze bot allows teams to map matching products across vendors and comb through a myriad of online websites of their competitors to monitor the price, inventory, and popularity changes of various products, allowing them to set their price in a competitive and up-to-date manner. 
+
+
 ## Getting Started
  -  Run `. ./init.sh` to launch `tmux` and the servers below:
  
