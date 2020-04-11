@@ -1,6 +1,12 @@
 const puppeteer = require('puppeteer')
 const axios = require('axios')
 const redis = require('redis');
+const fs = require('fs');
+const scrape = require('website-scraper');
+const PuppeteerPlugin = require('website-scraper-puppeteer');
+var path = require('path');
+
+
 const client = redis.createClient();
 // Print redis errors to the console
 client.on('error', (err) => {
@@ -39,8 +45,8 @@ const handleJobs = async (store, keywords, isUpdate, job = null, producer = null
       keyword = encodeURIComponent(keyword)
       client.get(`${store}:${keyword}`, (err, data) => {
         //if update is request or there is no data
-        if (isUpdate || !data) {
-        // if (true) {
+        // if (isUpdate || !data) {
+        if (true) {
           console.log("retrieving from web")
           handlerDispatcher(store, keyword)(keyword).then(
             data => {
@@ -164,7 +170,7 @@ const scrapeBestBuyProductPage = (keyword) => {
 
 const scrapeAmazon = async (keyword) => {
   const browser = await puppeteer.launch({
-    headless: true,
+    headless: false,
     args: [
       '--window-size=1000,1000',
       '--no-sandbox', '--disable-setuid-sandbox'
@@ -299,7 +305,41 @@ const scrapeWalmartProductPage = async (url) => {
   return scrapedData
 }
 
-const scrapeStaples = async (keyword) => {
+function makeid() {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < 5; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+}
+
+const scrapeStaples = async(keyword) => {
+  var id = makeid()
+  console.log("started loading page" + keyword)
+  await scrape({
+    urls: [encodeURI(keyword)],
+    directory: path.join(__dirname + '/artifact/' + id) ,
+    request: {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 4 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166'
+      }
+    },
+    plugins: [ 
+      new PuppeteerPlugin({
+        launchOptions: { headless: true, args: [
+          '--no-sandbox', '--disable-setuid-sandbox'
+        ] }, /* optional */
+        // scrollToBottom: { timeout: 10000, viewportN: 10 } /* optional */
+      })
+    ]
+});
+  console.log("finish loading page")
+  return id
+}
+
+const scrapeStaples1 = async (keyword) => {
   const browser = await puppeteer.launch({
     headless: true,
     args: [
@@ -311,40 +351,47 @@ const scrapeStaples = async (keyword) => {
   await page.setViewport({ width: 1000, height: 1000, deviceScaleFactor: 1 })
   await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36')
   await page.goto(
-    `https://www.staples.ca/search?query=${keyword}`
-  )
-
-  const scrapedData = await page.evaluate(() => {
-    const numberify = string => Number(string.replace(/[^\d.]+/, '').replace(/\btp\./g, '').replace(',', '') || 0)
-    const products = Array.from(document.querySelectorAll('.ais-hits--item'))
-      .map(product => {
-        const prod = {
-          p_name: null,
-          url: null,
-          uuid: null,
-          price: null,
-          regularPrice: null
-        }
-        image = product.querySelector('.product-thumbnail__image')
-        if (image) {
-          prod.img = image.getAttribute('src')
-        }
-        title = product.querySelector('a.product-thumbnail__title.product-link')
-        if (title != null) {
-          prod.p_name = title.textContent
-          prod.url = 'https://www.staples.ca' + title.getAttribute('href')
-        }
-        price = product.querySelector('.money.pre-money')
-        if (price != null) {
-          prod.price = numberify(price.textContent)
-          prod.uuid = price.getAttribute('data-product-id')
-        }
-        return prod
-      }).filter(product => {
-        return product.p_name != null && (product.price != null || product.regularPrice != null)
-      })
-    return products
-  })
+    `https://www.staples.ca/search?query=${keyword}`, {waitUntil: 'networkidle2'})
+  await autoScroll(page)
+  fs.writeFile("./artifact/test.html",await page.evaluate(() => document.body.innerHTML), function(err) {
+    if(err) {
+        return console.log(err);
+    }
+    console.log("The file was saved!");
+    return 
+  }); 
+  // const scrapedData = await page.evaluate(() => {
+  //   const numberify = string => Number(string.replace(/[^\d.]+/, '').replace(/\btp\./g, '').replace(',', '') || 0)
+  //   const products = Array.from(document.querySelectorAll('.ais-hits--item'))
+  //     .map(product => {
+  //       const prod = {
+  //         p_name: null,
+  //         url: null,
+  //         uuid: null,
+  //         price: null,
+  //         regularPrice: null
+  //       }
+  //       image = product.querySelector('.product-thumbnail__image')
+  //       if (image) {
+  //         prod.img = image.getAttribute('src')
+  //       }
+  //       title = product.querySelector('a.product-thumbnail__title.product-link')
+  //       if (title != null) {
+  //         prod.p_name = title.textContent
+  //         prod.url = 'https://www.staples.ca' + title.getAttribute('href')
+  //       }
+  //       price = product.querySelector('.money.pre-money')
+  //       if (price != null) {
+  //         prod.price = numberify(price.textContent)
+  //         prod.uuid = price.getAttribute('data-product-id')
+  //       }
+  //       return prod
+  //     }).filter(product => {
+  //       return product.p_name != null && (product.price != null || product.regularPrice != null)
+  //     })
+  //   return products
+  // })
+ 
   await browser.close()
   return scrapedData
 }
@@ -522,7 +569,7 @@ const handlers_product = {
 }
 
 module.exports.handleJobs = handleJobs
-// module.exports.scrapeAmazon = scrapeAmazon
-// module.exports.scrapeStaples = scrapeStaples
-// module.exports.scrapeWalmart = scrapeWalmart
-// module.exports.scrapeBestBuy = scrapeBestBuy
+module.exports.scrapeAmazon = scrapeAmazon
+module.exports.scrapeStaples = scrapeStaples
+module.exports.scrapeWalmart = scrapeWalmart
+module.exports.scrapeBestBuy = scrapeBestBuy
