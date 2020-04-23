@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="52" height="25" viewBox="0 0 52 25">
+    <g fill="none" fill-rule="evenodd">
+        <text fill="#616161" font-family="MicrosoftJhengHeiBold, Microsoft JhengHei" font-size="13" font-weight="bold" transform="translate(0 -3)">
+            <tspan x="0" y="14">樂天服務</tspan>
+        </text>
+        <path d="M16 14h20v13H16z"/>
+        <path fill="#8B8B8B" fill-rule="nonzero" d="M26.046 21.529l7.425-5.362 2.12 1.532-9.545 6.894-9.546-6.894 2.121-1.532z"/>
+    </g>
+</svg>

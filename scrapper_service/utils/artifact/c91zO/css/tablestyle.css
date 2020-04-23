@@ -1,0 +1,173 @@
+/* 產品介紹/規格表格樣式表
+-----------------------------------------------*/
+
+
+#tablespe{/* 有其他產品圖片的區塊
+-----------------------------------------------*/
+    float: right ;
+	font-family: arial, verdana,  helvetica;
+	display: block;
+    width: 300px;
+	margin-right: 10px;
+	font-size :85%;
+    color: #333333;
+	background: #fff; 
+    height: Changes depending on content 
+}
+#tablespe2{/* 儀器類規格表-中間藍色那塊
+-----------------------------------------------*/
+
+    margin: 10px 0px;
+	text-align:left;
+	font-size :85%;
+    color: #666;
+	background: #F4F5F7;  
+	padding: 8px 10px 8px 10px;
+	border-top: 1px solid #ededed; 
+    border-bottom: 1px solid #ededed; 
+}
+
+
+#tables001 {/* 表格內容
+-----------------------------------------------*/
+    float: left ;
+	width: 100%;
+    font-size :85%;
+}
+#tables001 td {
+	border-bottom: 1px solid #CCCCCC; 
+}
+
+#tables001 th {
+	font-weight:bold;/* 指定字型為一般粗細 */    
+	border-bottom: 1px solid #CCCCCC; /* 指定1px的下框線 */
+	background-color: #F3F3F3; /* 指定儲存格底色 */
+	padding: 5px 5px 5px 5px; /* 指定上下左右內距 */	
+}
+
+#tables001 a:visited {
+    text-decoration:none;
+	color:#color : #6D7390; ;
+	font-weight:bold;
+}
+
+
+/* 補充
+-----------------------------------------------*/
+.NoNewline
+
+{
+
+word-break: keep-all;/*強制不換行*/
+
+}
+
+/* 表格標頭plisttest1 
+-----------------------------------------------*/
+
+#titlename_plisttest1 {
+	height: 30px;
+	padding: 0px;
+	width: 650px;
+	border-top: 2px solid #ededed;
+	background-image: url(../image/part/footer_2.gif);
+	background-repeat: repeat-x;
+	background-position: left bottom;
+}
+
+
+#titlename_plisttest1 #t1 {
+	float: left;
+	width: 135px;
+	padding: 5px
+}	
+
+#titlename_plisttest1 #t2 {
+	float: left;
+	width: 290px;
+	padding: 5px
+}	
+
+#titlename_plisttest1 #t3 {
+	float: left;
+	width: 35px;
+	padding: 5px
+}	
+
+#titlename_plisttest1 #t4 {
+	float: left;
+	width: 30px;
+	padding: 5px
+}	
+
+#titlename_plisttest1 #t5 {
+	float: left;
+	text-align: center;
+	width: 50px;
+	padding: 5px
+}	
+
+#titlename_plisttest1 #t6 {
+	float: left;
+	text-align: center;
+	width: 50px;
+	padding: 5px
+}	
+
+/* 表格標頭plisttest2 
+-----------------------------------------------*/
+
+#titlename_plisttest2 {
+	height: 30px;
+	padding: 0px;
+	width: 650px;
+	border-top: 2px solid #ededed;
+	background-image: url(../image/part/footer_2.gif);
+	background-repeat: repeat-x;
+	background-position: left bottom;
+}
+
+
+#titlename_plisttest2 #t1 {
+	float: left;
+	width: 135px;
+	padding: 5px
+}	
+
+#titlename_plisttest2 #t2 {
+	float: left;
+	width: 320px;
+	padding: 5px
+}	
+
+#titlename_plisttest2 #t3 {
+	float: left;
+	width: 30px;
+	padding: 5px
+}	
+
+#titlename_plisttest2 #t4 {
+	float: left;
+	width: 20px;
+	padding: 5px
+}	
+
+#titlename_plisttest2 #t5 {
+	float: left;
+	text-align: right;
+	width: 60px;
+	padding: 5px
+}	
+
+#titlename_plisttest2 #t6 {
+	float: left;
+	text-align: right;
+	width: 50px;
+	padding: 5px
+}	
+table{
+	font-size: 13px;
+	font-family: arial, verdana,  helvetica;
+	color: #666;
+
+}	

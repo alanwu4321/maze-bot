@@ -53,3 +53,5 @@ then
   tmux select-window -t ${SESSION_NAME}:1
 fi
 tmux attach -t ${SESSION_NAME}
+
+# export DEBUG=website-scraper*

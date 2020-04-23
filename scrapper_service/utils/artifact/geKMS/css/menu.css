@@ -1,0 +1,130 @@
+.imcm ul,.imcm li,.imcm div,.imcm span,.imcm a{
+text-align:left;vertical-align:top ;padding:0px;margin:0;list-style:none outside none;border-style:none;background-image:none;clear:none;float:none;display:block;position:static;overflow:visible;line-height:normal;}
+.imcm li a img{display:inline;border-width:0px;}
+.imcm span{display:inline;}
+.imcm .imclear,.imclear{clear:both;height:0px;visibility:hidden;line-height:0px;font-size:1px;}
+.imcm .imsc{position:relative;}
+.imcm .imsubc{position:absolute;visibility:hidden;}
+.imcm li{list-style:none;font-size:1px;float:left;}
+.imcm ul ul li{width:100%;float:none !important;}
+.imcm a{display:block;position:relative;}
+.imcm ul .imsc,.imcm ul .imsubc {z-index:10;}
+.imcm ul ul .imsc,.imcm ul ul .imsubc{z-index:20;}
+.imcm ul ul ul .imsc,.imcm ul ul ul .imsubc{z-index:30;}
+.imde ul li:hover .imsubc{visibility:visible;}
+.imde ul ul li:hover  .imsubc{visibility:visible;}
+.imde ul ul ul li:hover  .imsubc{visibility:visible;}
+.imde li:hover ul  .imsubc{visibility:hidden;}
+.imde li:hover ul ul .imsubc{visibility:hidden;}
+.imde li:hover ul ul ul  .imsubc{visibility:hidden;}
+.imcm .imea{display:block;position:relative;left:0px;font-size:1px;line-height:1px;height:0px;width:1px;float:right;}
+.imcm .imea span{display:block;position:relative;font-size:1px;line-height:0px;}.dvs,.dvm{border-width:0px}/*\*//*/.imcm .imea{visibility:hidden;}/**/
+
+
+
+	/* --[[ Main Expand Icons ]]-- */
+	#imenus0 .imeam span,#imenus0 .imeamj span {background-image:url(../image/part/sample3_main_arrow.gif); width:7px; height:5px; left:-7px; top:5px; background-repeat:no-repeat;background-position:top left;}
+	#imenus0 li:hover .imeam span,#imenus0 li a.iactive .imeamj span {background-image:url(../image/part/sample3_main_arrow.gif); background-repeat:no-repeat;background-position:top left; }
+
+
+	/* --[[ Sub Expand Icons ]]-- */
+	#imenus0 ul .imeas span,#imenus0 ul .imeasj span {background-image:url(../image/part/sample3_sub_arrow.gif); width:7px; height:9px; left:-7px; top:3px; background-repeat:no-repeat;background-position:top left;}
+	#imenus0 ul li:hover .imeas span,#imenus0 ul li a.iactive .imeasj span {background-image:url(../image/part/sample3_sub_arrow.gif); background-repeat:no-repeat;background-position:top left;}
+
+
+	/* --[[ Main Container ]]-- */
+	#imouter0 { bwhite-space: nowrap;  ackground-color:#404040;border-style:none; border-color:#404040; border-width:1px; padding:0px; margin:0px; }
+
+
+	/* --[[ Sub Container ]]-- */
+	#imenus0 li ul {background-color:#404040; border-style:outset; border-color:#404040; border-width:0px 1px 1px; padding:5px; margin:4px 0px 0px; }
+
+
+	/* --[[ Main Items ]]-- */
+	#imenus0 li a, #imenus0 .imctitle {color:#fff; text-align:center; font-family:Arial; font-size:12px; font-weight:normal; text-decoration:none;border-style:solid; border-color:#000; border-width:1px; padding:2px 8px; }
+
+		/* [hover] - These settings must be duplicated for IE compatibility.*/
+		#imenus0 li:hover>a {background-color:#404040; color:#dddddd; border-style:inset; border-color:#dddddd; }
+		#imenus0 li a.ihover, .imde imenus0 a:hover {background-color:#666; color:#dddddd; border-style:inset; border-color:#dddddd; }
+
+		/* [active] */
+		#imenus0 li a.iactive {}
+
+
+	/* --[[ Sub Items ]]-- */
+	#imenus0 ul a, #imenus0 .imsubc li .imctitle  {color:#ffffff; text-align:left; font-size:11px; font-weight:normal; text-decoration:none; border-style:none; border-color:#ff0000; border-width:1px; padding:2px 5px; }
+
+		/* [hover] - These settings must be duplicated for IE comptatibility.*/
+		#imenus0 ul li:hover>a {background-color:#ddd; color:#000; border-style:none; border-color:#333333; }
+		#imenus0 ul li a.ihover {background-color:#ddd; color:#000; border-style:none; border-color:#333333; }
+
+		/* [active] */
+		#imenus0 ul li a.iactive {text-decoration:underline; }
+
+#logo {
+	float: left;
+	height: 60px;
+	width: 200px;
+	padding-top:10px;
+}
+#logo_center {
+	float: left;
+	height: 30px;
+	width: 400px;
+	margin-top:10px;
+}
+#logo_right {
+	float: right;
+	width: 350px;
+	margin-top:10px;
+}
+#float_logo{
+	width:170px;
+	font-size:12PX;
+	text-align: center;
+	padding-top: 20px;
+	padding-right: 10px;
+	padding-bottom: 20px;
+	padding-left: 10px;
+	float: left;
+	 
+}
+#line01{
+    float: left;
+	width:160px;
+	 
+}
+
+#linekf01{ 
+    float: left;
+	width:160px;
+	padding-top:10px;
+	 
+}
+
+#logo_centerindex{float:right ;	width: 600px; margin-top:5px;margin-right:10px; text-align:right;   }
+
+#float_Copyright{
+	font-size:10PX;
+	padding-top: 20px;
+	padding-right: 10px;
+	padding-bottom: 20px;
+	padding-left: 10px;
+	float: left;
+}
+#float_Copyright_right{
+    float: left;
+	font-size:12PX;
+	padding:20px 10px; 
+}
+#float_Copyright_bottom{
+	font-size:12PX;
+	background-color:#FFF;
+	color:#DDD;
+	width: 100%;
+	padding-top: 10px;
+	padding-right: 61px;
+	padding-bottom: 10px;
+	padding-left: 61px;
+	float: left;
+}

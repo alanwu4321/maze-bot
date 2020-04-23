@@ -1,0 +1,1097 @@
+@charset "UTF-8";
+/* css reset */
+* {
+    margin: 0;
+    padding: 0;
+}
+ul,
+ol {
+    list-style: none;
+    margin: 0;
+}
+.b-header a,
+.b-header a:visited,
+.b-header a:hover,
+.b-header a:active,
+#footer a,
+#footer a:visited,
+#footer a:hover,
+#footer a:active {
+    text-decoration: none;
+}
+/*===== scss style for rwd common footer =====*/
+#page .b-footer-full {
+    background-color: #f7f7f7;
+}
+#foot {
+    background-color: #ccc;
+}
+footer .slogan {
+    display: none;
+}
+.policies.text-muted {
+    display: none;
+}
+/*
+** 預設狀態為寬度950的狀況
+*/
+/*========== footer 共用設定 ==========*/
+#foot .b-footnavbar {
+    width: 950px;
+    margin: 0 auto;
+    background-color: #f7f7f7;
+}
+footer {
+    text-align: left!important;
+    display: table;
+    margin: 24px auto 0;
+}
+footer a {
+    font-size: 12px;
+    font-weight: bold;
+    text-align: left;
+    color: #4f4f4f;
+}
+/* 視窗解析度 1220px 以上 */
+@media screen and (min-width: 1220px) {
+    #foot .b-footnavbar {
+        width: 1220px;
+    }
+}
+/* 視窗解析度 1200px ~ 1220px */
+@media screen and (min-width: 1200px) and (max-width: 1219px) {
+    #foot .b-footnavbar {
+        width: 1200px;
+    }
+}
+/* 視窗解析度 992px ~ 1199px */
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+    #foot .b-footnavbar {
+        width: 992px;
+    }
+}
+/* 視窗解析度 949px 以下 mobile & tablet 模式 */
+@media only screen and (max-width: 949px) {
+    #foot .b-footnavbar {
+        width: 100%;
+    }
+}
+/* 視窗解析度 640px 以下 mobile 模式 */
+@media only screen and (max-width: 640px) {
+    #foot .b-footnavbar {
+        width: 100%;
+        min-width: 360px;
+    }
+}
+/*========== footer 共用設定 ==========*/
+/*========== 季節 Banner ==========*/
+.season-banner {
+    font-size: 0;
+    letter-spacing: 0;
+    background-color: white;
+    text-align: center;
+}
+.season-banner img {
+    width: 950px;
+}
+.season-banner .bn-sp {
+    display: none;
+}
+/* 視窗解析度 949px 以下 mobile & tablet 模式 */
+@media only screen and (max-width: 949px) {
+    .season-banner .bn-pc {
+        display: none;
+    }
+    .season-banner .bn-sp {
+        display: block;
+        width: 100%;
+    }
+}
+/* 視窗解析度 640px 以下 mobile 模式 */
+@media only screen and (max-width: 640px) {
+    .season-banner .bn-pc {
+        display: none;
+    }
+    .season-banner .bn-sp {
+        display: block;
+        width: 100%;
+    }
+}
+/*========== 季節 Banner 結束 ==========*/
+/*========== 購物網分類 ==========*/
+.foot-nav-category {
+    font-size: 0;
+    letter-spacing: 0;
+}
+.foot-nav-category .foot-nav-title {
+    font-size: 14px;
+    border-left: 4px solid #3f3a32;
+    margin: 27px 0 0 32px;
+    padding-left: 4px;
+    display: block;
+    font-weight: 700;
+    color:#070707;
+}
+.foot-nav-category ul {
+    width: 135px;
+    display: inline-block;
+    vertical-align: top;
+    padding: 12px 0 4px 0;
+    margin-bottom: 21px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.foot-nav-category ul:nth-child(2) {
+    margin-left: 32px;
+}
+.foot-nav-category ul:nth-child(3) {
+    margin-left: 32px;
+}
+.foot-nav-category ul:nth-child(4) {
+    margin-left: 31px;
+}
+.foot-nav-category ul:nth-child(5) {
+    margin-left: 14px;
+}
+.foot-nav-category ul:nth-child(6) {
+    margin-left: 49px;
+}
+.foot-nav-category li {
+    display: inline-block;
+    width: 100%;
+    line-height: 16px;
+    margin: 0 0 8px 20px;
+}
+/* 視窗解析度 1220px 以上 */
+@media screen and (min-width: 1220px) {
+    .foot-nav-category .foot-nav-title {
+        margin-left: 42px;
+    }
+    .foot-nav-category ul:nth-child(2) {
+        margin-left: 42px;
+    }
+    .foot-nav-category ul:nth-child(3),
+    .foot-nav-category ul:nth-child(4),
+    .foot-nav-category ul:nth-child(5),
+    .foot-nav-category ul:nth-child(6),
+    .foot-nav-category ul:nth-child(7) {
+        margin-left: 62px;
+    }
+}
+/* 視窗解析度 1200px ~ 1220px */
+@media screen and (min-width: 1200px) and (max-width: 1219px) {
+    .foot-nav-category ul:nth-child(2) {
+        margin-left: 32px;
+    }
+    .foot-nav-category ul:nth-child(3),
+    .foot-nav-category ul:nth-child(4),
+    .foot-nav-category ul:nth-child(5),
+    .foot-nav-category ul:nth-child(6) {
+        margin-left: 62px;
+    }
+}
+/* 視窗解析度 992px ~ 1199px */
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+    .foot-nav-category .foot-nav-title {
+        margin-left: 53px;
+    }
+    .foot-nav-category ul:nth-child(2) {
+        margin-left: 53px;
+    }
+}
+/* 視窗解析度 949px 以下 mobile & tablet 模式 */
+@media only screen and (max-width: 949px) {
+    .foot-nav-category {
+        display: none;
+    }
+}
+/*========== 購物網分類結束 ==========*/
+/*========== 中間區塊 ==========*/
+.foot-nav-info {
+    font-size: 0;
+    letter-spacing: 0;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: #ebebeb;
+}
+.foot-nav-info ul {
+    display: inline-block;
+    vertical-align: top;
+}
+.foot-nav-info ul li {
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #000;
+    font-weight: bold;
+    vertical-align: top;
+}
+.foot-nav-info ul li:nth-child(1) a {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 21px;
+    color: #070707;
+    margin-bottom: 8px;
+}
+.foot-nav-info ul.about {
+    width: 95px;
+    margin: 18px 0 0 49px;
+}
+.foot-nav-info ul.member {
+    width: 95px;
+    margin: 18px 0 0 28px;
+}
+.foot-nav-info ul.shop {
+    width: 95px;
+    margin: 18px 0 0 28px;
+}
+.foot-nav-info ul.policy {
+    width: 100px;
+    margin: 18px 0 0 37px;
+}
+.foot-nav-info ul.social {
+    width: 56px;
+    margin: 18px 40px 0 15px;
+}
+.foot-nav-info ul.social li {
+    display: inline-block;
+}
+.foot-nav-info ul.social li:nth-child(even) {
+    margin: 0 3px 5px 7px;
+}
+.foot-nav-info ul.social li:nth-child(odd) {
+    margin: 0 7px 5px 3px;
+}
+.foot-nav-info ul.social li:nth-child(1) {
+    width: 56px;
+    margin: 0 0 10px;
+}
+.foot-nav-info ul.social li a {
+    display: block;
+    font-size: 0;
+}
+.foot-nav-info ul.social img {
+    width: 18px;
+    height: 18px;
+}
+.foot-nav-info ul.official-app li:nth-child(1) {
+    display: none;
+}
+.foot-nav-info ul.security-info li,
+.foot-nav-info ul.payment li,
+.foot-nav-info ul.delivery li {
+    display: inline-block;
+    vertical-align: top;
+}
+.foot-nav-info ul.security-info li span,
+.foot-nav-info ul.payment li span,
+.foot-nav-info ul.delivery li span {
+    display: block;
+    width: 67px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #616161;
+    padding-right: 8px;
+    line-height: 1.43;
+    position: relative;
+}
+.foot-nav-info ul.security-info li span:after,
+.foot-nav-info ul.payment li span:after,
+.foot-nav-info ul.delivery li span:after {
+    content: '';
+    height: 13px;
+    width: 2px;
+    background-color: #979797;
+    position: absolute;
+    right: 0;
+    top: 3px;
+    display: block;
+}
+.foot-nav-info ul.security-info {
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+}
+.foot-nav-info ul.security-info li span {
+    margin: 16px 0 0 40px;
+}
+.foot-nav-info ul.security-info li #dpmarkseal {
+    margin: 12px 0 0 11px;
+}
+.foot-nav-info ul.security-info li #dpmarkseal img {
+    width: 47px;
+}
+.foot-nav-info ul.security-info li #dpmarkseal a {
+    margin: 0;
+}
+.foot-nav-info ul.security-info li #dpmarkseal2 {
+    font-size: 12px;
+    color: #808080;
+    -ms-transform: scale(0.65);
+    transform: scale(0.65);
+    -webkit-transform: scale(0.65);
+    margin-top: -10px;
+}
+.foot-nav-info ul.security-info li.text {
+    width: 190px;
+    margin: 10px 0 0 0;
+    background: url(https://intl.rakuten-static.com/b/tw/assets/footer/img/rwd/icon-lock.svg) no-repeat;
+}
+.foot-nav-info ul.security-info li.text p {
+    width: 100%;
+    display: inline-block;
+    font-size: 9px;
+    font-weight: bold;
+    line-height: 1.33;
+    color: #7e7e7e;
+    -ms-transform: scale(0.8);
+    transform: scale(0.8);
+    -webkit-transform: scale(0.8);
+    margin-left: 10px;
+}
+.foot-nav-info ul.payment li span {
+    margin: 16px 0 0 0;
+}
+.foot-nav-info ul.payment li img {
+    margin: 15px 0 0 10px;
+    width: 190px;
+}
+.foot-nav-info ul.payment li img.card-sp {
+    display: none;
+}
+.foot-nav-info ul.delivery li span {
+    margin: 16px 0 0 50px;
+}
+.foot-nav-info ul.delivery li img {
+    margin: 15px 0 0 10px;
+    width: 136px;
+}
+.foot-nav-info div.app-qrcode {
+    width: 300px;
+    display: inline-block;
+}
+.foot-nav-info div.app-qrcode ul {
+    margin: 18px 8px 0 0;
+}
+.foot-nav-info div.app-qrcode ul li {
+    display: inline-block;
+}
+.foot-nav-info div.app-qrcode ul li:nth-child(odd) {
+    margin: 0 5px 8px 0;
+}
+.foot-nav-info div.app-qrcode ul li:nth-child(1) {
+    display: block;
+}
+.foot-nav-info div.app-qrcode ul li:nth-child(1) a {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 19px;
+    color: #070707;
+    margin-bottom: 8px;
+}
+.foot-nav-info div.app-qrcode ul li:nth-child(3) {
+    margin-left: 5px;
+}
+.foot-nav-info hr {
+    border: 0;
+    display: block;
+    height: 1px;
+    margin: 7px 32px 0;
+    background-color: white;
+}
+.foot-nav-info div.app-qrcode ul.rakuten-app li a::before{
+    content: "";
+    background: url(https://intl.rakuten-static.com/b/tw/assets/header/img/spritesheet-svg.svg) no-repeat 0 -815px;
+    display: block;
+    width: 60px;
+    height: 60px;
+}
+.foot-nav-info div.app-qrcode ul.pickup-app li:nth-child(3) a::before{
+    content: "";
+    background: url(https://intl.rakuten-static.com/b/tw/assets/header/img/spritesheet-svg.svg) no-repeat 0 -874px;
+    display: block;
+    width: 60px;
+    height: 60px;
+}
+.foot-nav-info div.app-qrcode ul.point-app li:nth-child(3) a::before{
+    content: "";
+    background: url(https://intl.rakuten-static.com/b/tw/assets/header/img/spritesheet-svg.svg) no-repeat -60px -815px;
+    display: block;
+    width: 60px;
+    height: 60px;
+}
+.foot-nav-info div.app-qrcode ul.rakuten-app li:nth-child(1) a::before{
+    display:none;
+}
+/* 視窗解析度 1220px 以上 */
+@media screen and (min-width: 1220px) {
+    .foot-nav-info {
+        padding-left: 10px;
+    }
+    .foot-nav-info ul.member {
+        margin-left: 93px;
+    }
+    .foot-nav-info ul.shop {
+        margin-left: 94px;
+    }
+    .foot-nav-info ul.policy {
+        margin-left: 93px;
+    }
+    .foot-nav-info ul.social {
+        margin: 18px 60px 0 50px;
+    }
+    .foot-nav-info ul.payment li span {
+        margin-left: 7px;
+    }
+    .foot-nav-info ul.delivery li span {
+        margin-left: 81px;
+    }
+    .foot-nav-info ul.security-info li.text {
+        width: 360px;
+    }
+    .foot-nav-info ul.security-info li.text p {
+        line-height: 32px;
+        margin-left: 0;
+    }
+    .foot-nav-info hr {
+        margin: 7px 42px 0;
+        max-width: 1220px;
+    }
+}
+/* 視窗解析度 1200px ~ 1220px */
+@media screen and (min-width: 1200px) and (max-width: 1219px) {
+    .foot-nav-info ul.member {
+        margin-left: 93px;
+    }
+    .foot-nav-info ul.shop {
+        margin-left: 94px;
+    }
+    .foot-nav-info ul.policy {
+        margin-left: 93px;
+    }
+    .foot-nav-info ul.social {
+        margin: 18px 60px 0 50px;
+    }
+    .foot-nav-info ul.payment li span {
+        margin-left: 7px;
+    }
+    .foot-nav-info ul.delivery li span {
+        margin-left: 81px;
+    }
+    .foot-nav-info ul.security-info li.text {
+        width: 360px;
+    }
+    .foot-nav-info ul.security-info li.text p {
+        line-height: 32px;
+        margin-left: 0;
+    }
+}
+/* 視窗解析度 992px ~ 1199px */
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+    .foot-nav-info ul.about {
+        margin-left: 70px;
+    }
+    .foot-nav-info ul.security-info li span {
+        margin-left: 61px;
+    }
+    .foot-nav-info hr {
+        margin: 7px 53px 0;
+    }
+}
+/* 視窗解析度 949px 以下 mobile & tablet 模式 */
+@media only screen and (max-width: 949px) {
+    .foot-nav-info {
+        background-color: #fff;
+        -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+        -moz-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+    }
+    .foot-nav-info ul {
+        display: block;
+        border-bottom: 1px solid #ccc;
+    }
+    .foot-nav-info ul.about,
+    .foot-nav-info ul.member,
+    .foot-nav-info ul.shop,
+    .foot-nav-info ul.policy,
+    .foot-nav-info ul.social,
+    .foot-nav-info ul.official-app {
+        width: auto;
+        margin: 0 10px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    .foot-nav-info ul.about li,
+    .foot-nav-info ul.member li,
+    .foot-nav-info ul.shop li,
+    .foot-nav-info ul.policy li,
+    .foot-nav-info ul.social li,
+    .foot-nav-info ul.official-app li {
+        margin: 0;
+        display: none;
+    }
+    .foot-nav-info ul li.title{
+        display: block;
+        position:relative;
+        line-height: 50px;
+        font-size: 16px;
+        color: #444;
+    }
+    .foot-nav-info ul li.title:after{
+        content: '';
+        background: url(https://intl.rakuten-static.com/b/tw/assets/footer/img/rwd/icon-footeritem-display.svg) no-repeat;
+        background-position: 0 0;
+        width: 10px;
+        height: 10px;
+        display: block;
+        position: absolute;
+        right: 10px;
+        top: 17px;
+    }
+    .foot-nav-info ul.about li a,
+    .foot-nav-info ul.member li a,
+    .foot-nav-info ul.shop li a,
+    .foot-nav-info ul.policy li a,
+    .foot-nav-info ul.social li a,
+    .foot-nav-info ul.official-app li a {
+        width: 100%;
+        margin: 0;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        display: block;
+        font-size: 13px;
+        line-height: 38px;
+        padding: 0 32px;
+    }
+    .foot-nav-info ul.open li {
+        display: block;
+    }
+    .foot-nav-info ul.open li.title:after {
+        background: url(https://intl.rakuten-static.com/b/tw/assets/footer/img/rwd/icon-footeritem-close.svg) no-repeat;
+    }
+    .foot-nav-info ul.social li a {
+        padding: 0;
+    }
+    .foot-nav-info ul.social li:nth-child(odd),
+    .foot-nav-info ul.social li:nth-child(even) {
+        margin: 9px 24px 9px 0;
+        display: none;
+    }
+    .foot-nav-info ul.social li:nth-child(1) {
+        width: 100%;
+        margin: 0;
+        display: block;
+    }
+    .foot-nav-info ul.social li:nth-child(2) {
+        margin-left: 36px;
+    }
+    .foot-nav-info ul.social img {
+        width: 26px;
+        height: 26px;
+    }
+    .foot-nav-info ul.social.open li:nth-child(odd),
+    .foot-nav-info ul.social.open li:nth-child(even) {
+        display: inline-block;
+    }
+    .foot-nav-info ul.social.open li:nth-child(1) {
+        display: block;
+    }
+    .foot-nav-info ul.official-app li a {
+        padding: 0;
+    }
+    .foot-nav-info ul.official-app li:nth-child(1) {
+        display: block;
+    }
+    .foot-nav-info ul.official-app div {
+        width: 100%;
+        text-align: left;
+    }
+    .foot-nav-info ul.official-app div ul {
+        display: inline-block;
+        margin: 0 0 0 36px;
+        border: 0;
+    }
+    .foot-nav-info ul.official-app div ul li:nth-child(1) h4 a {
+        font-size: 14px;
+    }
+    .foot-nav-info ul.official-app div ul:nth-child(1) {
+        margin-left: 40px;
+    }
+    .foot-nav-info ul.official-app div ul li h3 a {
+        padding: 0;
+    }
+    .foot-nav-info ul.official-app.open li {
+        display: inline-block;
+    }
+    .foot-nav-info ul.official-app.open li:nth-child(1) {
+        display: block;
+    }
+    .foot-nav-info .flex-wrap {
+        position: relative;
+        padding-bottom: 50px;
+    }
+    .foot-nav-info .flex-wrap ul {
+        border: 0;
+    }
+    .foot-nav-info .flex-wrap ul.security-info {
+        position: absolute;
+        top: 50px;
+    }
+    .foot-nav-info .flex-wrap ul.security-info li h4 {
+        margin: 7px 0 0 25px;
+    }
+    .foot-nav-info .flex-wrap ul.security-info li #dpmarkseal {
+        margin-top: 3px;
+    }
+    .foot-nav-info .flex-wrap ul.security-info li.text {
+        margin-top: 3px;
+        width: 225px;
+    }
+    .foot-nav-info .flex-wrap ul.security-info li span {
+        margin: 5px 0 0 24px;
+    }
+    .foot-nav-info .flex-wrap ul.payment {
+        display: inline-block;
+        margin-left: 25px;
+    }
+    .foot-nav-info .flex-wrap ul.payment img.card-pc {
+        display: none;
+    }
+    .foot-nav-info .flex-wrap ul.payment img.card-sp {
+        display: block;
+        width: 226px;
+    }
+    .foot-nav-info .flex-wrap ul.delivery {
+        display: inline-block;
+    }
+    .foot-nav-info hr {
+        margin: 7px 10px 0;
+    }
+}
+/* 視窗解析度 640px 以下 mobile 模式 */
+@media only screen and (max-width: 640px) {
+    footer {
+        text-align: center!important;
+    }
+    .foot-nav-info ul.social li a {
+        padding: 0;
+    }
+    .foot-nav-info ul.social li:nth-child(odd),
+    .foot-nav-info ul.social li:nth-child(even) {
+        margin: 0 0 0 24px;
+    }
+    .foot-nav-info ul.social li:nth-child(1) {
+        width: 100%;
+        margin: 0;
+        display: block;
+    }
+    .foot-nav-info ul.social li:nth-child(2) {
+        margin-left: 25px;
+    }
+    .foot-nav-info ul.official-app div ul {
+        margin: 0 0 0 15px;
+    }
+    .foot-nav-info ul.official-app div ul:nth-child(1) {
+        margin-left: 15px;
+    }
+    .foot-nav-info ul.official-app div ul li:nth-child(1) a {
+        display: inline;
+        line-height: 30px;
+        color: #494949;
+    }
+    
+    .foot-nav-info ul.official-app div ul li:nth-child(2),
+    .foot-nav-info ul.official-app div ul li:nth-child(3) {
+        display: none;
+    }
+    .foot-nav-info ul.official-app div ul.rakuten-app li:nth-child(1) {
+        background: url(https://intl.rakuten-static.com/b/tw/assets/footer/img/iconAppiconIchiba@2x.png) no-repeat;
+        background-size: 28px;
+        padding: 0 0 0 38px;
+        line-height: 28px;
+    }
+    .foot-nav-info ul.official-app div ul.pickup-app li:nth-child(1) {
+        background: url(https://intl.rakuten-static.com/b/tw/assets/footer/img/rwd/icon-appicon-pickup@2x.png) no-repeat;
+        background-size: 28px;
+        padding: 0 0 0 38px;
+        line-height: 28px;
+    }
+    .foot-nav-info ul.official-app div ul.point-app li:nth-child(1):before {
+        content: "";
+        background: url(https://intl.rakuten-static.com/b/tw/assets/header/img/rwd/logo_point_app.svg) no-repeat 0 0;
+        line-height: 28px;
+        width: 28px;
+        height: 28px;
+        display: inline-block;
+        vertical-align: middle;
+        border: 1px solid #dbdbdb;
+        border-radius: 6px;
+        margin-right: 10px;
+    }
+    .foot-nav-info .flex-wrap ul.security-info {
+        display: block;
+        margin: 0 0 0 25px;
+        top: 100px;
+    }
+    .foot-nav-info .flex-wrap ul.security-info li span {
+        margin: 5px 0 0;
+    }
+    .foot-nav-info .flex-wrap ul.security-info li.text {
+        margin-top: 0;
+        width: 185px;
+    }
+    .foot-nav-info .flex-wrap ul.payment {
+        display: block;
+        margin: 0 25px;
+    }
+    .foot-nav-info .flex-wrap ul.payment li img {
+        margin-left: 15px;
+    }
+    .foot-nav-info .flex-wrap ul.delivery {
+        display: block;
+        margin: 0 25px;
+    }
+    .foot-nav-info .flex-wrap ul.delivery li span {
+        margin: 16px 0;
+    }
+    .foot-nav-info ul li.title{
+        line-height: 50px;
+        font-size: 16px;
+        color: #444;
+    }
+    .foot-nav-info ul li.title:after{
+        content: '';
+        background: url(https://intl.rakuten-static.com/b/tw/assets/footer/img/rwd/icon-footeritem-display.svg) no-repeat;
+        background-position: 0 0;
+        width: 10px;
+        height: 10px;
+        display: block;
+        position: absolute;
+        right: 10px;
+        top: 17px;
+    }
+    .foot-nav-info div.app-qrcode ul.rakuten-app li a::before{
+        display: none;
+    }
+}
+/*========== 中間區塊結束 ==========*/
+/*========== 國家設定 ==========*/
+div.country {
+    display: block;
+    background-color: #ebebeb;
+    padding-bottom: 10px;
+}
+div.country ul {
+    margin: 0 40px;
+}
+div.country ul li {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+}
+div.country ul li:nth-child(1) {
+    margin-right: 20px;
+}
+div.country ul li a {
+    font-size: 12px;
+    font-weight: bold;
+    color: #2d2d2d;
+}
+div.country ul li i {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background-color: #2d2d2d;
+    display: inline-block;
+    margin: 0 5px 3px;
+}
+div.country ul li div.cut-wrap {
+    display: inline-block;
+}
+div.country hr {
+    display: none;
+    border: 0;
+    height: 1px;
+    margin: 30px 32px 0;
+    background-color: white;
+    border-top: 1px solid #e0dcdc;
+}
+/* 視窗解析度 1220px 以上 */
+@media screen and (min-width: 1220px) {
+    div.country ul {
+        margin-left: 51px;
+    }
+}
+/* 視窗解析度 1200px ~ 1220px */
+/* 視窗解析度 992px ~ 1199px */
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+    div.country ul {
+        margin-left: 61px;
+    }
+}
+/* 視窗解析度 949px 以下 mobile & tablet 模式 */
+@media only screen and (max-width: 949px) {
+    div.country {
+        background-color: transparent;
+        padding: 32px 0 0;
+        text-align: center;
+    }
+    div.country ul li,
+    div.country ul li a {
+        font-size: 14px;
+        font-weight: bold;
+    }
+    div.country hr {
+        display: block;
+    }
+}
+/* 視窗解析度 640px 以下 mobile 模式 */
+@media only screen and (max-width: 640px) {
+    div.country ul {
+        margin: 0 20px;
+    }
+    div.country ul li {
+        display: block;
+        margin-bottom: 10px;
+    }
+    div.country ul li:nth-child(1) {
+        margin-right: 0;
+    }
+    div.country ul li div.cut-wrap {
+        display: block;
+        margin-top: 10px;
+    }
+    div.country ul li div.cut-wrap i:nth-child(1) {
+        display: none;
+    }
+    div.country hr {
+        margin: 20px 20px 0;
+    }
+}
+/*========== 國家設定結束 ==========*/
+/*========== 下方區塊 ==========*/
+.one-brand-services {
+    text-align: right;
+}
+.one-brand-services .footer-logo {
+    margin: 0 0 0 31px;
+    float: left;
+    vertical-align: top;
+}
+.one-brand-services .footer-logo .logo-pc {
+    display: block;
+    margin: 15px 0 0 9px;
+}
+.one-brand-services .footer-logo .logo-sp {
+    display: none;
+}
+.one-brand-services .services-wrap {
+    display: inline-block;
+    width: 60%;
+    font-size: 0;
+    letter-spacing: 0;
+    margin-right: 30px;
+}
+.one-brand-services .services-wrap ul li {
+    display: inline-block;
+}
+.one-brand-services .services-wrap ul li a {
+    display: block;
+    font-size: 11px;
+    font-weight: normal;
+    -ms-transform: scale(0.916);
+    transform: scale(0.916);
+    -webkit-transform: scale(0.916);
+    o-transform: scale(1);
+}
+.one-brand-services .services-wrap ul.services-list li {
+    margin: 10px 0 7px 25px;
+}
+.one-brand-services .services-wrap ul.services-list li:nth-child(1) {
+    margin: 10px 0 7px 7px;
+}
+.one-brand-services .services-wrap ul.services-list2 li {
+    margin: 9px 0 8px 14px;
+}
+.one-brand-services .services-wrap ul.services-list2 li:nth-child(1) {
+    margin: 9px 0 8px 7px;
+}
+.one-brand-services .services-wrap ul.more-services {
+    text-align: right;
+    margin-right: -3px;
+}
+.one-brand-services .services-wrap ul.more-services li:nth-child(1) {
+    margin: 10px 41px 7px 0;
+}
+.one-brand-services .services-wrap ul.more-services li:nth-child(2) {
+    margin: 10px 36px 7px 0;
+}
+.one-brand-services .services-wrap ul.more-services li:nth-child(3) {
+    margin: 10px 0px 7px 0;
+}
+.one-brand-services .services-wrap a.sp-toggle {
+    display: none;
+    width: 100%;
+    height: 50px;
+    background: #f7f7f7 url(https://intl.rakuten-static.com/b/tw/assets/footer/img/rwd/footer-service-arrow-down.svg) no-repeat center 8px;
+    position: absolute;
+    bottom: 0;
+    padding-bottom: 0;
+}
+.one-brand-services .services-wrap.open a.sp-toggle {
+    background: #f7f7f7 url(https://intl.rakuten-static.com/b/tw/assets/footer/img/rwd/fotter-service-arrow-up.svg) no-repeat center 8px;
+}
+.one-brand-services hr {
+    max-width: 1150px;
+    border: 0;
+    display: block;
+    height: 1px;
+    margin: 7px 32px 0;
+    background-color: white;
+    border-top: 1px solid #e0dcdc;
+}
+.one-brand-services .tag {
+    margin: 20px 43px 0;
+    display: block;
+}
+.one-brand-services .tag i {
+    width: 226px;
+    height: 15px;
+    display: block;
+    background: url(https://www.rakuten.com.tw/assets/sprite-mall-common-de5b37548911a62ea973173f2471db0f.png) no-repeat;
+    background-position: 0 -18px;
+}
+.one-brand-services .copyright {
+    margin: 8px 43px 0;
+    display: block;
+    font-size: 12px;
+    color: #616161;
+}
+.one-brand-services .privacy-link {
+    margin: 5px 43px 16px;
+    text-align: right;
+    font-size: 12px;
+}
+/* 視窗解析度 1220px 以上 */
+@media screen and (min-width: 1220px) {
+    .one-brand-services .services-wrap {
+        margin-right: 40px;
+    }
+    .one-brand-services .footer-logo {
+        margin-left: 41px;
+    }
+}
+/* 視窗解析度 1200px ~ 1220px */
+@media screen and (min-width: 1200px) and (max-width: 1219px) {
+    .one-brand-services .services-wrap {
+        margin-right: 30px;
+    }
+    .one-brand-services .footer-logo {
+        margin-left: 31px;
+    }
+}
+/* 視窗解析度 992px ~ 1199px */
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+    .one-brand-services .services-wrap {
+        margin-right: 50px;
+    }
+    .one-brand-services .footer-logo {
+        margin-left: 51px;
+    }
+}
+/* 視窗解析度 949px 以下 mobile & tablet 模式 */
+@media only screen and (max-width: 949px) {
+    .one-brand-services .footer-logo {
+        float: none;
+        margin: 0 32px;
+        text-align: center;
+    }
+    .one-brand-services .footer-logo .logo-pc {
+        display: none;
+    }
+    .one-brand-services .footer-logo .logo-sp {
+        display: block;
+        width: 290px;
+        margin: 20px auto 30px;
+    }
+    .one-brand-services .services-wrap {
+        width: 100%;
+        margin: 0;
+        height: 60px;
+        position: relative;
+        overflow: hidden;
+        -o-transition: height .5s;
+        transition: height .5s;
+        -webkit-transition: height .5s;
+    }
+    .one-brand-services .services-wrap a.sp-toggle {
+        display: block;
+    }
+    .one-brand-services .services-wrap .services-list,
+    .one-brand-services .services-wrap .services-list2,
+    .one-brand-services .services-wrap ul.more-services {
+        display: block;
+        width: 95%;
+        margin: 0 auto;
+        text-align: center;
+    }
+    .one-brand-services .services-wrap .services-list {
+        margin-top: 20px;
+    }
+    .one-brand-services .services-wrap ul.more-services {
+        margin-bottom: 10px;
+    }
+    .one-brand-services .services-wrap ul li a {
+        font-size: 13px;
+        -ms-transform: scale(1);
+        transform: scale(1);
+        -webkit-transform: scale(1);
+        o-transform: scale(1);
+    }
+    .one-brand-services .services-wrap.open {
+        height: 175px;
+    }
+    .one-brand-services .services-wrap.open .services-list,
+    .one-brand-services .services-wrap.open .services-list2,
+    .one-brand-services .services-wrap.open ul.more-services {
+        display: block;
+    }
+    .one-brand-services .tag i {
+        background-position: 8px -18px;
+        margin: 0 auto;
+    }
+    .one-brand-services .copyright {
+        margin: 16px 43px 0;
+        text-align: center;
+    }
+    .one-brand-services .privacy-link {
+        text-align: center;
+    }
+}
+/* 視窗解析度 640px 以下 mobile 模式 */
+@media only screen and (max-width: 616px) {
+    .one-brand-services .services-wrap.open {
+        height: 210px;
+    }
+}
+@media only screen and (max-width: 603px) {
+    .one-brand-services .services-wrap.open {
+        height: 250px;
+    }
+}
+/*========== 下方區塊結束 ==========*/
+/*========== 廣告版位 ==========*/
+@media only screen and (max-width: 949px) {
+    .event-ad-300x250x3 li:nth-child(3) {
+        display: none;
+    }
+}
+@media only screen and (max-width: 640px) {
+    .event-ad-300x250x3 li:nth-child(2),
+    .event-ad-300x250x3 li:nth-child(3) {
+        display: none;
+    }
+}
+/*========== 廣告版位 ==========*/

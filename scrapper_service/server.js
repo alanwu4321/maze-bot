@@ -2,6 +2,8 @@ const express = require('express')
 var Bull = require('bull')
 const { setQueues, UI } = require('bull-board')
 const scraper = require('./utils/scraper')
+var https = require('https')
+
 // const script = require('./iframe-script.html')
 
 const app = express()
@@ -102,7 +104,7 @@ Queue.on('waiting', (job, result) => {
 let whitelist = ['http://localhost:3001']
 
 app.use(cors());
-app.use('/ux', express.static(path.join(__dirname + '/utils/artifact/' + 'jfpLL')));
+app.use('/ux', express.static(path.join(__dirname + '/utils/artifact/' + 'uagHs')));
 
 app.use('/admin/queues', UI)
 
@@ -187,7 +189,7 @@ app.get('/kafka', (req, res) => {
 })
 
 app.get('/test', (req, res) => {
-  io.emit("FromAPI", { message: "", store: "bestbuy" })
+  // io.emit("FromAPI", { message: "", store: "bestbuy" })
   res.status(200).send("hi")
 })
 
@@ -228,7 +230,12 @@ app.get('/api', (req, res) => {
     .catch(err => res.status(500).send({ error: err }))
 })
 
-app.listen(process.env.PORT || 3000)
+https.createServer({
+  key: fs.readFileSync('/Users/alwu/localhost+2-key.pem'),
+  cert: fs.readFileSync('/Users/alwu/localhost+2.pem')
+}, app).listen(process.env.PORT || 3000)
+
+// app.listen(process.env.PORT || 3000)
 
 // var http = require('http').createServer(app);
 

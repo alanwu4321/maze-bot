@@ -1,0 +1,222 @@
+/* 網站整體佈局樣式表
+-----------------------------------------------*/
+body {
+	text-align: center;
+}
+
+
+
+#wrapper {
+	width: 950px;
+	margin: auto  ;
+	text-align: left;
+}
+
+
+
+#header {
+    background-color: #FFF;
+	height: 80px;
+	width: 100%;
+	
+}
+
+#content {
+	width: 100%;
+}
+
+#secondary {/*左選單  */
+	float: left;
+	display: inline;
+	display: inline-block;
+	width: 200px; 
+	background-color: #fff;
+	
+	padding:12px 10px 10px 10px;
+}
+#secondaryl2 {/*左選單  */
+	float: left;
+	display: inline;
+	display: inline-block;
+	width: 220px; 
+	background-color: #fff;
+	padding:0px 0px 0px 0px;
+}
+
+#primary {/* 兩欄版型時套的內文標籤 */
+	float: left;
+	width: 640px;
+	background-color: #FFF; 
+	border-left: 1px solid #ededed;
+	padding:12px 20px 10px 40px;
+}
+
+
+#primary_left {/* 三欄版型時套的內文 */
+	float: left;
+	width: 505px;
+	background-color: #FFF;
+	border-left: 1px solid #ededed;
+	padding:20px 10px 10px 15px;
+	margin: auto  ;
+}
+#primary_right {/* 三欄版型時套的右文 */
+	float: right;
+	width: 175px;
+	background-color: #FFF;
+	padding:10px 10px 0px 10px;
+
+}
+#primary_bottom {/* 三欄版型時套的右文 */
+	float:left ;
+	width: 700px;
+	border-left: 1px solid #ededed;
+	display:block;
+	padding:5px 10px 10px 15px;
+}
+
+
+#footer {
+	clear: both; /* 取消文繞圖 */	
+	height: 95px;
+	width: 100%;
+	margin: 5px 0; /* 設定上、下邊界 */
+	white-space: nowrap;/* 不斷行 */
+}
+
+
+.line11{width: 100%;background: #f2f2f2;height:2px;overflow: hidden; margin: 5px 0px 5px 0px; }
+.line1122{width: 100%;background: #F4F5F7;height: 15px;overflow: hidden; margin:0px 0px 5px 0px;}
+
+/* 本樣式表為=產品分類樣式
+-----------------------------------------------*/
+.h01{/*標頭樣式*/ 
+ color : #333; 
+ background: #E4E4E4;
+ padding: 4px 8px;
+}
+.p-2{/*首行空2格樣式*/
+	text-indent: 2em;
+}
+
+
+
+.bottomline_BOTTOM {BORDER-BOTTOM: #c3c3c3 1px solid;}/* 只有底線*/
+
+.bottomline_TOP {BORDER-TOP: #c3c3c3 1px solid;}/* 只有頂線*/
+
+.bottomline_Trl { BORDER-TOP: #c3c3c3 1px solid;
+                  BORDER-right: #c3c3c3 1px solid;
+                  BORDER-left: #c3c3c3 1px solid;
+			      }/* 缺底邊線*/				  
+.bottomlinerlB {
+                 BORDER-left: #c3c3c3 1px solid;
+			     BORDER-right: #c3c3c3 1px solid;
+                 BORDER-BOTTOM: #c3c3c3 1px solid;		  
+			     }/* 缺頂邊線*/ 
+.bottomlinerlB_Black {
+                 BORDER-left: #333 1px solid;
+			     BORDER-right: #333 1px solid;
+                 BORDER-BOTTOM: #333 1px solid;		  
+			     }/* 缺頂邊線*/ 
+				 
+.bottomlineTrlB {BORDER-TOP: #c3c3c3 1px solid;
+                 BORDER-left: #c3c3c3 1px solid;
+			     BORDER-right: #c3c3c3 1px solid;
+                 BORDER-BOTTOM: #c3c3c3 1px solid;		  
+			     }/* 四周有邊線*/
+.bottomlineTrlB_Black {BORDER-TOP: #333 1px solid;
+                 BORDER-left: #333 1px solid;
+			     BORDER-right: #333 1px solid;
+                 BORDER-BOTTOM: #333 1px solid;		  
+			     }/* 四周有邊線*/
+			  
+.bottomline_backgroundF8 {background-color: #f8f8f8;}/* 加背景色*/  
+.bottomline_backgroundE {background-color: #EEE;}/* 加背景色*/  
+
+
+
+
+
+
+.bottomline_padding{
+	padding:5px 10px 5px 10px;
+}/* 加內距*/	  
+.bottomline_padding_min{
+			  padding:3px 3px 3px 3px;
+			  }/* 加內距*/				  
+.bottomline_h1 {background:  url(../image/part/544efde.gif) top left repeat-x ; 
+			    color: #333;}/* 帶背景標題*/
+			  
+
+.products-t {display: block;}
+TBODY TR TD a:visited {
+	text-decoration:none;
+	color:#6D7390;
+	
+}
+
+TBODY TR TD a:hover { text-decoration:underline; color:#999966;}
+
+TBODY TR TD a:link { text-decoration:none; color:#6D7390;}
+
+
+
+
+
+.bottomline {BORDER-BOTTOM: #c3c3c3 1px solid;}
+.bottomline2 {BORDER-TOP: #c3c3c3 1px solid;
+BORDER-left: #c3c3c3 1px solid;BORDER-right: #c3c3c3 1px solid;
+              BORDER-BOTTOM: #c3c3c3 1px solid;}
+.bottomline3 {BORDER-TOP: #c3c3c3 1px solid;
+BORDER-right: #c3c3c3 1px solid;
+BORDER-left: #c3c3c3 1px solid;
+              }
+.sbox td {  
+           border-bottom: 1px solid #EEE;   
+		   background-color: #ECF2F2; 
+           padding:10px 5px 5px 10px;
+           line-height : 200%;}
+.solbb td {
+           padding: 5px 0px 5px 0px;
+		   background:#FFFFFF ;
+		  
+}
+.solbb a{
+     border-bottom: 3px solid  #ECECEE;
+     background: #FFF  left center no-repeat;
+	 padding: 5px 0px 5px 0px;
+     color: #252f47; /* 指定文字顏色 */
+	 display: block; /* 設定為以區塊方式顯示 */
+	 width: 100% !important; /* 為了要讓頁面在Windows Internet Explorer上也能正常顯示，需指定區塊寬度 */
+	 width /**/: 100%; /* 指定 Windows Internet Explorer 5 所用的設定值 */
+	  text-decoration:none;
+}
+.solbb a:hover {
+     border-toP: 1px solid  #ff9900;
+     border-bottom: 1px solid  #ff9900;
+	 padding: 5px 0px 5px 0px;
+	 background-color: #ECF2F2; 
+     color: #333; /* 指定文字顏色 */
+	 display: block; /* 設定為以區塊方式顯示 */
+	 width: 100% !important; /* 為了要讓頁面在Windows Internet Explorer上也能正常顯示，需指定區塊寬度 */
+	 width /**/: 100%; /* 指定 Windows Internet Explorer 5 所用的設定值 */
+	  text-decoration:none;
+}
+.solbb a:link { text-decoration:none; }
+.STYLE1 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+
+}
+
+#primary_cerdit {/*專為DGL信用卡查詢設計 */
+	width: 640px;
+	background-color: #FFF;
+	border-left: 1px solid #ededed;
+	padding-top: 12px;
+	padding-right: 20px;
+	padding-bottom: 10px;
+	padding-left: 40px;
+}

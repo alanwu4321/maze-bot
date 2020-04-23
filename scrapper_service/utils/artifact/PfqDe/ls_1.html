@@ -1,0 +1,7 @@
+<!DOCTYPE html><html><head></head>
+<body>
+<script>
+"use strict";try{var cookie_key="OrgKeyValue",lsid_key="lsid",script,scriptNode,localStorage,id,send=function(t){parent&&parent.postMessage&&parent.postMessage(t,"*")},cb=function(t){if(id=t.id){try{localStorage.setItem(lsid_key,id)}catch(e){}send(id)}},mid=function(t,e){try{var o=RegExp("[?|&]"+e+"=(.+?)(&|$)").exec(t);if(o)return decodeURIComponent(o[1])}catch(c){}return""}(window.location.href,"mid");id=function(t){var e,o,c,i="";try{for(t=decodeURIComponent(t),e=document.cookie.split(";"),o=e.length-1;o>=0;)c=e[o].trim(),0===c.indexOf(t)&&(i=c.substring(t.length+1,c.length)),o-=1;i=decodeURIComponent(i)}catch(r){}try{i||(localStorage=window.localStorage,i=null!==localStorage&&"object"==typeof localStorage&&"function"==typeof localStorage.getItem?localStorage.getItem(lsid_key):"")}catch(r){}return i}(cookie_key),id?mid&&send(id):(scriptNode=document.getElementsByTagName("script")[0],script=document.createElement("script"),script.src=("https:"===window.location.protocol?"https:":"http:")+"//bw.scupio.com/ssp/initid.aspx?mode=L&cb="+Math.random(),mid&&(script.src+="&mid="+mid),scriptNode.parentNode.insertBefore(script,scriptNode))}catch(ignore){}
+</script>
+
+</body></html>
