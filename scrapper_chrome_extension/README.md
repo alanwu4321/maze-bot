@@ -1,4 +1,4 @@
-# ScrapeMate Beta ![GitHub Logo](/icons/24.png) 
+# Scraper Chrome Extension
 Scraping assistant tool. Editing and maintaining CSS/XPath selectors across webpages.  
 Available as a [Chrome/Chromium](https://chrome.google.com/webstore/detail/scrapemate-beta/daiomapeacamgnofkkmiaollhidcndld) and a [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrapemate/) extensions.
 
@@ -17,9 +17,6 @@ Planned features: nested selectors, more template testing and possibly actual ex
 ### Notes
 * This was first intended as a bookmarklet but due to various limitations bookmarklet mode has been dropped. You can still check out outdated but somewhat working version [at this page](https://rawgit.com/Unknowny/ScrapeMate/4a60a3bd65f9445a84a5642a056801ecd85d4212/index.html).
 
-### Screenshots
-![screenshot](https://lh3.googleusercontent.com/Yzdry6FnIr75tEJnoZCfdn1ybtlRkeyF4kNQZNH7z-GRYzA5Qvx5QW-gjdJKytyZILcYj--LLw=w640-h400-e365)
-![screenshot](https://lh3.googleusercontent.com/LOAdby4Dm1dfhyE0B0nQXznkyaIBjIUl3FDlFpoggxxEfYQUkRjJTUIpz_TNqOd6obBOlqnX=w640-h400-e365)
 
 ### Build
 ```
