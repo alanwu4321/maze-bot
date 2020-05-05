@@ -8,7 +8,7 @@ The problem addressed in this project is collecting data required for businesses
 > _Libertis_ monitors the web, so you don't have to.
 
 
-## In App Demo
+## Dashboard Demo
 
 ### Search matching products on different vendors (Amazon, Walmart, Bestbuy, Source and Staple) 
 
@@ -25,6 +25,16 @@ The problem addressed in this project is collecting data required for businesses
 ### View Product Analytics
 
 ![Image description](https://alan-wu.com/maze-bot/step_table.png)
+
+## Extension Demo
+
+### Select elements on the page
+![Image description](https://i.ibb.co/0yt2bRj/Screen-Shot-2020-05-05-at-1-50-23-AM.png)
+![Image description](https://i.ibb.co/0tMDXKn/Screen-Shot-2020-05-05-at-1-48-52-AM.png)
+
+### Review & Submit
+![Image description](https://i.ibb.co/txg0x9j/Screen-Shot-2020-05-05-at-1-49-35-AM.png)
+
 
 
 ## Getting Started
