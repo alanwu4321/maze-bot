@@ -3,6 +3,29 @@ import _ from 'lodash'
 import MainComponent from './sidebar-main.vue'
 import WindowBus from './bus.js'
 import Selector from './selector.js'
+import 'vue-material-design-icons/styles.css';
+import MenuIcon from 'vue-material-design-icons/Menu.vue';
+import BrushIcon from 'vue-material-design-icons/Brush.vue';
+import EraserIcon from 'vue-material-design-icons/Eraser.vue';
+import ContentDuplicateIcon from 'vue-material-design-icons/ContentDuplicate.vue';
+import DeleteIcon from 'vue-material-design-icons/Delete.vue';
+import ChevronUpIcon from 'vue-material-design-icons/ChevronUp.vue';
+const axios = require("axios")
+
+
+
+
+Vue.component('menu-icon', MenuIcon);
+Vue.component('brush-icon', BrushIcon);
+Vue.component('eraser-icon', EraserIcon);
+Vue.component('dup-icon', ContentDuplicateIcon);
+Vue.component('del-icon', DeleteIcon);
+Vue.component('chevron-icon', ChevronUpIcon);
+
+
+
+
+
 
 
 // Template - main data model for this application:
@@ -29,11 +52,11 @@ const parentBus = new WindowBus()
 // Utils
 ////////////////////////////////////////////////////////////////////////////////
 
-function toBooleanSorters (sorters) {
+function toBooleanSorters(sorters) {
     return sorters.map(sorter => _.isFunction(sorter) ? _.negate(sorter) : v => v != sorter)
 }
 
-function no3w (string) {
+function no3w(string) {
     return string.replace(/^www\./, '')
 }
 
@@ -41,37 +64,77 @@ function no3w (string) {
 ////////////////////////////////////////////////////////////////////////////////
 
 export default {
-    data () { return {
-        template: {}, // current template
-        templates: [], // all templates
-        loc: null, // page location
-        selCovers: {}, // number of element each selector covers
-        pickingField: null, // field that selector picker is active on
+    data() {
+        return {
+            value: null,
+            countryList: [
+                {
+                    id: 1,
+                    name: 'Algeria asdfasdfasfasdfasdfasdfsfdasfasd'
+                },
+                {
+                    id: 2,
+                    name: 'Argentina'
+                },
+                {
+                    id: 3,
+                    name: 'Brazil'
+                },
+                {
+                    id: 4,
+                    name: 'Canada'
+                },
+                {
+                    id: 5,
+                    name: 'Italy'
+                },
+                {
+                    id: 6,
+                    name: 'Japan'
+                },
+                {
+                    id: 7,
+                    name: 'United Kingdom'
+                },
+                {
+                    id: 8,
+                    name: 'United States'
+                }
+            ],
+            countries: [],
+            template: {}, // current template
+            templates: [], // all templates
+            loc: null, // page location
+            selCovers: {}, // number of element each selector covers
+            pickingField: null, // field that selector picker is active on
 
-        stashedTemplate: null, // stashed copy of current template (for revert)
-        templateEdited: false,
-        selectedTemplates: [],
+            stashedTemplate: null, // stashed copy of current template (for revert)
+            templateEdited: false,
+            selectedTemplates: [],
 
-        jsDisabled: null,
-        options: {
-            autonojs: false
-        },
+            jsDisabled: null,
+            options: {
+                autonojs: false
+            },
 
-        // TODO:low just one var - currentView
-        jsonEditorView: false,
-        controlTabsView: false,
-        templatesView: false,
-        confView: false,
+            // TODO:low just one var - currentView
+            jsonEditorView: false,
+            controlTabsView: false,
+            templatesView: false,
+            confView: false,
 
-        jsonEditorText: '',
-        jsonEditorIsReset: true,
+            jsonEditorText: '',
+            jsonEditorIsReset: true,
 
-        controlTab: 'data',
+            controlTab: 'data',
 
-        selElemAttrs: [], // [[[attrName, attrVale]...], ...]
-        selElemUniqAttrs: [], // [attrName, ...]
-        attrToShow: null,
-    }},
+            selElemAttrs: [], // [[[attrName, attrVale]...], ...]
+            selElemUniqAttrs: [], // [attrName, ...]
+            attrToShow: null,
+
+            compiled: [],
+        }
+    },
     created: async function () {
 
         // setup communication with the page
@@ -88,10 +151,13 @@ export default {
         // retrieve config and templates
         let storage = await this.sendMessage('loadStorage')
         this.options = Object.assign({}, this.options, storage['options'] || {})
-        Object.entries(storage).forEach(([k,v]) => {
+        console.log("STORAGE => ")
+        console.log(storage)
+        Object.entries(storage).forEach(([k, v]) => {
             if (!k.startsWith('_')) return
             let [id, t] = [k, v]
             this.augmentTemplate(t, id)
+            console.log(t)
             Vue.set(this.templates, id, t)
         })
 
@@ -116,33 +182,33 @@ export default {
         this.$el.style = '' // show everything
     },
     computed: {
-        fields () {
+        fields() {
             return this.template.fields || []
         },
-        fieldCovers () {
+        fieldCovers() {
             // selCovers but accessing from fields
             return this.fields.map(f => this.selCovers[f.selector])
         },
-        sortedTemplates () {
+        sortedTemplates() {
             if (!this.loc) return []
             return _.sortBy(_.values(this.templates), [
-                        t => t !== this.template, // current template
-                        t => no3w(t.lastLoc.hostname) !== no3w(this.loc.hostname), // same host
-                        t => no3w(t.lastLoc.host) // hostname alphabetic
-                    ])
+                t => t !== this.template, // current template
+                t => no3w(t.lastLoc.hostname) !== no3w(this.loc.hostname), // same host
+                t => no3w(t.lastLoc.host) // hostname alphabetic
+            ])
         },
-        sortedSelElemAttrs () {
+        sortedSelElemAttrs() {
             if (!this.selElemAttrs.length) return []
             console.log("sortedSelElemAttrs")
             console.log("selElemAttrs => ")
-            console.log(selElemAttrs)
+            console.log(this.selElemAttrs)
             let sorters = _.concat(toBooleanSorters(htmlAttrImportance), _.identity)
             let pairsSorters = sorters.map(s => v => s(v[0]))
             return this.selElemAttrs.map(attrs => {
                 return _.sortBy(_.toPairs(attrs), pairsSorters)
             })
         },
-        templateStat () {
+        templateStat() {
             return _.values(this.sortedTemplates).map(t => {
                 let liveSels = '?'
                 let matchPower = 'low'
@@ -156,13 +222,78 @@ export default {
                     matchPower = 'unknown'
                 }
 
-                return {selCount: liveSels + '/' + (fields.length), matchPower: matchPower}
+                return { selCount: liveSels + '/' + (fields.length), matchPower: matchPower }
             })
         },
     },
     methods: {
+        submitTemplate() {
+            axios({
+                url: 'http://localhost:3000/graphql',
+                method: 'post',
+                data: {
+                    query: `
+                    mutation CreateProduct($jsonTest: JSON!) {
+                        createProduct(
+                        input: { 
+                            product:
+                            { jsonTest: $jsonTest}
+                          }
+                        ) {
+                        product {
+                            jsonTest
+                        }
+                      }
+                    }`,
+                    variables: {
+                        jsonTest: this.template
+                    }
+                }
+            }).then((result) => {
+                console.log(result.data)
+            });
+        },
+        compileResult() {
+            this.compiled = []
+            this.template.fields.forEach(async f => {
+                console.log("compile result", f.name)
+                console.log(f)
+                let data = await this.sendMessage('getSelElemAttrs', f.selector)
+                this.compiled.push(data.map(i => i[f.attr]))
+            })
+        },
+        async showData(f) {
+            console.log(f)
+            // this.getSelElemAttrs(f.selector)
+            let data = await this.sendMessage('getSelElemAttrs', f.selector)
+            console.log("showData => ")
+            console.log(data)
+            console.log(data.map(i => i[f.attr]))
+            return [f.name, f.attr]
+        },
+        onAttribute(attr) {
+            this.attrToShow = attr
+            console.log("onAttribute=>")
+            console.log(this.pickingField)
+            this.$set(this.pickingField, "attr", attr);
+            _.debounce(function () { this.commitTemplate() }, 300)
+            console.log(this.pickingField)
+            console.log(this.template)
+        },
+        getCountries(searchTerm) {
+            this.countries = new Promise(resolve => {
+                window.setTimeout(() => {
+                    if (!searchTerm) {
+                        resolve(this.countryList)
+                    } else {
+                        const term = searchTerm.toLowerCase()
 
-        onKeyUp (e) {
+                        resolve(this.countryList.filter(({ name }) => name.toLowerCase().includes(term)))
+                    }
+                }, 500)
+            })
+        },
+        onKeyUp(e) {
             // note: on remote call from parent window e.target will not be set
 
             let isRoot = _.includes([undefined, document.body], e.target)
@@ -170,51 +301,51 @@ export default {
             if (e.keyCode === 27) {
                 // esc
                 this.resetView()
-            } else if (_.includes([8,46], e.keyCode) && isRoot && this.pickingField) {
+            } else if (_.includes([8, 46], e.keyCode) && isRoot && this.pickingField) {
                 // backspace
                 this.resetSelector(this.pickingField)
-            } else if (_.includes([37,39], e.keyCode) && isRoot) {
+            } else if (_.includes([37, 39], e.keyCode) && isRoot) {
                 // < and > arrow keys
                 this.sendMessage('togglePosition')
             }
         },
-        sendMessage (event, data) {
+        sendMessage(event, data) {
             // cooperate with our content script in the page
             return parentBus.sendMessage(event, data)
         },
-        resetView () {
+        resetView() {
             this.disablePicker()
             this.controlTabsView = false
             this.jsonEditorView = false
             this.templatesView = false
             this.confView = false
         },
-        getAllSelectors (templates) {
+        getAllSelectors(templates) {
             return _.chain(templates).values()
-                    .flatMap(t => t.fields.map(f => f.selector))
-                    .uniq().value()
+                .flatMap(t => t.fields.map(f => f.selector))
+                .uniq().value()
         },
-        onOptionsEdited () {
-            this.sendMessage('saveStorage', {options: this.options})
+        onOptionsEdited() {
+            this.sendMessage('saveStorage', { options: this.options })
         },
-        remote_resetView () {this.resetView()},
-        remote_keyUp(e) {this.onKeyUp(e)},
+        remote_resetView() { this.resetView() },
+        remote_keyUp(e) { this.onKeyUp(e) },
 
         // Template Management
 
-        makeTemplate (augment) {
+        makeTemplate(augment) {
             return {
                 fields: [],
                 title: no3w(this.loc.hostname) + this.loc.pathname.replace(/\/$/, ''),
                 urls: [this.loc.href],
             }
         },
-        augmentTemplate (t, id) {
+        augmentTemplate(t, id) {
             t.id = id ? id : '_' + Date.now()
             t.lastLoc = new URL(_.last(t.urls) || this.loc.href)
             t.fields.push(this.makeField())
         },
-        cloneCurrentTemplate () {
+        cloneCurrentTemplate() {
             let t = _.cloneDeep(this.template)
             t.id = '_' + Date.now()
             t.title += ' New'
@@ -222,7 +353,7 @@ export default {
             this.commitTemplate()
             this.templateEdited = false
         },
-        revertTemplate () {
+        revertTemplate() {
             if (!confirm('Undo all edits made to this template?')) return
             this.resetView()
             this.template = this.stashedTemplate
@@ -230,47 +361,48 @@ export default {
             Vue.set(this.templates, this.template.id, this.template)
             this.templateEdited = false
         },
-        newTemplate () {
+        newTemplate() {
             this.resetView()
             this.template = this.makeTemplate()
             this.stashedTemplate = null
             this.augmentTemplate(this.template)
         },
-        openTemplatesView () {
+        openTemplatesView() {
             this.resetView()
             this.templatesView = true
         },
-        pickTemplate (t) {
+        pickTemplate(t) {
             this.template = t
             this.stashedTemplate = _.cloneDeep(this.template)
             this.checkAndUpdateSelectors()
             this.templatesView = false
         },
-        removeSelectedTemplates () {
+        removeSelectedTemplates() {
             this.templates = _.omit(this.templates, this.selectedTemplates)
             this.sendMessage('removeStorageKeys', this.selectedTemplates)
             this.selectedTemplates = []
         },
-        selectTemplate (t) {
+        selectTemplate(t) {
             if (_.includes(this.selectedTemplates, t.id))
                 this.selectedTemplates = _.without(this.selectedTemplates, t.id)
             else
                 this.selectedTemplates.push(t.id)
         },
-        selectAllTemplates () {
+        selectAllTemplates() {
             if (this.selectedTemplates.length) this.selectedTemplates = []
             else this.selectedTemplates = _.keys(this.templates)
         },
-        commitTemplate () {
+        commitTemplate() {
+            console.log("saved!")
             this.templateEdited = true
             if (!_.includes(this.template.urls, this.loc.href))
                 this.template.urls.push(this.loc.href)
             Vue.set(this.templates, this.template.id, this.template)
             let template = _.pick(this.template, ['title', 'fields', 'urls'])
             template.fields = template.fields.slice(0, -1) // remove ghost field
-            this.sendMessage('saveStorage', {[this.template.id]: template})
+            this.sendMessage('saveStorage', { [this.template.id]: template })
         },
-        findTemplate () {
+        findTemplate() {
             // looks for template matching this page
 
             return new Promise(async resolve => {
@@ -286,10 +418,10 @@ export default {
                 let data = await this.sendMessage('checkSelectors', uniqSels)
 
                 // count amount of working on this page selectors for each template
-                var counted = Object.entries(id2sels).map(([id,sels]) => {
+                var counted = Object.entries(id2sels).map(([id, sels]) => {
                     return [id, sels.filter(s => data[s]).length]
                 })
-                counted.sort((a,b) => b[1] - a[1])
+                counted.sort((a, b) => b[1] - a[1])
                 let top = counted[0]
 
                 if (top && top[1] > 0) {
@@ -305,23 +437,23 @@ export default {
                 resolve(id)
             })
         },
-        onTemplateTitleInput: _.debounce(function () {this.commitTemplate()}, 300),
+        onTemplateTitleInput: _.debounce(function () { this.commitTemplate() }, 300),
 
         // Fields/Selectors Management
 
-        makeField () {
-            return {name: '', selector: ''}
+        makeField() {
+            return { name: '', selector: '' }
         },
-        addField () {
+        addField() {
             this.template.fields.push(this.makeField())
             this.commitTemplate()
         },
-        removeField (idx) {
+        removeField(idx) {
             if (this.fields[idx] === this.pickingField) this.disablePicker()
             this.template.fields.splice(idx, 1)
             this.commitTemplate()
         },
-        onPickerClick (f, e) {
+        onPickerClick(f, e) {
             if (f === _.last(this.fields)) this.addField()
 
             e.target.blur()
@@ -332,7 +464,7 @@ export default {
                 this.enablePicker(f)
             }
         },
-        enablePicker (f) {
+        enablePicker(f) {
             this.sendMessage('enablePicker')
             this.pickingField = f
             this.controlTabsView = true
@@ -344,19 +476,19 @@ export default {
                 let fbox = this.$refs.field[idx].getBoundingClientRect()
                 let cbox = this.$refs.controlTabs.getBoundingClientRect()
 
-                let scrollBy = (fbox.y + fbox.height + fbox.height*.85) - cbox.y
+                let scrollBy = (fbox.y + fbox.height + fbox.height * .85) - cbox.y
                 if (scrollBy > 0) this.$el.scrollTop += scrollBy
             }, 100)
         },
-        disablePicker () {
+        disablePicker() {
             this.sendMessage('disablePicker')
             this.controlTabsView = false
             this.pickingField = null
         },
-        submitSelector (sel) {
+        submitSelector(sel) {
             this.sendMessage('changeSelectorPicked', sel)
         },
-        onSelectorInput (f) {
+        onSelectorInput(f) {
             if (f === _.last(this.fields)) this.addField()
             this._onSelectorInput(f)
         },
@@ -368,21 +500,21 @@ export default {
             if (this.pickingField)
                 this.getSelElemAttrs(sel)
         }, 300),
-        onSelectorEnter (f) {
+        onSelectorEnter(f) {
             if (f === this.pickingField)
                 this.submitSelector(f.selector)
         },
-        onFieldNameInput (f) {
+        onFieldNameInput(f) {
             if (f === _.last(this.fields)) this.addField()
             this._onFieldNameInput()
         },
-        _onFieldNameInput: _.debounce(function () {this.commitTemplate()}, 300),
-        async checkAndUpdateSelectors (sels) {
+        _onFieldNameInput: _.debounce(function () { this.commitTemplate() }, 300),
+        async checkAndUpdateSelectors(sels) {
             if (!sels) sels = this.template.fields.map(f => f.selector)
             let data = await this.sendMessage('checkSelectors', sels)
             this.selCovers = Object.assign({}, this.selCovers, data)
         },
-        async getSelElemAttrs (sel) {
+        async getSelElemAttrs(sel) {
             let data = await this.sendMessage('getSelElemAttrs', sel)
             console.log("getSelElemAttrs => ")
             console.log(data)
@@ -393,18 +525,18 @@ export default {
                 .flatMap(_.keys).uniq().sortBy(sorters).value()
             this.attrToShow = this.selElemUniqAttrs[0]
         },
-        cloneField (idx) {
+        cloneField(idx) {
             this.template.fields.splice(idx, 0, _.cloneDeep(this.fields[idx]))
             this.commitTemplate()
         },
-        resetSelector (f) {
+        resetSelector(f) {
             if (!f) return
             f.selector = ''
             this.onSelectorInput(f)
             if (f === this.pickingField)
                 this.submitSelector(f.selector)
         },
-        remote_selectorPicked (sel) {
+        remote_selectorPicked(sel) {
             if (this.pickingField)
                 this.pickingField.selector = sel
             this.commitTemplate()
@@ -415,13 +547,13 @@ export default {
 
         // Import/Export
 
-        async exportTemplates () {
+        async exportTemplates() {
             let storage = await this.sendMessage('loadStorage')
             let templates = _.pick(storage, this.selectedTemplates)
             let content = JSON.stringify(templates, null, 2)
             this.sendMessage('saveText', content)
         },
-        importTemplates (e) {
+        importTemplates(e) {
             let file = e.target.files[0]
             if (file.type !== 'application/json') {
                 alert(`Incorrect file type of "${file.name}": ${file.type}\nExpected: application/json`)
@@ -440,8 +572,8 @@ export default {
             // TODO:low report problem with loading it or something?
             reader.readAsText(file)
         },
-        commitImportedTemplates (object) {
-            let templates = Object.entries(object).map(([id,t]) => {
+        commitImportedTemplates(object) {
+            let templates = Object.entries(object).map(([id, t]) => {
                 id = id.toString()
                 if (!id.startsWith('_')) id = '_' + id
                 let tt = this.makeTemplate()
@@ -460,7 +592,7 @@ export default {
                 return [id, tt]
             })
             this.sendMessage('saveStorage', _.fromPairs(templates))
-            templates.forEach(([id,t]) => {
+            templates.forEach(([id, t]) => {
                 this.augmentTemplate(t, id)
                 Vue.set(this.templates, id, t)
             })
@@ -469,16 +601,16 @@ export default {
 
         // Field JSON editor
 
-        openJsonEditor () {
+        openJsonEditor() {
             this.resetView()
             this.resetJsonEditor()
             this.jsonEditorView = true
         },
-        applyJsonEditor () {
+        applyJsonEditor() {
             try {
                 let data = JSON.parse(this.jsonEditorText)
                 let fields = []
-                Object.entries(data).forEach(([k,v]) => {
+                Object.entries(data).forEach(([k, v]) => {
                     let f = this.makeField()
                     f.name = k
                     f.selector = v.sel
@@ -495,14 +627,14 @@ export default {
                 throw e
             }
         },
-        resetJsonEditor () {
+        resetJsonEditor() {
             this.jsonEditorIsReset = true
             let object = _.fromPairs(this.template.fields.slice(0, -1).map(f => {
-                return [f.name, {sel: f.selector, type: Selector.getType(f.selector)}]
+                return [f.name, { sel: f.selector, type: Selector.getType(f.selector) }]
             }))
             this.jsonEditorText = JSON.stringify(object, null, 2)
         },
-        copyJsonEditor () {
+        copyJsonEditor() {
             this.$refs.jsonEditor.select()
             document.execCommand('copy')
         },

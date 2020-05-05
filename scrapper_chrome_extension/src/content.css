@@ -3,10 +3,9 @@
     right: 0;
     top: 0;
     z-index: 9999999999;
-    width: 350px;
+    width: 550px;
     height: 100%;
     border: 0;
-    opacity: 0.92;
     background: #888 !important;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
 }

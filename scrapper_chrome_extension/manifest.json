@@ -1,6 +1,6 @@
 {
 	"background": {"scripts": ["background.js"]},
-	"web_accessible_resources": ["sidebar.html", "content.css", "vendor/selectorgadget_combined.css"],
+	"web_accessible_resources": ["*"],
 	"browser_action": {
 		"default_icon": {
 			"16": "icons/16.png",
