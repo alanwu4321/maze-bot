@@ -1,0 +1,85 @@
+/* 產品介紹區塊樣式表
+-----------------------------------------------*/
+
+/* 本文
+-----------------------------------------------*/
+#article{
+
+width: 650px;
+	
+}
+#articleintroduction {
+float: right ;
+display: block;
+width: 350px;
+}
+
+#articleintroductionimge {
+float: left ;
+display: block;
+width: 240px;
+padding: 0px 20px 20px 20px;
+}
+
+#articleintroduction p {
+float: right ;
+width: 300px;
+padding: 0px 15px 0px 15px;
+
+}
+
+#articleintroduction h2{
+	font-size: 1.15em;
+    color: #444;
+    padding: 10px 15px 0px 15px;
+	font-weight:bold;
+}
+
+#articleintroduction h3{
+	line-height: 4em;
+    padding: 10px 15px 0px 25px;
+text-decoration:underline;
+}
+p{
+	line-height : 160%;
+	padding:5px 0px;
+}
+.style3 { font-size: 12px; background: url(../activities/hot/003/image001.jpg); border: 0px; width: 122px; height: 28px}
+.style4 { font-size: 12px; font-weight: bold; background: url(../activities/hot/003/image001-2.jpg); border: 0px ; width: 122px; height: 28px}
+.style5 { font-size: 12px; background: url(../activities/hot/003/image005.jpg); border: 0px; width: 122px; height: 28px}
+.style6 { font-size: 12px; font-weight: bold; background: url(../activities/hot/003/image005-2.jpg); border: 0px ; width: 122px; height: 28px}
+.style7 { font-size: 12px; background: url(../activities/hot/046/image046-bl.jpg); border: 0px; width: 122px; height: 28px}
+.style8 {
+	font-size: 12px;
+	font-weight: bold;
+	border: 0px;
+	width: 122px;
+	height: 28px;
+	background-image: url(../activities/hot/046/image046-bl-2.jpg);
+}
+.style9 { font-size: 12px; background: url(../activities/hot/046/image046-bn.jpg); border: 0px; width: 122px; height: 28px}
+.style10 {
+	font-size: 12px;
+	font-weight: bold;
+	border: 0px;
+	width: 122px;
+	height: 28px;
+	background-image: url(../activities/hot/046/image046-bn-2.jpg);
+}
+.style11 { font-size: 12px; background: url(../activities/hot/053/image53.jpg); border: 0px; width: 122px; height: 28px}
+.style12 { font-size: 12px; font-weight: bold; background: url(../activities/hot/053/image53-2.jpg); border: 0px ; width: 122px; height: 28px}
+.style13 {
+	font-size: 12px;
+	border: 0px;
+	width: 122px;
+	height: 28px;
+	background-image: url(../activities/hot/060/botton3.png);
+}
+.style14 {
+	font-size: 12px;
+	font-weight: bold;
+	border: 0px;
+	width: 122px;
+	height: 28px;
+	background-image: url(../activities/hot/060/botton4.png);
+}

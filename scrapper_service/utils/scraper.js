@@ -324,16 +324,17 @@ const scrapeStaples = async(keyword) => {
     maxDepth: 1, 
     maxRecursiveDepth: 1,
     request: {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 4 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166'
-      }
+      // headers: {
+      //   'User-Agent': 'Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 4 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166'
+      // }
     },
     plugins: [ 
       new PuppeteerPlugin({
-        launchOptions: { headless: true, args: [
+        launchOptions: { headless: false, args: [
+          '--window-size=2000,2000',
           '--no-sandbox', '--disable-setuid-sandbox'
         ] }, /* optional */
-        // scrollToBottom: { timeout: 10000, viewportN: 10 } /* optional */
+        scrollToBottom: { timeout: 10000, viewportN: 10 } /* optional */
       })
     ]
 });

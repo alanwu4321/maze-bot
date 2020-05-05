@@ -19,7 +19,9 @@
     "pug": "^2.0.3",
     "puppeteer": "^1.20.0",
     "redis": "^3.0.2",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "website-scraper": "^4.2.0",
+    "website-scraper-puppeteer": "^0.1.4"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
