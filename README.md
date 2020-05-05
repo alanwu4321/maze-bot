@@ -1,5 +1,40 @@
+![Image description](https://alan-wu.com/0001.jpg)
+
+
+
 ## About
-The problem addressed in this project is collecting data required for businesses to develop a competitive pricing strategy. The maze bot allows teams to map matching products across vendors and comb through a myriad of online websites of their competitors to monitor the price, inventory, and popularity changes of various products, allowing them to set their price in a competitive and up-to-date manner. 
+The problem addressed in this project is collecting data required for businesses to develop a competitive pricing strategy. The _Libertis_ allows teams to map matching products across vendors and comb through a myriad of online websites of their competitors to monitor the price, inventory, and popularity changes of various products, allowing them to set their price in a competitive and up-to-date manner.
+
+> _Libertis_ monitors the web, so you don't have to.
+
+
+## Dashboard Demo
+
+### Search matching products on different vendors (Amazon, Walmart, Bestbuy, Source and Staple) 
+
+![Image description](https://alan-wu.com/maze-bot/step_search.png)
+
+### View all target products and request price and inventory updates from selected vendors
+
+![Image description](https://alan-wu.com/maze-bot/step_update.png)
+
+### View Dashboard Analytics by Category
+
+![Image description](https://alan-wu.com/maze-bot/step_dashboard.png)
+
+### View Product Analytics
+
+![Image description](https://alan-wu.com/maze-bot/step_table.png)
+
+## Extension Demo
+
+### Select elements on the page
+![Image description](https://i.ibb.co/0yt2bRj/Screen-Shot-2020-05-05-at-1-50-23-AM.png)
+![Image description](https://i.ibb.co/0tMDXKn/Screen-Shot-2020-05-05-at-1-48-52-AM.png)
+
+### Review & Submit
+![Image description](https://i.ibb.co/txg0x9j/Screen-Shot-2020-05-05-at-1-49-35-AM.png)
+
 
 
 ## Getting Started
@@ -25,19 +60,6 @@ The problem addressed in this project is collecting data required for businesses
 
 ## Database
 ![Image description](https://alan-wu.com/maze-bot/db.png)
-
-## In App Demo
-### Search matching products on different vendors (Amazon, Walmart, Bestbuy, Source and Staple) 
-![Image description](https://alan-wu.com/maze-bot/step_search.png)
-
-### View all target products and request price and inventory updates from selected vendors
-![Image description](https://alan-wu.com/maze-bot/step_update.png)
-
-### View Dashboard Analytics by Category
-![Image description](https://alan-wu.com/maze-bot/step_dashboard.png)
-
-### View Product Analytics
-![Image description](https://alan-wu.com/maze-bot/step_table.png)
 
 ### Request API
 
