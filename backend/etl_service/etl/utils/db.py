@@ -118,7 +118,7 @@ class query:
                     else:
                         temp[fn] = val
                 res.append(temp)
-            return res 
+            return res
 
         except (Exception, psycopg2.DatabaseError) as error:
             print("Error while creating PostgreSQL table", error)

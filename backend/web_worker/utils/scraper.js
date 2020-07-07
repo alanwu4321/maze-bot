@@ -233,14 +233,14 @@ const scrapeAmazon = async (keyword) => {
 
 const scrapeAmazonProductPage = async (url) => {
   const browser = await puppeteer.launch({
-    headless: true,
+    headless: false,
     args: [
-      '--window-size=1000,1000',
+      '--window-size=1500,1500',
       '--no-sandbox', '--disable-setuid-sandbox'
     ]
   })
   const page = await browser.newPage()
-  await page.setViewport({ width: 1000, height: 1000, deviceScaleFactor: 1 })
+  await page.setViewport({ width: 1500, height: 1500, deviceScaleFactor: 1 })
   await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36')
   await page.goto(decodeURIComponent(url.split("product%3A")[1]))
   const scrapedData = await page.evaluate(() => {
@@ -330,7 +330,7 @@ const scrapeStaples = async(keyword) => {
     },
     plugins: [ 
       new PuppeteerPlugin({
-        launchOptions: { headless: false, args: [
+        launchOptions: { headless: true, args: [
           '--window-size=2000,2000',
           '--no-sandbox', '--disable-setuid-sandbox'
         ] }, /* optional */

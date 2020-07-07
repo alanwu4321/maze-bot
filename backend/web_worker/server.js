@@ -85,7 +85,7 @@ app.use('/admin/queues', UI)
 app.get('/iframe', async (req, res) => {
   // var id = "NihkW"
   let url = req.query.q
-  var id = await scraper.scrapeStaples("http://dgs2.fanswoo.com/catalog")
+  var id = await scraper.scrapeStaples("http://camlab.sienci.com/camlab")
   app.use('/ux/' + id, express.static(path.join(__dirname + '/utils/artifact/' + id)));
   res.json('/ux/' + id)
 })

@@ -1,0 +1,556 @@
+<!DOCTYPE html><html><head lang="en">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script type="text/javascript" async src="js/analytics.js"></script><script async src="js_1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-126823697-1');
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="copyright" content="stewart allen [stewart@neuron.com], Sienci Labs [hi@sienci.com]">
+    <meta name="description" content="CNC toolpath and gcode generator">
+    <meta name="keywords" content="cnc,cam,toolpaths,toolpath generation,camlab,kiri,kirimoto,kiri:moto,gcode">
+    <meta name="author" content="Stewart Allen and Christopher Thorogood">
+    <meta name="robots" content="noindex, nofollow">
+    <meta property="og:description" content="CAMLab is powered by Kiri:moto. It is a simple yet powerful CNC CAM program that runs entirely within your browser. Create and output gcode to a variety of CNC routers with ease.">
+    <meta property="og:title" content="Cloud-based CAM for Makers">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://camlab.sienci.com">
+    <!-- <meta property="og:image" content="https://grid.space/img/logo_km_og.png"> -->
+    <meta property="og:image" content="images/baa_2.png">
+    <title>CAMLab</title>
+    <!-- <link rel="icon" href="/kiri/favicon.ico">
+    <link rel="apple-touch-icon" href="/kiri/favicon-mobile.png"> -->
+    <link rel="icon" href="sheep.ico">
+    <link rel="apple-touch-icon" href="images/baa_1.png">
+    <link rel="stylesheet" type="text/css" href="css/style_1.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="js/ext-three.js"></script>
+</head>
+<body>
+    <script>
+    /* because TWEEN complains */
+    module = {};
+    </script>
+<!--{camlab}-->
+<script src="1.2.4b"></script>
+    <!-- app title home page links -->
+    <!-- <div id="appid">
+        <span><a href="#" id="kiri">Kiri:Moto</a> by <a href="/" target="home">Grid.Space</a></span>
+    </div> -->
+    
+    <!-- Projects dialog -->
+    <div id="projects" style="z-index: 2; display: none;">
+    <!-- <div id="projects" class="dialog" style="z-index: 2"> -->
+        <button id="projects-close">X</button>
+        <div id="projects-desc" class="flow-col">
+            <h1>Projects</h1>
+            <p>
+            Here you can see some of the projects that we really
+            like and try them out yourself. Click around to start
+            making on your machine now!    
+            </p>
+        </div>
+        <div id="projects-list" class="flow-col">
+                <div id="wood-box" class="project-entry">
+                    <div id="wood-box-desc" class="project-desc">
+                        <p>
+                        The following box was designed by Andy. It’s
+                        beautiful in its simplicity and fits together nicely.
+                        A nice enclosure and a great starting project for the
+                        woodworker at heart.
+                        <br><b>Material:</b> Any wood (min 22mm tall for the base and 13mm tall for the lid)
+                        <br><b>End Mill:</b> 2-flute, 1/4″ (6.4 mm)˜ flat end
+                        <br><b>Cutting Time:</b> 25 minutes
+                        <br><button id="wood-box-make" class="project-start">Let's Go</button>
+                        </p>
+                    </div>
+                    <img id="wood-box-img" class="proj-pic" src="images/Box-with-earrings.jpg" alt="Wood box and earrings">
+                    <!-- <div id="wood-box-img" class="flow-col">
+                    </div> -->
+                </div>
+                <div id="plastic-gears" class="project-entry">
+                    <div id="plastic-gears-desc" class="project-desc">
+                        <p>
+                        This gear train was designed from scratch by Chris.
+                        At the right speed, acrylic and other soft plastics
+                        can be smoothly milled to yield very beautiful results.
+                        Learn tips on how to mill this beautiful but brittle plastic.
+                        <br><b>Material:</b> 6mm acrylic
+                        <br><b>End Mill:</b> 2-flute, 1/8″ flat end
+                        <br><b>Cutting Time:</b> 14 minutes
+                        <br><button id="plastic-gears-make" class="project-start">Let's Go</button>
+                        </p>
+                    </div>
+                    <img id="plastic-gears-img" class="proj-pic" src="images/Gear-Train.jpg" alt="Gears made of plastic">
+                    <!-- <div id="wood-box-img" class="flow-col">
+                    </div> -->
+                </div>
+        </div>
+    </div>
+
+    <!-- left control menu -->
+    <div id="control-left" class="control" style="z-index: 1; display: block;"><div id="assets"><div class="grouphead noselect groupLabel" id="ck_layers" style="display: none;"><a ck="ck_layers" id="ck_layers_label">layers</a><div class="flow-row ck_layers" style="display: none;"><label id="outline" class="noselect">outline</label><input type="checkbox"></div><div class="flow-row ck_layers" style="display: none;"><label id="trace" class="noselect">trace</label><input type="checkbox"></div><div class="flow-row ck_layers"><label id="facing" class="noselect">facing</label><input type="checkbox"></div><div class="flow-row ck_layers"><label id="roughing" class="noselect">roughing</label><input type="checkbox"></div><div class="flow-row ck_layers"><label id="finishing" class="noselect">finishing</label><input type="checkbox"></div><div class="flow-row ck_layers"><label id="finishx" class="noselect">finish x</label><input type="checkbox"></div><div class="flow-row ck_layers"><label id="finishy" class="noselect">finish y</label><input type="checkbox"></div><div class="flow-row ck_layers" style="display: none;"><label id="delta" class="noselect">delta</label><input type="checkbox"></div><div class="flow-row ck_layers" style="display: none;"><label id="solids" class="noselect">solids</label><input type="checkbox"></div><div class="flow-row ck_layers" style="display: none;"><label id="solidfill" class="noselect">solid fill</label><input type="checkbox"></div><div class="flow-row ck_layers" style="display: none;"><label id="sparsefill" class="noselect">sparse fill</label><input type="checkbox"></div><div class="flow-row ck_layers" style="display: none;"><label id="support" class="noselect">support</label><input type="checkbox"></div><div class="flow-row ck_layers"><label id="move" class="noselect">move</label><input type="checkbox"></div><div class="flow-row ck_layers"><label id="flipjig" class="noselect">flip jig</label><input type="checkbox"></div></div><div class="ck_layers"><div class="tablerow"><button id="button_Machine"><a>Machine</a><img src="images/SmallMachine.png" width="35%" align="right"></button></div></div><div class="ck_layers"><div class="tablerow"><button id="button_Import">Import</button><button id="button_+" import="1">+</button></div></div><div class="grouphead noselect groupLabel" id="ck_materialsize"><a ck="ck_materialsize" id="ck_materialsize_label">material size</a><div class="flow-row ck_materialsize" title="width in millimeters
+0 defaults to part size"><label id="width" class="noselect">width</label><input size="1" type="text"></div><div class="flow-row ck_materialsize" title="depth in millimeters
+0 defaults to part size"><label id="depth" class="noselect">depth</label><input size="1" type="text"></div><div class="flow-row ck_materialsize" title="height in millimeters
+0 defaults to part size"><label id="height" class="noselect">height</label><input size="1" type="text"></div></div><div class="grouphead noselect groupLabel" id="ck_positioning"><a ck="ck_positioning" id="ck_positioning_label">positioning</a><div class="flow-row ck_positioning" title="cutting tool either starts at
+center or at front, left"><label id="origincenter" class="noselect">origin center</label><input type="checkbox" title="cutting tool either starts at
+center or at front, left"></div><div class="flow-row ck_positioning" title="cutting tool either starts at
+the top or the bottom"><label id="origintop" class="noselect">origin top</label><input type="checkbox" title="cutting tool either starts at
+the top or the bottom"></div><div class="flow-row ck_positioning" title="float the object to
+the top of the material"><label id="snaptotop" class="noselect">snap to top</label><input type="checkbox" title="float the object to
+the top of the material"></div><div class="flow-row ck_positioning" title="offset from stock surface
+to top face of part [mm]"><label id="ztopoffset" class="noselect">z top offset</label><input size="1" type="text"></div><div class="flow-row ck_positioning" title="offset from part bottom
+to limit cutting depth [mm]"><label id="zsegment" class="noselect">z segment</label><input size="1" type="text"></div></div><div class="ck_positioning"><div class="tablerow"><button id="button_Mills"><a>Tools</a><img src="images/endmill.png" width="40%" align="right" margin-top="3px"></button></div><div class="tablerow"></div></div><div class="grouphead noselect groupLabel" id="ck_millselect"><a ck="ck_millselect" id="ck_millselect_label">millselect</a><div class="flow-row ck_millselect"><label id="tool" class="noselect">tool</label><select><option></option><option value="1000">end 1/4</option><option value="1001">end 1/8</option><option value="1002">end 1/16</option><option value="1003">end 2mm</option><option value="1004">end 3mm</option><option value="1005">ball 1/4</option><option value="1006">ball 1/8</option><option value="1007">ball 1/16</option></select></div></div><div class="ck_millselect"><div class="tablerow"><button id="button_Arrange" class="buton">Arrange</button></div><div class="tablerow"><button id="button_Generate">Generate</button></div><div class="tablerow"><button id="button_Send">Export</button></div><div class="tablerow"><button id="button_Powered"><img src="images/KiriMoto.png" width="100%"></button></div><div class="tablerow"><button id="button_Cam"><a>CAMLab</a><img src="images/baa.png" width="30%" align="right"></button></div><div class="tablerow"><button id="button_Feeds" style="display: inline-block;">Feeds</button></div><div class="tablerow"><button id="button_Help" title="Find tutorials on how to use CAMLab">?</button></div></div></div></div>
+    <!-- right control menu -->
+    <div id="control-right" class="contract" style="z-index: 1; display: block;"><div id="sets"><div class="grouphead noselect groupLabel" id="ck_settings"><a ck="ck_settings" id="ck_settings_label">settings</a></div><div class="ck_settings"><div class="tablerow"><button id="button_load">load</button><button id="button_save">save</button></div></div><div class="grouphead noselect groupLabel" id="ck_pathalterations"><a ck="ck_pathalterations" id="ck_pathalterations_label">path alterations</a><div class="flow-row ck_pathalterations" title="stops from cutting
+the object's perimeter"><label id="pocketonly" class="noselect">pocket only</label><input type="checkbox" title="stops from cutting
+the object's perimeter"></div><div class="flow-row ck_pathalterations" title="optimize pocket cuts
+with depth priority"><label id="depthfirst" class="noselect">depth first</label><input type="checkbox" title="optimize pocket cuts
+with depth priority"></div><div class="flow-row ck_pathalterations" title="waterline milling direction"><label id="clockwise" class="noselect">clockwise</label><input type="checkbox" title="waterline milling direction"></div><div class="flow-row ck_pathalterations" title="in mm" style="display: none;"><label id="width" class="noselect">width</label><input size="5" type="text"></div><div class="flow-row ck_pathalterations" title="in mm" style="display: none;"><label id="depth" class="noselect">depth</label><input size="5" type="text"></div></div><div class="grouphead noselect groupLabel" id="ck_roughing"><a ck="ck_roughing" id="ck_roughing_label">roughing</a><input type="checkbox" class="enable-checkbox" title="cuts away a
+lot of material"><div class="flow-row ck_roughing" title="0.1 - 1.0
+percentage of
+tool diameter" style="height: 0px; visibility: hidden;"><label id="stepover" class="noselect">step over</label><input size="4" type="text"></div><div class="flow-row ck_roughing" title="step down depth for
+each roughing pass [mm]
+0 to disable" style="height: 0px; visibility: hidden;"><label id="stepdown" class="noselect">step down</label><input size="4" type="text"></div><div class="flow-row ck_roughing" title="max speed while
+cutting [mm/min]" style="height: 0px; visibility: hidden;"><label id="feedrate" class="noselect">feed rate</label><input size="4" type="text"></div><div class="flow-row ck_roughing" title="max speed on
+z axis [mm/min]" style="height: 0px; visibility: hidden;"><label id="plungerate" class="noselect">plunge rate</label><input size="4" type="text"></div><div class="flow-row ck_roughing" title="horizontal offset from vertical faces
+stock to leave for finishing pass [mm]" style="height: 0px; visibility: hidden;"><label id="leavestock" class="noselect">leave stock</label><input size="4" type="text"></div></div><div class="grouphead noselect groupLabel" id="ck_finishing"><a ck="ck_finishing" id="ck_finishing_label">finishing</a><input type="checkbox" class="enable-checkbox" title="small material removal
+for a nice surface
+finish"><div class="flow-row ck_finishing" title="step down depth for
+each finishing pass [mm]
+0 to disable" style="height: 100%; visibility: visible;"><label id="stepdown" class="noselect">step down</label><input size="4" type="text"></div><div class="flow-row ck_finishing" title="max speed while
+cutting [mm/min]" style="height: 100%; visibility: visible;"><label id="feedrate" class="noselect">feed rate</label><input size="4" type="text"></div><div class="flow-row ck_finishing" title="max speed on
+z axis [mm/min]" style="height: 100%; visibility: visible;"><label id="plungerate" class="noselect">plunge rate</label><input size="4" type="text"></div></div><div class="grouphead noselect groupLabel" id="ck_relief"><a ck="ck_relief" id="ck_relief_label">relief</a><input type="checkbox" class="enable-checkbox" title="linear finishing in
+x-asis and y-axis"><div class="flow-row ck_relief" title="0.05 - 1.0
+percentage of
+tool diameter" style="height: 0px; visibility: hidden;"><label id="stepover" class="noselect">step over</label><input size="4" type="text"></div><div class="flow-row ck_relief" title="max speed while
+cutting [mm/min]" style="height: 0px; visibility: hidden;"><label id="feedrate" class="noselect">feed rate</label><input size="4" type="text"></div><div class="flow-row ck_relief" title="max speed on
+z axis [mm/min]" style="height: 0px; visibility: hidden;"><label id="plungerate" class="noselect">plunge rate</label><input size="4" type="text"></div><div class="flow-row ck_relief" title="angles greater than this
+are considered vertical" style="height: 0px; visibility: hidden;"><label id="maxangle" class="noselect">max angle</label><input size="4" type="text"></div><div class="flow-row ck_relief" title="linear x-axis finishing" style="height: 0px; visibility: hidden;"><label id="nolinearx" class="noselect">no linear x</label><input type="checkbox" title="linear x-axis finishing"></div><div class="flow-row ck_relief" title="linear y-axis finishing" style="height: 0px; visibility: hidden;"><label id="nolineary" class="noselect">no linear y</label><input type="checkbox" title="linear y-axis finishing"></div><div class="flow-row ck_relief" title="limit linear cleanup
+to curved surfaces
+to reduce time" style="height: 0px; visibility: hidden;"><label id="curvesonly" class="noselect">curves only</label><input type="checkbox" title="limit linear cleanup
+to curved surfaces
+to reduce time"></div></div><div class="grouphead noselect groupLabel" id="ck_drilling"><a ck="ck_drilling" id="ck_drilling_label">drilling</a><input type="checkbox" class="enable-checkbox" title="for drilling holes"><div class="flow-row ck_drilling" title="max plunge between
+dwell periods [mm]
+0 to disable" style="height: 0px; visibility: hidden;"><label id="plungeper" class="noselect">plunge per</label><input size="4" type="text"></div><div class="flow-row ck_drilling" title="plunge rate [mm/min]
+0 to disable" style="height: 0px; visibility: hidden;"><label id="plungerate" class="noselect">plunge rate</label><input size="4" type="text"></div><div class="flow-row ck_drilling" title="dwell time between
+plunges [milliseconds]" style="height: 0px; visibility: hidden;"><label id="dwelltime" class="noselect">dwell time</label><input size="4" type="text"></div><div class="flow-row ck_drilling" title="lift between plunges
+after dwell period [mm]
+0 to disable" style="height: 0px; visibility: hidden;"><label id="drilllift" class="noselect">drill lift</label><input size="4" type="text"></div></div><div class="grouphead noselect groupLabel" id="ck_cutouttabs"><a ck="ck_cutouttabs" id="ck_cutouttabs_label">cutout tabs</a><input type="checkbox" class="enable-checkbox" title="keeps the object
+partially attached to
+the original material"><div class="flow-row ck_cutouttabs" title="width perpendicular
+to part [mm]" style="height: 0px; visibility: hidden;"><label id="width" class="noselect">width</label><input size="4" type="text"></div><div class="flow-row ck_cutouttabs" title="height from part
+bottom [mm]" style="height: 0px; visibility: hidden;"><label id="height" class="noselect">height</label><input size="4" type="text"></div></div><div class="grouphead noselect groupLabel" id="ck_flipjig"><a ck="ck_flipjig" id="ck_flipjig_label">flip jig</a><input type="checkbox" class="enable-checkbox" title="generates a jig which
+allows both sides of the
+object to be cut"><div class="flow-row ck_flipjig" title="step down depth for
+each pass [mm]
+0 to disable" style="height: 0px; visibility: hidden;"><label id="stepdown" class="noselect">step down</label><input size="4" type="text"></div><div class="flow-row ck_flipjig" title="max speed while
+cutting [mm/min]" style="height: 0px; visibility: hidden;"><label id="feedrate" class="noselect">feed rate</label><input size="4" type="text"></div><div class="flow-row ck_flipjig" title="max speed on
+z axis [mm/min]" style="height: 0px; visibility: hidden;"><label id="plungerate" class="noselect">plunge rate</label><input size="4" type="text"></div><div class="flow-row ck_flipjig" title="minimum space between
+part border and start
+of jig [mm]" style="height: 0px; visibility: hidden;"><label id="padding" class="noselect">padding</label><input size="4" type="text"></div></div></div></div>
+    <!-- SPJS gcode sender -->
+    <div id="sender">
+        <div id="sender-bar">
+            <button id="sender-spjs">?</button>
+            <button id="sender-close">X</button>
+        </div>
+        <span>direct machine control</span>
+        <div class="sender-sel">
+            <table>
+                <tbody><tr>
+                    <th colspan="2" class="flow-row">
+                        <input class="flow-grow" id="sender-host" size="30" spellcheck="false" placeholder="host:port of SPJS server">
+                    </th>
+                    <td> <button id="sender-connect">connect</button> </td>
+                </tr>
+                <tr>
+                    <th class="flow-row">
+                        <select class="flow-grow" id="sender-port" disabled="true"><option>select port</option></select> &nbsp;
+                        <select id="sender-mode" disabled="true">
+                            <option id="mode-option">set mode</option>
+                            <option value="grbl">grbl</option>
+                            <option value="tinyg">tinyg</option>
+                        </select>
+                    </th>
+                    <td> <button id="sender-port-close">close</button> </td>
+                </tr>
+            </tbody></table>
+        </div>
+        <div class="sender-sel"> <div id="sender-log"></div> </div>
+        <div class="sender-sel" id="sender-cc">
+            <table>
+                <tbody><tr>
+                    <th>
+                        <label>status</label>
+                        <input id="sender-status" size="5" disabled="true">
+                        <label>send</label>
+                        <input id="sender-command" size="30">
+                    </th>
+                </tr>
+                <tr>
+                    <th class="flow-row" id="sender-quick">
+                        <button id="sender-ctrlx">soft reset</button> &nbsp;
+                        <button id="sender-hold">feed hold</button> &nbsp;
+                        <button id="sender-resume">feed resume</button>
+                    
+                </th></tr>
+            </tbody></table>
+        </div>
+        <div class="sender-sel flow-row flow-space-between" id="sender-pad">
+            <div>
+            <table>
+                <tbody><tr><th>
+                    <button id="sjx-">X-</button>
+                    <button id="sjx+">X+</button>
+                </th></tr>
+                <tr><th>
+                    <button id="sjy-">Y-</button>
+                    <button id="sjy+">Y+</button>
+                </th></tr>
+                <tr><th>
+                    <button id="sjz-">Z-</button>
+                    <button id="sjz+">Z+</button>
+                </th></tr>
+            </tbody></table>
+        </div><div>
+            <table>
+                <tbody><tr><th> <label>jog</label><input id="sender-jog" size="4" value="1" title="jog distance in mm"><label>mm</label> </th></tr>
+                <tr><th> <button id="sender-set-zero">zero out axes</button> </th></tr>
+                <tr><th> <button id="sender-goto-zero">goto zero axis</button> </th></tr>
+            </tbody></table>
+        </div><div>
+            <table id="sender-coordinates">
+                <tbody><tr><th><label>X</label> <input id="saxi" disabled="true" size="9"> <input id="srxi" disabled="true" size="9"></th></tr>
+                <tr><th><label>Y</label> <input id="sayi" disabled="true" size="9"> <input id="sryi" disabled="true" size="9"></th></tr>
+                <tr><th><label>Z</label> <input id="sazi" disabled="true" size="9"> <input id="srzi" disabled="true" size="9"></th></tr>
+            </tbody></table>
+        </div>
+        </div>
+        <div class="sender-sel" id="sender-control">
+            <table>
+                <tbody><tr><td>
+                    <label>gcode control</label>
+                    <div id="sender-control-buttons">
+                        <button id="sender-gc-send">send</button>
+                        <button id="sender-gc-pause">pause</button>
+                        <button id="sender-gc-abort">abort</button>
+                        : <button id="sender-gc-runbox">runbox</button>
+                    </div>
+                </td></tr>
+                <tr><td class="flow-row flow-space-between">
+                    <div><label>queue</label><input id="sender-gc-queue" disabled="true" size="9"> </div>
+                    <div><label>sent</label><input id="sender-gc-sent" disabled="true" size="9"> </div>
+                    <div><label>total</label><input id="sender-gc-lines" disabled="true" size="9"> </div>
+                </td></tr>
+            </tbody></table>
+        </div>
+    </div>
+    <!-- all modal dialogs -->
+    <div id="modal" style="display: none;">
+        <div id="help"></div>
+        <!-- changeable print dialog -->
+        <div id="print"></div>
+        <!-- hidden file input loader -->
+        <input id="load-file" type="file" name="loadme" style="display:none" accept=".stl">
+        <!-- <input id="load-file" type="file" name="loadme" style="display:none" accept=".stl, .gcode, .nc"/> -->
+    </div>
+    <!-- 3js -->
+    <div id="container"><canvas width="800" height="600" style="width: 800px; height: 600px;"></canvas></div>
+    <!-- progress bar -->
+    <div id="loading"><div id="progress"><span id="prostatus">status</span></div></div>
+    <!-- file load catalog -->
+    <div id="catalog" class="dialog" style="left: 182px; top: 56px; display: none;">
+        <div id="catalogBody" class="flow-col">
+            <span id="localCache">recent files</span>
+            <div id="catalogList"></div>
+        </div>
+    </div>
+    <!-- settings load dialog -->
+    <div id="settings" class="dialog" style="right: 182px; top: 35px; display: none;">
+        <div id="settingsBody" class="flow-col">
+            <span id="settingsCache">Cut Settings</span>
+            <div id="settingsList"></div>
+        </div>
+    </div>
+    <!-- GCode filter editor -->
+    <div id="machines" class="dialog" style="left: 182px; top: 12px; display: none;">
+    <!-- <div id="machines" class="dialog flex-col"> -->
+        <div id="machines-body" class="flow-col">
+            <div id="machine-labels" class="flow-row">
+                <span>machine</span>
+                <span>settings</span>
+            </div>
+            <div id="machine-cols" class="flow-row">
+                <div id="machine-list" class="flow-col">
+                    <select id="machine-select" size="15"></select>
+                </div>
+                <div id="machine-info">
+                    <div id="machine"><div class="grouphead noselect groupLabel" id="ck_Machine"><a ck="ck_Machine" id="ck_Machine_label">Machine</a><div class="flow-row ck_Machine"><label id="name" class="noselect">name</label><input size="12" type="text" disabled></div><div class="flow-row ck_Machine" title="diameter [mm]" style="display: none;"><label id="filament" class="noselect">filament</label><input size="5" type="text" disabled></div><div class="flow-row ck_Machine" title="diameter [mm]" style="display: none;"><label id="nozzle" class="noselect">nozzle</label><input size="5" type="text" disabled></div><div class="flow-row ck_Machine" title="[mm]"><label id="bedwidth" class="noselect">bed width</label><input size="5" type="text" disabled></div><div class="flow-row ck_Machine" title="[mm]"><label id="beddepth" class="noselect">bed depth</label><input size="5" type="text" disabled></div><div class="flow-row ck_Machine" title="in mm"><label id="metric" class="noselect">metric</label><input type="checkbox" title="in mm" disabled></div><div class="flow-row ck_Machine" title="max build height [mm]" style="display: none;"><label id="maxheight" class="noselect">max height</label><input size="5" type="text" disabled></div></div><div class="grouphead noselect groupLabel" id="ck_gcode"><a ck="ck_gcode" id="ck_gcode_label">gcode</a><div class="flow-row ck_gcode" title="max spindle speed
+0 to disable"><label id="maxspindlerpm" class="noselect">max spindle rpm</label><input size="5" type="text" disabled></div><div class="flow-row ck_gcode" title="extrusion moves absolute"><label id="extrusionabsolute" class="noselect">extrusion absolute</label><input type="checkbox" title="extrusion moves absolute" disabled></div><div class="flow-row ck_gcode" title="bed origin center"><label id="origincenter" class="noselect">origin center</label><input type="checkbox" title="bed origin center" disabled></div><div class="flow-row ck_gcode" title="part z origin top"><label id="origintop" class="noselect">origin top</label><input type="checkbox" title="part z origin top" disabled></div><div class="flow-row ck_gcode" title="set cooling fan power" style="display: none;"><label id="fanpower" class="noselect">fan power</label><input size="15" type="text" disabled></div><div class="flow-row ck_gcode" title="output on each % progress" style="display: none;"><label id="progress" class="noselect">progress</label><input size="15" type="text" disabled></div><div class="flow-row ck_gcode" title="gcode token spacing"><label id="tokenspacing" class="noselect">token spacing</label><input type="checkbox" title="gcode token spacing" disabled></div><div class="flow-row ck_gcode" title="strip gcode comments"><label id="stripcomments" class="noselect">strip comments</label><input type="checkbox" title="strip gcode comments" disabled></div><div class="flow-row ck_gcode" title="file name exension"><label id="fileext" class="noselect">file ext</label><input size="5" type="text" disabled></div></div><div class="flow-row ck_gcode" title="output at each layer change" style="display: none;"><label id="layer" class="noselect">layer</label><button>edit</button></div><div class="flow-row ck_gcode" title="gcode dwell script"><label id="dwell" class="noselect">dwell</label><button>edit</button></div><div class="flow-row ck_gcode" title="tool change script"><label id="toolchange" class="noselect">tool change</label><button>edit</button></div><div class="flow-row ck_gcode" title="set spindle speed"><label id="spindlespeed" class="noselect">spindle speed</label><button>edit</button></div><div class="flow-row ck_gcode" title="gcode pause script" style="display: none;"><label id="pause" class="noselect">pause</label><button>edit</button></div><div class="flow-row ck_gcode" title="gcode header script"><label id="header" class="noselect">header</label><button>edit</button></div><div class="flow-row ck_gcode" title="gcode footer script"><label id="footer" class="noselect">footer</label><button>edit</button></div></div>
+                </div>
+            </div>
+            <!-- <div style="position:relative">
+                    <div id="insert" style="position:absolute"></div>
+            </div> -->
+            <div id="machine-action" class="flow-row">
+                <button id="machine-add">+</button>
+                <button id="machine-del" disabled><img src="images/trash.png" width="90%" align="bottom" style="margin-bottom:-2px"></button>
+                <span id="machine-spacer"></span>
+                <button id="machine-save" disabled>save</button>
+                <button id="machine-close">done</button>
+            </div>
+        </div>
+    </div>
+    <!-- CAM tools dialog -->
+    <div id="tools" class="dialog" style="left: 182px; top: 100px; display: none;">
+        <div id="tools-body" class="flow-col">
+            <div id="tool-labels" class="flow-row">
+                <span>Mills</span>
+                <span>Features</span>
+            </div>
+            <div id="tool-cols" class="flow-row">
+                <div id="tool-list" class="flow-col">
+                    <select id="tool-select" size="15"></select>
+                </div>
+                <div id="tool-info" class="flow-col">
+                    <div class="flow-row"><label>name</label><input id="tool-name" size="10"></div>
+                    <div class="flow-row">
+                      <label>type</label>
+                      <select id="tool-type">
+                        <option value="endmill" selected>endmill</option>
+                        <option value="ballmill">ballmill</option>
+                      </select>
+                    </div>
+                    <div class="flow-row"><input id="tool-num" size="5"></div>
+                    <!-- <div class="grouphead">flute</div> -->
+                    <div class="flow-row" title="flute diameter"><label>flute diameter</label><input id="tool-fdiam" size="5"></div>
+                    <div class="flow-row" title="flute length"><label>flute length</label><input id="tool-flen" size="5"></div>
+                    <!-- <div class="grouphead">shaft</div> -->
+                    <div class="flow-row" title="shaft diameter"><label>shaft diameter</label><input id="tool-sdiam" size="5"></div>
+                    <div class="flow-row" title="shaft length"><label>shaft length</label><input id="tool-slen" size="5"></div>
+                    <div class="flow-row">
+                      <label>metric</label>
+                      <input id="tool-metric" type="checkbox">
+                    </div>
+                </div>
+                <!--
+                    <div class="flow-row"><label>type</label>
+                        <select id="tool-type">
+                            <option value="endmill" selected>endmill</option>
+                            <option value="ballmill">ballmill</option>
+                        </select>
+                    </div>
+                    <div class="flow-row"><label>name</label><input id="tool-name" size=8></input></div>
+                    <div class="flow-row"><label>tool #</label><input id="tool-num" size=5></input></div>
+                    <div class="flow-row"><label>metric</label><input id="tool-metric" type="checkbox"></input></div>
+                    <div class="grouphead">flute</div>
+                    <div class="flow-row" title="flute diameter"><label>diameter</label><input id="tool-fdiam" size=5></input></div>
+                    <div class="flow-row" title="flute length"><label>length</label><input id="tool-flen" size=5></input></div>
+                    <div class="grouphead">shaft</div>
+                    <div class="flow-row" title="shaft diameter"><label>diameter</label><input id="tool-sdiam" size=5></input></div>
+                    <div class="flow-row" title="shaft length"><label>length</label><input id="tool-slen" size=5></input></div>
+                -->
+            </div>
+            <div id="tool-action" class="flow-row">
+                <button id="tool-add">+</button>
+                <button id="tool-del"><img src="images/trash.png" width="90%" align="bottom" style="margin-bottom:-2px"></button>
+                <!-- <span id="tool-spacer"></span> -->
+                <button id="tools-save">save</button>
+                <button id="tools-close">done</button>
+            </div>
+        </div>
+    </div>
+    <!-- CAM feeds dialog -->
+    <div id="feeds" class="dialog" style="display: none; width: 600px; right: 182px; top: 35px;">
+        <div id="feeds-body" class="flow-col">
+            <div id="feeds-note" class="flow-row">
+                    <span>These feeds and speeds are recommended for a 2-flute, 1/8" carbide end mill;
+                            if you're using another kind of cutting tool then adjust your settings accordingly.</span>
+            </div>
+            <div id="feeds-table" class="flow-row">
+                <table>
+                    <tbody><tr>
+                    <th>Material</th>
+                    <th>Feed Rate (mm/ min)</th>
+                    <th>Plunge Rate (mm/ min)</th>
+                    <th>Step Over</th>
+                    <th>Step Down (mm)</th>
+                    <th>Spindle Speed (RPM)</th>
+                    </tr>
+                    <tr>
+                    <td>Wood</td>
+                    <td>700</td>
+                    <td>250</td>
+                    <td>0.45</td>
+                    <td>2</td>
+                    <td>20000</td>
+                    </tr>
+                    <tr>
+                    <td>Pine/Cedar</td>
+                    <td>800</td>
+                    <td>250</td>
+                    <td>0.45</td>
+                    <td>2</td>
+                    <td>20000</td>
+                    </tr>
+                    <tr> 					
+                    <td>Pinewood</td>
+                    <td>1000</td>
+                    <td>250</td>
+                    <td>0.3</td>
+                    <td>1.5</td>
+                    <td>20000</td>
+                    </tr>
+                    <tr>					
+                    <td>Maple</td>
+                    <td>800</td>
+                    <td>250</td>
+                    <td>0.45</td>
+                    <td>1</td>
+                    <td>20000</td>
+                    </tr>
+                    <tr>   					
+                    <td>MDF</td>
+                    <td>700</td>
+                    <td>200</td>
+                    <td>0.2</td>
+                    <td>1.2</td>
+                    <td>22000</td>
+                    </tr>
+                    <tr>					
+                    <td>HDPE</td>
+                    <td>1100</td>
+                    <td>250</td>
+                    <td>0.35</td>
+                    <td>1.5</td>
+                    <td>20000</td>
+                    </tr>
+                    <tr>					
+                    <td>Acrylic</td>
+                    <td>800</td>
+                    <td>250</td>
+                    <td>0.4</td>
+                    <td>1.8</td>
+                    <td>24000</td>
+                    </tr>
+                    <tr>      					
+                    <td>Foam</td>
+                    <td>1500</td>
+                    <td>800</td>
+                    <td>0.7</td>
+                    <td>2</td>
+                    <td>20000</td>
+                    </tr>
+                    <tr>  					
+                    <td>PCB</td>
+                    <td>800</td>
+                    <td>100</td>
+                    <td>0.3</td>
+                    <td>N/A</td>
+                    <td>20000</td>
+                    </tr>
+                    <tr>					
+                    <td>Aluminum</td>
+                    <td>1000</td>
+                    <td>100</td>
+                    <td>0.2</td>
+                    <td>0.4</td>
+                    <td>20000</td>
+                    </tr>
+                </tbody></table> 
+            </div>
+            <div id="ridgid-table" class="flow-row">
+                <table>	
+                    <tbody><tr>
+                    <th>Ridgid R24012</th>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    <td>7</td>
+                    </tr>
+                    <tr>
+                    <td>Speed (RPM)</td>
+                    <td>20,000</td>
+                    <td>21,000</td>
+                    <td>22,500</td>
+                    <td>25,000</td>
+                    <td>27,500</td>
+                    <td>29,000</td>
+                    <td>30,000</td>
+                    </tr>
+                </tbody></table> 
+            </div>				
+            <div id="makita-table" class="flow-row">
+                <table>	
+                    <tbody><tr>
+                    <th>Makita RT0701</th>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                    </tr>
+                    <tr>
+                    <td>Speed (RPM)</td>
+                    <td>10,000</td>
+                    <td>12,000</td>
+                    <td>17,000</td>
+                    <td>22,000</td>
+                    <td>27,000</td>
+                    <td>30,000</td>
+                    </tr>
+                </tbody></table> 
+            </div>
+        </div>    
+    </div>
+    <!-- selection info -->
+    <div id="selection" style="display: none;">
+        <span>
+            <label class="label">width:</label><label id="sel_width" class="value">0</label>
+            <label class="label">depth:</label><label id="sel_depth" class="value">0</label>
+            <label class="label">height:</label><label id="sel_height" class="value">0</label>
+            &nbsp;&nbsp;
+            <label class="label">scale:</label>
+            <label class="label">x</label><input id="scale_x" size="1" value="1">
+            <label class="label">y</label><input id="scale_y" size="1" value="1">
+            <label class="label">z</label><input id="scale_z" size="1" value="1">
+            <label class="label">uniform</label><input type="checkbox" id="scale_uni" checked>
+            &nbsp;&nbsp;
+            <label class="label">rotate:</label>
+            <button id="x+" title="hold SHIFT to rotate 5 degrees">x+</button><button id="x-" title="hold SHIFT to rotate 5 degrees">x-</button>
+            <button id="y+" title="hold SHIFT to rotate 5 degrees">y+</button><button id="y-" title="hold SHIFT to rotate 5 degrees">y-</button>
+            <button id="z+" title="hold SHIFT to rotate 5 degrees">z+</button><button id="z-" title="hold SHIFT to rotate 5 degrees">z-</button>
+            &nbsp;&nbsp;
+            <button id="delmodel" title="delete current object
+(can also use 'delete')"><img src="images/trash_b.png" width="45%" align="bottom" style="margin-bottom:-3.5px"></button>
+        </span>
+    </div>
+    <!-- layer slider -->
+    <div id="layer-view" class="flow-row" style="display: none;">
+        <span>
+        <button id="layer-toggle"><img src="images/eye.png" width="14" id="layer-toggle-img">Cut Type</button>
+        &nbsp;&nbsp;&nbsp;
+        <!-- <button id="layer-range">single layer</button> -->
+        <label class="label">single layer</label><input type="checkbox" id="layer-range">
+        
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <div id="layers"></div>
+        <input id="layer-id" size="1">
+        ​​
+        <input id="layer-slider" type="range" max="0">
+        <input id="layer-span" size="1" value="1" hidden="1">
+        &nbsp;
+    </span>
+    </div>
+
+
+</body></html>
