@@ -16,7 +16,7 @@
     "bull-board": "^0.6.0",
     "express": "^4.16.3",
     "kafka-node": "^5.0.0",
-    "pug": "^2.0.3",
+    "pug": "^3.0.1",
     "puppeteer": "^1.20.0",
     "redis": "^3.0.2",
     "socket.io": "^2.3.0",
