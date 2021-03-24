@@ -60,7 +60,7 @@ PyYAML==3.13
 redis==3.4.1
 requests==2.23.0
 rfc3986==1.3.2
-rsa==3.4.2
+rsa==4.1
 s3transfer==0.2.0
 sanic==19.12.2
 six==1.10.0
