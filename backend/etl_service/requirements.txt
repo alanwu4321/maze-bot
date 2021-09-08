@@ -17,7 +17,7 @@ docutils==0.14
 feedparser==5.2.1
 Flask==1.1.1
 Flask-Cors==3.0.8
-flask-restx==0.2.0
+flask-restx==0.5.1
 gitsome==0.8.4
 h11==0.8.1
 h2==3.2.0
